@@ -2,7 +2,7 @@
     
     <PropertyGroup>
         <RootNamespace>Rejuvena.Collate</RootNamespace>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -25,10 +25,15 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.2.0" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
     </ItemGroup>
 
     <ItemGroup>
-        <None PackagePath="build/Rejuvena.Collate.dll" Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" Visible="false" />
+        <ProjectReference Include="..\TML.Patcher\src\TML.Files\TML.Files.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None PackagePath="build/" Include="$(OutputPath)\*" Pack="true" Visible="false" />
         <None PackagePath="build/Rejuvena.Collate.targets" Include="build\Rejuvena.Collate.targets" Pack="true" />
     </ItemGroup>
 

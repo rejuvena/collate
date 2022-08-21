@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Build.Utilities;
 
-namespace Rejuvena.Collate.Tasks
+namespace Rejuvena.Collate
 {
     public abstract class BaseTask : Task
     {

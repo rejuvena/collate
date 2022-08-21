@@ -1,4 +1,4 @@
-﻿namespace Rejuvena.Collate.Tasks
+﻿namespace Rejuvena.Collate
 {
     public enum ErrorPermissiveness
     {

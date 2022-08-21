@@ -32,9 +32,69 @@
     <!-- Import .targets file defined from TargetsFilePath. -->
     <Import Project="$(TargetsFilePath)"/>
 
-    <!-- <UsingTask TaskName="ImportModLoaderTargetsTask" AssemblyFile="Rejuvena.Collate"/>
-    <Target Name="BeforeResolveReferences">
-        <ImportModLoaderTargetsTask EnvVarName="TMODLOADER_TARGETS_PATH"/>
-    </Target> -->
+    <UsingTask TaskName="PackageModTask" AssemblyFile="Rejuvena.Collate.dll"/>
+    <ItemDefinitionGroup>
+        <ModReference>
+            <Visible>false</Visible>
+        </ModReference>
+    </ItemDefinitionGroup>
+    <Target Name="IncludeModReferences" BeforeTargets="ResolveAssemblyReferences">
+        <Message Text="Adding %(ModReference.Identity) as a reference..."/>
+        
+        <ItemGroup>
+            <Reference Include="%(ModReference.Identity)" Condition="'%(ModReference.ProjectPath)'=='' AND '%(ModReference.HintPath)'!=''">
+                <HintPath>%(ModReference.HintPath)</HintPath>
+            </Reference>
+        </ItemGroup>
+
+        <ItemGroup>
+            <ProjectReference Include="%(ModReference.ProjectPath)" Condition="'%(ModReference.ProjectPath)'!=''"/>
+        </ItemGroup>
+    </Target>
+    <Target Name="Package" AfterTargets="AfterBuild">
+        <Message Text="Packaging files into a .tmod archive..."/>
+
+        <Message Text="Converting mod properties into an item group..."/>
+        <ItemGroup>
+            <ModProperty Include="Version" Value="$(Version)"/>
+            <ModProperty Include="DisplayName" Value="$(DisplayName)"/>
+            <ModProperty Include="Author" Value="$(Author)"/>
+            <ModProperty Include="Homepage" Value="$(Homepage)"/>
+            <ModProperty Include="HideCode" Value="$(HideCode)"/>
+            <ModProperty Include="HideResources" Value="$(HideResources)"/>
+            <ModProperty Include="IncludeSource" Value="$(IncludeSource)"/>
+            <ModProperty Include="IncludePDB" Value="$(IncludePDB)"/>
+            <ModProperty Include="BuildIgnore" Value="$(BuildIgnore)"/>
+            <ModProperty Include="Side" Value="$(ModSide)"/>
+            <ModProperty Include="SortBefore" Value="$(SortBefore)"/>
+            <ModProperty Include="SortAfter" Value="$(SortAfter)"/>
+        </ItemGroup>
+
+        <GetAssemblyIdentity AssemblyFiles="$(tMLSteamPath)$(tMLPath)">
+            <Output TaskParameter="Assemblies" ItemName="TmlAssemblyIdentity"/>
+        </GetAssemblyIdentity>
+
+
+        <PropertyGroup>
+            <!-- Use default values in case they have not been provided -->
+            <TmlVersion Condition="$(TmlVersion) == '' AND TmlAssemblyIdentity!=''">%(TmlAssemblyIdentity.Version)</TmlVersion>
+            <TmlVersion Condition="$(TmlVersion) == '' AND TmlAssemblyIdentity==''">1.4</TmlVersion>
+        </PropertyGroup>
+
+        <PackageModTask
+                PackageReferences="@(PackageReference)"
+                ModReferences="@(ModReference)"
+                ReferencePaths="@(ReferencePath)"
+                ProjectDirectory="$(MSBuildProjectDirectory)"
+                OutputPath="$(OutputPath)"
+                AssemblyName="$(AssemblyName)"
+                TmlVersion="$(TmlVersion)"
+                TmlDllPath="$(tMLSteamPath)$(tMLPath)"
+                OutputTmodPath="$(OutputTmodPath)"
+                ModProperties="@(ModProperty)"/>
+    </Target>
+    
+    <!-- Override normal tModLoader BuildMod target. -->
+    <Target Name="BuildMod" AfterTargets="AfterBuild" />
 
 </Project>
