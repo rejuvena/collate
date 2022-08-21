@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    
+    <PropertyGroup>
+        <RootNamespace>Rejuvena.Collate</RootNamespace>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+
+        <PackageId>Rejuvena.Collate</PackageId>
+        <IsPackable>true</IsPackable>
+        <Title>Alternative tModLoader Build Toolchain</Title>
+        <Authors>Tomat</Authors>
+        <Description>A fast and efficient build toolchain for modern tModLoader mods, with extra features.</Description>
+        <Version>1.0.0</Version>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/rejuvena/collate</PackageProjectUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+
+        <!-- Copy dep DLLs to ./bin/ so they can be inluded -->
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None PackagePath="build/Rejuvena.Collate.dll" Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" Visible="false" />
+        <None PackagePath="build/Rejuvena.Collate.targets" Include="build\Rejuvena.Collate.targets" Pack="true" />
+    </ItemGroup>
+
+</Project>

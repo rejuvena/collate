@@ -1,0 +1,25 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <!-- Build options -->
+    <PropertyGroup>
+        <DebugSymbols>true</DebugSymbols> <!-- Stack traces with line numbers -->
+        <ProduceReferenceAssembly>false</ProduceReferenceAssembly> <!-- ./refs folder is useless -->
+    </PropertyGroup>
+
+    <!-- Boilerplate to initialize TargetsFilePath (with TMODLOADER_TARGETS_PATH and some common paths) -->
+    <PropertyGroup>
+        <!-- TMODLOADER_TARGETS_PATH environment variable we advise users to set. -->
+        <TargetsFilePath Condition=" !Exists('$(TargetsFilePath)') ">$(TMODLOADER_TARGETS_PATH)</TargetsFilePath>
+        
+        <!-- TODO: more paths lol -->
+    </PropertyGroup>
+
+    <!-- Import .targets file defined as an environment variable. -->
+    <Import Project="$(TargetsFilePath)"/>
+
+    <!-- <UsingTask TaskName="ImportModLoaderTargetsTask" AssemblyFile="Rejuvena.Collate"/>
+    <Target Name="BeforeResolveReferences">
+        <ImportModLoaderTargetsTask EnvVarName="TMODLOADER_TARGETS_PATH"/>
+    </Target> -->
+
+</Project>
