@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Rejuvena.Collate.Util;
 using TML.Files;
+using Task = Microsoft.Build.Utilities.Task;
 
 namespace Rejuvena.Collate
 {
-    public class PackageModTask : BaseTask
+    public class PackageModTask : Task
     {
         [Required]
         public ITaskItem[] PackageReferences { get; set; } = Array.Empty<ITaskItem>();
@@ -40,12 +41,14 @@ namespace Rejuvena.Collate
         [Required]
         public ITaskItem[] ModProperties { get; set; } = Array.Empty<ITaskItem>();
 
-        protected override void ExecuteTask() {
+        public void Run() {
             string modDllName = AssemblyName + ".dll";
             string modDllPath = Path.Combine(ProjectDirectory, OutputPath, modDllName);
+            string modPdbName = AssemblyName + ".pdb";
+            string modPdbPath = Path.Combine(ProjectDirectory, OutputPath, modPdbName);
             ModFileWriter writer = new();
 
-            Expect.FileExists(modDllPath, "Mod assembly not found: ");
+            if (!File.Exists(modDllName)) throw new FileNotFoundException("Mod assembly not found: " + modDllName);
             Log.LogMessage(MessageImportance.Low, "Resolved mod assembly: " + modDllName);
 
             BuildProperties props = MakeModProperties();
@@ -57,6 +60,7 @@ namespace Rejuvena.Collate
             Directory.CreateDirectory(Path.GetDirectoryName(OutputTmodPath)!);
             CollateModFile buildFile = new(TmlVersion, AssemblyName, props.Version.ToString());
             buildFile.AddFile(modDllName, File.ReadAllBytes(modDllPath));
+            if (File.Exists(modPdbPath)) buildFile.AddFile(modPdbName, File.ReadAllBytes(modPdbPath));
             AddAllReferences(buildFile, props);
             buildFile.AddFile("Info", props.ToBytes(TmlVersion));
 
