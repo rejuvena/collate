@@ -108,6 +108,10 @@ namespace Rejuvena.Collate
             if (File.Exists(OutputTmodPath)) File.Delete(OutputTmodPath);
             using Stream modFile = File.Open(OutputTmodPath, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
             writer.Write(buildFile, modFile, new ModFileWriterSettings(buildFile.Header, buildFile.ModLoaderVersion, buildFile.Name, buildFile.Version));
+            
+            // TODO: Let people specify the enabled.json file path? Kinda useless...?
+            string enabledJsonPath = Path.Combine(Path.GetDirectoryName(OutputTmodPath)!, "enabled.json");
+            ModEnabler.EnableMod(Log, enabledJsonPath, AssemblyName);
             return true;
         }
 
