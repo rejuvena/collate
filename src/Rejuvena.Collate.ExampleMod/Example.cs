@@ -1,6 +1,6 @@
 ﻿using Terraria.ModLoader;
 
-namespace Rejuvena.Collate.ExampleMod
+namespace CollateExample
 {
     public class Example : Mod
     {

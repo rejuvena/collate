@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
+using Rejuvena.Collate.Converters;
 using Rejuvena.Collate.Util;
 using TML.Files;
 using Task = Microsoft.Build.Utilities.Task;
@@ -81,8 +82,8 @@ namespace Rejuvena.Collate
             string modPdbPath = Path.Combine(ProjectDirectory, OutputPath, modPdbName);
             ModFileWriter writer = new();
 
-            if (!File.Exists(modDllName)) throw new FileNotFoundException("Mod assembly not found: " + modDllName);
-            Log.LogMessage(MessageImportance.Low, "Resolved mod assembly: " + modDllName);
+            if (!File.Exists(modDllPath)) throw new FileNotFoundException("Mod assembly not found: " + modDllPath);
+            Log.LogMessage(MessageImportance.Low, "Resolved mod assembly: " + modDllPath);
 
             BuildProperties props = MakeModProperties();
             Log.LogMessage(MessageImportance.Low, "Parsed mod properties.");

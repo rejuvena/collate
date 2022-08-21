@@ -1,16 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <AssemblyName>Rejuvena.Collate.ExampleMod</AssemblyName>
+        <AssemblyName>CollateExample</AssemblyName>
+
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+
+        <!-- Work-around for us since our project name doesn't match the mod's internal name.
+             I wish we could just use periods in internal names, but tML does not support it. -->
+        <RootNamespace>CollateExample</RootNamespace>
     </PropertyGroup>
-    
+
     <!-- Mod properties/ -->
     <PropertyGroup>
         <Version>1.0.0</Version>
-        <DisplayName>Rejuvena.Collate Example Mod</DisplayName>
+        <DisplayName>Collate Example Mod</DisplayName>
         <Author>Tomat</Author>
         <Homepage>https://github.com/rejuvena/collate</Homepage>
         <HideCode>false</HideCode>
@@ -20,7 +25,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Rejuvena.Collate" Version="1.0.0" />
+        <PackageReference Include="Rejuvena.Collate" Version="1.0.0"/>
     </ItemGroup>
 
 </Project>
