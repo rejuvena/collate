@@ -232,8 +232,7 @@ namespace Rejuvena.Collate
             string relPath = resPath[(ProjectDirectory.Length + 1)..];
             Log.LogMessage(MessageImportance.Low, "Packing file into resulting .tmod: " + relPath);
 
-            // We'll permit read-write file share since this should be fast enough to avoid being written to in the middle of reading.
-            using FileStream open = File.Open(resPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using FileStream open = File.OpenRead(resPath);
             using MemoryStream memStream = new();
 
             if (!ContentConverters.Convert(ref relPath, open, memStream)) open.CopyTo(memStream);
