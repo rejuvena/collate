@@ -21,7 +21,7 @@
         <HideCode>false</HideCode>
         <HideResources>false</HideResources>
         <IncludeSource>true</IncludeSource>
-        <IncludePDB>true</IncludePDB>
+        <IncludePDB>true</IncludePDB> <!-- TODO: Appears deprecated? -->
     </PropertyGroup>
 
     <ItemGroup>

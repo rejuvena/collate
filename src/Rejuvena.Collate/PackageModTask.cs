@@ -95,6 +95,7 @@ namespace Rejuvena.Collate
             CollateModFile buildFile = new(TmlVersion, AssemblyName, props.Version.ToString());
             buildFile.AddFile(modDllName, File.ReadAllBytes(modDllPath));
             if (File.Exists(modPdbPath)) buildFile.AddFile(modPdbName, File.ReadAllBytes(modPdbPath));
+            else Log.LogWarning("Could not resolve .pdb file, expected at: " + modPdbPath);
             AddAllReferences(buildFile, props);
             buildFile.AddFile("Info", props.ToBytes(TmlVersion));
 
