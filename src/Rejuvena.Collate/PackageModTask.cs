@@ -10,34 +10,67 @@ using Task = Microsoft.Build.Utilities.Task;
 
 namespace Rejuvena.Collate
 {
+    /// <summary>
+    ///     Packages the compiled assembly and PDB of a mod alongside its resources into a .tmod archive.
+    /// </summary>
     public class PackageModTask : Task
     {
+        /// <summary>
+        ///     NuGet package references.
+        /// </summary>
         [Required]
         public ITaskItem[] PackageReferences { get; set; } = Array.Empty<ITaskItem>();
 
+        /// <summary>
+        ///     Assembly references.
+        /// </summary>
         [Required]
         public ITaskItem[] ReferencePaths { get; set; } = Array.Empty<ITaskItem>();
 
+        /// <summary>
+        ///     Mod references.
+        /// </summary>
         [Required]
         public ITaskItem[] ModReferences { get; set; } = Array.Empty<ITaskItem>();
 
+        /// <summary>
+        ///     The directory of the project that is being built and packaged.
+        /// </summary>
         [Required]
         public string ProjectDirectory { get; set; } = string.Empty;
 
+        /// <summary>
+        ///     The output path that the compiled mod assembly lies in. Not the same as <see cref="OutputTmodPath"/>.
+        /// </summary>
         [Required]
         public string OutputPath { get; set; } = string.Empty;
 
+        /// <summary>
+        ///     The assembly name of the mod, which also serves as the internal name.
+        /// </summary>
         [Required]
         public string AssemblyName { get; set; } = string.Empty;
 
+        /// <summary>
+        ///     The mod loader version the mod was built with.
+        /// </summary>
         [Required]
         public string TmlVersion { get; set; } = string.Empty;
 
+        /// <summary>
+        ///     The tModLoader assembly path.
+        /// </summary>
         [Required]
         public string TmlDllPath { get; set; } = string.Empty;
 
+        /// <summary>
+        ///     The output path that the .tmod archive should be written to.
+        /// </summary>
         public string OutputTmodPath { get; set; } = string.Empty;
 
+        /// <summary>
+        ///     Mod build properties, serving as an alternative to the <c>build.txt</c> file.
+        /// </summary>
         [Required]
         public ITaskItem[] ModProperties { get; set; } = Array.Empty<ITaskItem>();
 
