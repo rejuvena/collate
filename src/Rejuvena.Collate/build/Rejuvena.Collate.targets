@@ -8,13 +8,28 @@
 
     <!-- Boilerplate to initialize TargetsFilePath (with TMODLOADER_TARGETS_PATH and some common paths) -->
     <PropertyGroup>
-        <!-- TMODLOADER_TARGETS_PATH environment variable we advise users to set. -->
+        <!-- Environment variable we advise users to set. -->
         <TargetsFilePath Condition=" !Exists('$(TargetsFilePath)') ">$(TMODLOADER_TARGETS_PATH)</TargetsFilePath>
-        
-        <!-- TODO: more paths lol -->
     </PropertyGroup>
+    <Choose>
+        <!-- Windows -->
+        <When Condition=" $(OS) == 'Windows_NT' ">
+            <PropertyGroup>
+                <TargetsFilePath Condition=" !Exists('$(TargetsFilePath)') ">$(USERPROFILE)/Documents/My Games/Terraria/tModLoader/ModSources/tModLoader.targets</TargetsFilePath>
+            </PropertyGroup>
+        </When>
 
-    <!-- Import .targets file defined as an environment variable. -->
+        <!-- Mac/Linux -->
+        <When Condition=" $(OS) == 'Unix' OR $(OS) == 'OSX' OR $(OS) == 'Linux' ">
+            <PropertyGroup>
+                <TargetsFilePath Condition=" !Exists('$(TargetsFilePath)') ">$(HOME)/.local/share/Terraria/tModLoader/ModSources/tModLoader.targets</TargetsFilePath>
+                <TargetsFilePath Condition=" !Exists('$(TargetsFilePath)') ">$(XDG_DATA_HOME)/Terraria/tModLoader/ModSources/tModLoader.targets</TargetsFilePath>
+                <TargetsFilePath Condition=" !Exists('$(TargetsFilePath)') ">$(HOME)/Library/Application support/Terraria/tModLoader/ModSources/tModLoader.targets</TargetsFilePath>
+            </PropertyGroup>
+        </When>
+    </Choose>
+
+    <!-- Import .targets file defined from TargetsFilePath. -->
     <Import Project="$(TargetsFilePath)"/>
 
     <!-- <UsingTask TaskName="ImportModLoaderTargetsTask" AssemblyFile="Rejuvena.Collate"/>
