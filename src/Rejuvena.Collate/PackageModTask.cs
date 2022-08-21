@@ -41,7 +41,7 @@ namespace Rejuvena.Collate
         [Required]
         public ITaskItem[] ModProperties { get; set; } = Array.Empty<ITaskItem>();
 
-        public void Run() {
+        public override bool Execute() {
             string modDllName = AssemblyName + ".dll";
             string modDllPath = Path.Combine(ProjectDirectory, OutputPath, modDllName);
             string modPdbName = AssemblyName + ".pdb";
@@ -73,6 +73,7 @@ namespace Rejuvena.Collate
             if (File.Exists(OutputTmodPath)) File.Delete(OutputTmodPath);
             using Stream modFile = File.Open(OutputTmodPath, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
             writer.Write(buildFile, modFile, new ModFileWriterSettings(buildFile.Header, buildFile.ModLoaderVersion, buildFile.Name, buildFile.Version));
+            return true;
         }
 
         protected void AddAllReferences(CollateModFile modFile, BuildProperties props) {
