@@ -5,16 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Build.Framework;
-using StringList = System.Collections.Generic.List<string>;
-using ModRefList = System.Collections.Generic.List<Rejuvena.Collate.Util.ModReference>;
 
 namespace Rejuvena.Collate.Util
 {
     public class BuildProperties
     {
-        public StringList DllReferences = new();
-        public ModRefList ModReferences = new();
-        public ModRefList WeakReferences = new();
+        public List<string> DllReferences = new();
+        public List<ModReference> ModReferences = new();
+        public List<ModReference> WeakReferences = new();
         public string[] SortAfter = Array.Empty<string>();
         public string[] SortBefore = Array.Empty<string>();
         public string[] BuildIgnores = Array.Empty<string>();
@@ -267,7 +265,7 @@ namespace Rejuvena.Collate.Util
             return new Regex(pattern, RegexOptions.IgnoreCase).IsMatch(fileMask);
         }
 
-        private static void VerifyRefs(StringList refs) {
+        private static void VerifyRefs(List<string> refs) {
             if (refs.Count != refs.Distinct().Count()) throw new DuplicateNameException("Weak and strong references contain at least one matching mod!");
         }
 
