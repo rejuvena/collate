@@ -40,7 +40,7 @@
     </ItemDefinitionGroup>
     <Target Name="IncludeModReferences" BeforeTargets="ResolveAssemblyReferences">
         <Message Text="Adding %(ModReference.Identity) as a reference..."/>
-        
+
         <ItemGroup>
             <Reference Include="%(ModReference.Identity)" Condition="'%(ModReference.ProjectPath)'=='' AND '%(ModReference.HintPath)'!=''">
                 <HintPath>%(ModReference.HintPath)</HintPath>
@@ -93,8 +93,15 @@
                 OutputTmodPath="$(OutputTmodPath)"
                 ModProperties="@(ModProperty)"/>
     </Target>
-    
+
     <!-- Override normal tModLoader BuildMod target. -->
-    <Target Name="BuildMod" AfterTargets="AfterBuild" />
+    <Target Name="BuildMod" AfterTargets="AfterBuild"/>
+
+    <!-- Include ./build/Properties/launchSettings.json so mods can build with it. -->
+    <!-- <ItemGroup>
+        <Content Include="$(MSBuildThisFileDirectory)launchSettings.json">
+            <Link>Properties/launchSettings.json</Link>
+        </Content>
+    </ItemGroup> -->
 
 </Project>

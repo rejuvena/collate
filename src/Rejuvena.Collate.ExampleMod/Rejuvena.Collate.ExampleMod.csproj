@@ -25,7 +25,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Rejuvena.Collate" Version="1.0.0"/>
+        <PackageReference Include="Rejuvena.Collate" Version="1.0.0" />
     </ItemGroup>
 
 </Project>

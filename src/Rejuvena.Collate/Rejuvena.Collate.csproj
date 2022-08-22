@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    
+
     <PropertyGroup>
         <RootNamespace>Rejuvena.Collate</RootNamespace>
         <TargetFramework>net6.0</TargetFramework>
@@ -34,8 +34,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None PackagePath="build/" Include="$(OutputPath)\*" Pack="true" Visible="false" />
         <None PackagePath="build/Rejuvena.Collate.targets" Include="build\Rejuvena.Collate.targets" Pack="true" />
+        
+        <!-- Hack to include all dependencies.-->
+        <None PackagePath="build/" Include="$(OutputPath)\*" Pack="true" Visible="false" />
+        <None Update="build\launchSettings.json">
+          <PackagePath>build/launchSettings.json</PackagePath>
+          <Pack>true</Pack>
+        </None>
     </ItemGroup>
 
 </Project>
