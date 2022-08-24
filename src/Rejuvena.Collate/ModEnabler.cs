@@ -2,19 +2,18 @@
 using System.IO;
 using Microsoft.Build.Utilities;
 using Newtonsoft.Json;
+using Rejuvena.Collate.Extensions;
 
 namespace Rejuvena.Collate
 {
     public static class ModEnabler
     {
         public static void EnableMod(TaskLoggingHelper log, string enabledPath, string modName) {
-            List<string> enabled = new();
-            if (File.Exists(enabledPath))
-                enabled = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(enabledPath)) ?? new List<string>();
-            enabled.Add(modName);
+            string dir = Path.GetDirectoryName(enabledPath) ?? throw new DirectoryNotFoundException("Could not get directory of path: " + enabledPath);
+            Directory.CreateDirectory(dir);
 
-            Directory.CreateDirectory(Path.GetDirectoryName(enabledPath)!);
-            File.WriteAllText(enabledPath, JsonConvert.SerializeObject(enabled, Formatting.Indented));
+            List<string>? enabled = File.Exists(enabledPath) ? JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(enabledPath)) : new List<string>();
+            File.WriteAllText(enabledPath, JsonConvert.SerializeObject((enabled ?? new List<string>()).With(modName), Formatting.Indented));
         }
     }
 }

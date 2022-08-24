@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Rejuvena.Collate.Converters;
+using Rejuvena.Collate.Extensions;
 using Rejuvena.Collate.Util;
 using TML.Files;
 using Task = Microsoft.Build.Utilities.Task;
@@ -76,26 +77,17 @@ namespace Rejuvena.Collate
         public ITaskItem[] ModProperties { get; set; } = Array.Empty<ITaskItem>();
 
         public override bool Execute() {
-            string modDllName = AssemblyName + ".dll";
-            string modDllPath = Path.Combine(ProjectDirectory, OutputPath, modDllName);
-            string modPdbName = AssemblyName + ".pdb";
-            string modPdbPath = Path.Combine(ProjectDirectory, OutputPath, modPdbName);
+            OutputTmodPath = GetOutputTmodPath();
+
+            PathNamePair modDll = new(AssemblyName + ".dll", Path.Combine(ProjectDirectory, OutputPath));
+            PathNamePair modPdb = new(AssemblyName + ".pdb", Path.Combine(ProjectDirectory, OutputPath));
             ModFileWriter writer = new();
-
-            if (!File.Exists(modDllPath)) throw new FileNotFoundException("Mod assembly not found: " + modDllPath);
-            Log.LogMessage(MessageImportance.Low, "Resolved mod assembly: " + modDllPath);
-
             BuildProperties props = MakeModProperties();
-            Log.LogMessage(MessageImportance.Low, "Parsed mod properties.");
-
-            if (string.IsNullOrEmpty(OutputTmodPath)) OutputTmodPath = SavePathLocator.FindSavePath(Log, TmlDllPath, AssemblyName);
-            Log.LogMessage(MessageImportance.Normal, "Using output path (for resulting .tmod file): " + OutputTmodPath);
-
-            Directory.CreateDirectory(Path.GetDirectoryName(OutputTmodPath)!);
             CollateModFile buildFile = new(TmlVersion, AssemblyName, props.Version.ToString());
-            buildFile.AddFile(modDllName, File.ReadAllBytes(modDllPath));
-            if (File.Exists(modPdbPath)) buildFile.AddFile(modPdbName, File.ReadAllBytes(modPdbPath));
-            else Log.LogWarning("Could not resolve .pdb file, expected at: " + modPdbPath);
+
+            buildFile.AddFileFromPath(modDll, onError: () => throw new FileNotFoundException("Mod assembly not present, expected at: " + modDll.Path));
+            buildFile.AddFileFromPath(modPdb, onError: () => { Log.LogWarning("Could not resolve mod .pdb, expected at: " + modPdb.Path); });
+
             AddAllReferences(buildFile, props);
             buildFile.AddFile("Info", props.ToBytes(TmlVersion));
 
@@ -108,11 +100,21 @@ namespace Rejuvena.Collate
             if (File.Exists(OutputTmodPath)) File.Delete(OutputTmodPath);
             using Stream modFile = File.Open(OutputTmodPath, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
             writer.Write(buildFile, modFile, new ModFileWriterSettings(buildFile.Header, buildFile.ModLoaderVersion, buildFile.Name, buildFile.Version));
-            
+
             // TODO: Let people specify the enabled.json file path? Kinda useless...?
             string enabledJsonPath = Path.Combine(Path.GetDirectoryName(OutputTmodPath)!, "enabled.json");
             ModEnabler.EnableMod(Log, enabledJsonPath, AssemblyName);
             return true;
+        }
+
+        protected string GetOutputTmodPath() {
+            OutputTmodPath = string.IsNullOrEmpty(OutputTmodPath) ? SavePathLocator.FindSavePath(Log, TmlDllPath, AssemblyName) : OutputTmodPath;
+            Directory.CreateDirectory(
+                Path.GetDirectoryName(OutputTmodPath) ?? throw new DirectoryNotFoundException("Could not find parent directory of output path!")
+            );
+
+            Log.LogMessage(MessageImportance.Normal, "Using output path (for resulting .tmod file): " + OutputTmodPath);
+            return OutputTmodPath;
         }
 
         protected void AddAllReferences(CollateModFile modFile, BuildProperties props) {
@@ -158,6 +160,8 @@ namespace Rejuvena.Collate
 
         protected List<ITaskItem> GetNugetReferences() {
             Dictionary<string, ITaskItem> nugetLookup = PackageReferences.ToDictionary(x => x.ItemSpec);
+
+            if (nugetLookup.ContainsKey("Rejuvena.Collate")) nugetLookup.Remove("Rejuvena.Collate");
             if (nugetLookup.ContainsKey("tModLoader.CodeAssist")) nugetLookup.Remove("tModLoader.CodeAssist");
 
             List<ITaskItem> nugetReferences = new();
@@ -226,12 +230,12 @@ namespace Rejuvena.Collate
         protected bool IgnoreResource(BuildProperties props, string resPath) {
             string relPath = resPath[(ProjectDirectory.Length + 1)..];
             return props.IgnoreFile(relPath)
-                   || relPath[0] == '.'
-                   || relPath.StartsWith("bin" + Path.DirectorySeparatorChar)
-                   || relPath.StartsWith("obj" + Path.DirectorySeparatorChar)
+                   || relPath[0] == '.' // ignore dotfiles (config files/folders, such as .git/, .vs/, .idea/, .gitignore, etc. 
+                   || relPath.StartsWith("bin" + Path.DirectorySeparatorChar) // ignore ./bin/
+                   || relPath.StartsWith("obj" + Path.DirectorySeparatorChar) // ignore ./obj/
                    || relPath == "build.txt" // TODO: Replace with .csproj-specified path if we add support.
-                   || !props.IncludeSource && new[] {".csproj", ".cs", ".sln"}.Contains(Path.GetExtension(resPath))
-                   || Path.GetFileName(resPath) == "Thumbs.db";
+                   || !props.IncludeSource && new[] {".csproj", ".cs", ".sln"}.Contains(Path.GetExtension(resPath)) // remove .cs, .csproj, and .sln files
+                   || Path.GetFileName(resPath) == "Thumbs.db"; // ignore Thumbs.db, a dumb Windows file; people should just use Details view anyway
         }
 
         protected void AddResource(CollateModFile modFile, string resPath) {
