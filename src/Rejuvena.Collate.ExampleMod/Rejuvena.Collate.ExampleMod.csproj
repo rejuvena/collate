@@ -1,32 +1,39 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <!-- The mod's internal name, which should be explicitly specified. -->
         <AssemblyName>CollateExample</AssemblyName>
 
+        <!-- Miscellaneous project settings. -->
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
         <!-- Work-around for us since our project name doesn't match the mod's internal name.
-             I wish we could just use periods in internal names, but tML does not support it. -->
+             I wish we could just use periods in internal names, but tML does not support it.
+             Such workarounds are not relevant to you, unless your mod's name contains a period. -->
         <RootNamespace>CollateExample</RootNamespace>
     </PropertyGroup>
 
-    <!-- Mod properties/ -->
+    <!-- Mod properties. -->
     <PropertyGroup>
-        <Version>1.0.0</Version>
-        <DisplayName>Collate Example Mod</DisplayName>
-        <Author>Tomat</Author>
-        <Homepage>https://github.com/rejuvena/collate</Homepage>
-        <HideCode>false</HideCode>
-        <HideResources>false</HideResources>
-        <IncludeSource>true</IncludeSource>
-        <IncludePDB>true</IncludePDB> <!-- TODO: Appears deprecated? -->
+        <DisplayName>Collate Example Mod</DisplayName> <!-- The name this mod is displayed as in-game. -->
+        <Author>Tomat</Author> <!-- A string representing the authors. Can be your name, a team name, multiple names, etc. -->
+        <Version>1.0.0</Version> <!-- The mod's version. -->
+
+        <HideCode>false</HideCode> <!-- Whether extracting a mod in-game will yield the mod's DLL; false means yes to extraction and true means no. -->
+        <HideResources>false</HideResources> <!-- Whether to hide all other packaged files; false means yes to extraction and true means no to extraction. -->
+        <IncludeSource>true</IncludeSource> <!-- Whether to package .cs, .csproj, and .sln files; false means packaging and true means no packaging. -->
+
+        <Homepage>https://github.com/rejuvena/collate</Homepage> <!-- The homepage link, which may be opened from in-game. -->
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Rejuvena.Collate" Version="1.0.0" />
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.45" />
+        <!-- The Rejuvena.Collate package, which is what makes Collate work. -->
+        <PackageReference Include="Rejuvena.Collate" Version="1.0.0"/>
+
+        <!-- An example of a NuGet package being used in a tModLoader mode. -->
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.45"/>
     </ItemGroup>
 
 </Project>
