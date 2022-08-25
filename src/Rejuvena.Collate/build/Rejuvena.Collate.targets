@@ -51,7 +51,8 @@
             <ProjectReference Include="%(ModReference.ProjectPath)" Condition="'%(ModReference.ProjectPath)'!=''"/>
         </ItemGroup>
     </Target>
-    <Target Name="Package" AfterTargets="AfterBuild">
+    <!-- Use Build instead of AfterBuild since it runs regardless of code changes. -->
+    <Target Name="Package" AfterTargets="Build">
         <Message Text="Packaging files into a .tmod archive..."/>
 
         <Message Text="Converting mod properties into an item group..."/>

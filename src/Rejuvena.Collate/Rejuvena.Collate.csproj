@@ -17,6 +17,8 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/rejuvena/collate</PackageProjectUrl>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <RepositoryUrl>https://github.com/rejuvena/collate</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
         <IncludeBuildOutput>false</IncludeBuildOutput>
 
         <!-- Copy dep DLLs to ./bin/ so they can be inluded -->
