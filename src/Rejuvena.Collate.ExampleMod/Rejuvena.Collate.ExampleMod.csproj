@@ -26,6 +26,7 @@
 
     <ItemGroup>
         <PackageReference Include="Rejuvena.Collate" Version="1.0.0" />
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.45" />
     </ItemGroup>
 
 </Project>

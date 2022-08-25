@@ -134,7 +134,7 @@ namespace Rejuvena.Collate
                 Log.LogMessage(MessageImportance.Low, $"Adding NuGet dependency {nugetFile} at path \"{nugetFile}\".");
                 if (string.Equals(taskItem.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase)) continue;
 
-                modFile.AddFile(nugetName, File.ReadAllBytes(nugetName));
+                modFile.AddFile(nugetName, File.ReadAllBytes(nugetFile));
                 props.AddDllReference(taskItem.GetMetadata("NuGetPackageId"));
             }
 
