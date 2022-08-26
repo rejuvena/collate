@@ -4,6 +4,10 @@
     <PropertyGroup>
         <DebugSymbols>true</DebugSymbols> <!-- Stack traces with line numbers -->
         <ProduceReferenceAssembly>false</ProduceReferenceAssembly> <!-- ./refs folder is useless -->
+
+        <!-- Mods should always build. -->
+        <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+        <DISABLEFASTUPTODATECHECK>true</DISABLEFASTUPTODATECHECK>
     </PropertyGroup>
 
     <!-- Boilerplate to initialize TargetsFilePath (with TMODLOADER_TARGETS_PATH and some common paths) -->
