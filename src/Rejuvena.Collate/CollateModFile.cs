@@ -51,7 +51,7 @@ namespace Rejuvena.Collate
         }
 
         public static bool ShouldCompress(string fileName) {
-            return !new[] {".png", ".mp3", "ogg"}.Contains(Path.GetExtension(fileName));
+            return !new[] {".png", ".mp3", ".ogg", ".rawimg"}.Contains(Path.GetExtension(fileName));
         }
     }
 }

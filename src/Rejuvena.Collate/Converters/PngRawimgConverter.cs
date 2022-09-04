@@ -28,6 +28,9 @@ namespace Rejuvena.Collate.Converters
 
                     if (color.A == 0) {
                         to.WriteByte(0);
+                        to.WriteByte(0);
+                        to.WriteByte(0);
+                        to.WriteByte(0);
                         continue;
                     }
 
@@ -37,6 +40,7 @@ namespace Rejuvena.Collate.Converters
                     to.WriteByte(color.A);
                 }
             }
+
         }
     }
 }
