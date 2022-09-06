@@ -8,15 +8,15 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
 
-        <AssemblyVersion>1.0.1</AssemblyVersion>
-        <FileVersion>1.0.1</FileVersion>
+        <AssemblyVersion>1.1.0</AssemblyVersion>
+        <FileVersion>1.1.0</FileVersion>
 
         <PackageId>Rejuvena.Collate</PackageId>
         <IsPackable>true</IsPackable>
         <Title>Alternative tModLoader Build Toolchain</Title>
         <Authors>Tomat</Authors>
         <Description>A fast and efficient build toolchain for modern tModLoader mods, with extra features.</Description>
-        <Version>1.0.1</Version>
+        <Version>1.1.0</Version>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/rejuvena/collate</PackageProjectUrl>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
