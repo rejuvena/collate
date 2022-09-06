@@ -4,18 +4,19 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
-using Rejuvena.Collate.Converters;
-using Rejuvena.Collate.Extensions;
+using Rejuvena.Collate.Tasks.Packaging;
+using Rejuvena.Collate.Tasks.Packaging.Converters;
+using Rejuvena.Collate.TML;
 using Rejuvena.Collate.Util;
 using TML.Files;
-using Task = Microsoft.Build.Utilities.Task;
+using BuildTask = Microsoft.Build.Utilities.Task;
 
-namespace Rejuvena.Collate
+namespace Rejuvena.Collate.Tasks
 {
     /// <summary>
     ///     Packages the compiled assembly and PDB of a mod alongside its resources into a .tmod archive.
     /// </summary>
-    public class PackageModTask : Task
+    public class PackageModTask : BuildTask
     {
         /// <summary>
         ///     NuGet package references.
@@ -103,12 +104,12 @@ namespace Rejuvena.Collate
 
             // TODO: Let people specify the enabled.json file path? Kinda useless...?
             string enabledJsonPath = Path.Combine(Path.GetDirectoryName(OutputTmodPath)!, "enabled.json");
-            ModEnabler.EnableMod(Log, enabledJsonPath, AssemblyName);
+            Utilities.EnableMod(Log, enabledJsonPath, AssemblyName);
             return true;
         }
 
         protected string GetOutputTmodPath() {
-            OutputTmodPath = string.IsNullOrEmpty(OutputTmodPath) ? SavePathLocator.FindSavePath(Log, TmlDllPath, AssemblyName) : OutputTmodPath;
+            OutputTmodPath = string.IsNullOrEmpty(OutputTmodPath) ? Utilities.FindSavePath(Log, TmlDllPath, AssemblyName) : OutputTmodPath;
             Directory.CreateDirectory(
                 Path.GetDirectoryName(OutputTmodPath) ?? throw new DirectoryNotFoundException("Could not find parent directory of output path!")
             );

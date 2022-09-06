@@ -1,6 +1,6 @@
 ﻿using TML.Files.Abstractions;
 
-namespace Rejuvena.Collate
+namespace Rejuvena.Collate.TML
 {
     public class CollateModEntry : IModFileEntry
     {

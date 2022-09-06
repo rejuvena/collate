@@ -1,4 +1,4 @@
-﻿namespace Rejuvena.Collate.Util
+﻿namespace Rejuvena.Collate.Tasks.Packaging
 {
     public enum BuildPurpose
     {

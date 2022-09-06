@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Rejuvena.Collate.Converters
+namespace Rejuvena.Collate.Tasks.Packaging.Converters
 {
     public static class ContentConverters
     {

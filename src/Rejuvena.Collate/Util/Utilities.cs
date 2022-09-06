@@ -1,15 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using Newtonsoft.Json;
+using Rejuvena.Collate.Tasks.Packaging;
 
 namespace Rejuvena.Collate.Util
 {
-    // TODO: This class could probably substitute my terrible boilerplate code for determining the .targets file location.
-    public static class SavePathLocator
+    public static class Utilities
     {
+        #region List Extensions
+
+        public static List<T> With<T>(this List<T> list, T obj) {
+            list.AddOnce(obj);
+            return list;
+        }
+
+        public static void AddOnce<T>(this List<T> list, T obj) {
+            if (!list.Contains(obj)) list.Add(obj);
+        }
+
+        #endregion
+
+        // TODO: This could probably substitute my terrible boilerplate code for determining the .targets file location.
+
+        #region Save Path Locating
+
         public const string STABLE_FOLDER_NAME = "tModLoader";
         public const string PREVIEW_FOLDER_NAME = "tModLoader-preview";
         public const string DEV_FOLDER_NAME = "tModLoader-dev";
@@ -22,13 +41,14 @@ namespace Rejuvena.Collate.Util
 
         public static string FindSaveFolder(TaskLoggingHelper log, string tmlDllPath) {
             log.LogMessage(MessageImportance.Low, "Searching for valid tModLoader save path...");
-            
+
             string tmlSteamPath = Path.GetDirectoryName(tmlDllPath) ?? throw new ArgumentException("Could not resolve directory of file: " + tmlDllPath);
             string fileFolder = GetBuildPurpose(log, tmlDllPath) switch
             {
                 BuildPurpose.Stable => STABLE_FOLDER_NAME,
                 BuildPurpose.Preview => PREVIEW_FOLDER_NAME,
-                BuildPurpose.Dev => DEV_FOLDER_NAME
+                BuildPurpose.Dev => DEV_FOLDER_NAME,
+                _ => throw new ArgumentException("Invalid build purpose - no build purpose was found?")
             };
 
             if (File.Exists(Path.Combine(tmlSteamPath, "savehere.txt"))) {
@@ -50,8 +70,7 @@ namespace Rejuvena.Collate.Util
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
                 string? environmentVariable = Environment.GetEnvironmentVariable("HOME");
-                if (string.IsNullOrEmpty(environmentVariable))
-                    return ".";
+                if (string.IsNullOrEmpty(environmentVariable)) return ".";
                 return environmentVariable + "/Library/Application Support";
             }
 
@@ -62,11 +81,10 @@ namespace Rejuvena.Collate.Util
                 }
 
                 text = Environment.GetEnvironmentVariable("HOME");
-                if (string.IsNullOrEmpty(text))
-                    return ".";
+                if (string.IsNullOrEmpty(text)) return ".";
                 return text + "/.local/share";
             }
-            
+
             throw new PlatformNotSupportedException("Could not locate storage path for platform: " + RuntimeInformation.OSDescription);
         }
 
@@ -78,16 +96,30 @@ namespace Rejuvena.Collate.Util
                 log.LogWarning("Could not retrieve informational version from the tModLoader DLL, assuming a 'Stable' build.");
                 return BuildPurpose.Stable;
             }
-            
+
             log.LogMessage(MessageImportance.Low, "Retrieved informational version from tModLoader DLL: " + tmlInfoVersion);
 
             string[] parts = tmlInfoVersion[(tmlInfoVersion.IndexOf('+') + 1)..].Split('|');
             if (parts.Length >= 3) {
                 if (Enum.TryParse(parts[2], true, out BuildPurpose purpose)) return purpose;
             }
-            
+
             log.LogWarning($"Could not parse resolved build purpose \"{parts[2]}\", assuming a 'Stable' build.");
             return BuildPurpose.Stable;
         }
+
+        #endregion
+
+        #region Mod Enabling
+
+        public static void EnableMod(TaskLoggingHelper log, string enabledPath, string modName) {
+            string dir = Path.GetDirectoryName(enabledPath) ?? throw new DirectoryNotFoundException("Could not get directory of path: " + enabledPath);
+            Directory.CreateDirectory(dir);
+
+            List<string>? enabled = File.Exists(enabledPath) ? JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(enabledPath)) : new List<string>();
+            File.WriteAllText(enabledPath, JsonConvert.SerializeObject((enabled ?? new List<string>()).With(modName), Formatting.Indented));
+        }
+
+        #endregion
     }
 }
