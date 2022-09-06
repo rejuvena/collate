@@ -17,6 +17,9 @@
     <PropertyGroup>
         <!-- Enable tML's roslyn analyzers -->
         <TMLCodeAssist>enable</TMLCodeAssist>
+        
+        <!-- Add our access transformer. -->
+        <AccessTransformerPath>.accesstransformer</AccessTransformerPath>
     </PropertyGroup>
 
     <!-- Mod properties. -->
@@ -38,6 +41,10 @@
 
         <!-- An example of a NuGet package being used in a tModLoader mode. -->
         <PackageReference Include="HtmlAgilityPack" Version="1.11.45" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ReferencePathWithRefAssemblies Update="C:\Users\xxlen\OneDrive\Documents\Repositories\collate\src\Rejuvena.Collate.ExampleMod\.collate\lib\tModLoader.dll" />
     </ItemGroup>
 
 </Project>

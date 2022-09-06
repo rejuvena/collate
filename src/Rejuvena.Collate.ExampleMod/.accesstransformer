@@ -1,0 +1,2 @@
+﻿# Publicize the Terraria.ModLoader.Mod.loading instance boolean field.
+public = System.Boolean Terraria.ModLoader.Mod::loading

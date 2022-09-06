@@ -12,6 +12,7 @@
 
     <PropertyGroup>
         <TMLCodeAssist Condition=" '$(TMLCodeAssist)' == '' ">disable</TMLCodeAssist>
+        <AccessTransformerPath Condition=" '$(AccessTransformerPath)' == '' ">none</AccessTransformerPath>
     </PropertyGroup>
     <ItemGroup>
         <!-- TMLCodeAssist, adds tML's roslyn analyzers -->
@@ -44,10 +45,20 @@
     <!-- Import .targets file defined from TargetsFilePath. -->
     <Import Project="$(TargetsFilePath)"/>
 
-    <!--<UsingTask TaskName="ApplyAccessTransformersTask" AssemblyFile="Rejuvena.Collate.dll"/>
-    <Target Name="ApplyAccessTransformers">
-        
-    </Target>-->
+    <UsingTask TaskName="ModifyAssemblyReferencesTask" AssemblyFile="Rejuvena.Collate.dll"/>
+    <Target Name="ModifyAssemblyReferences" BeforeTargets="ResolveAssemblyReferences">
+        <ModifyAssemblyReferencesTask
+                AccessTransformerPath="$(AccessTransformerPath)"
+                ProjectDirectory="$(MSBuildProjectDirectory)"
+                References="@(Reference)">
+            <Output TaskParameter="ReferenceToRemove" ItemName="_ReferenceToRemove"/>
+            <Output TaskParameter="ReferenceToAdd" ItemName="_ReferenceToAdd"/>
+        </ModifyAssemblyReferencesTask>
+        <ItemGroup>
+            <Reference Remove="@(_ReferenceToRemove)"/>
+            <Reference Include="@(_ReferenceToAdd)"/>
+        </ItemGroup>
+    </Target>
 
     <UsingTask TaskName="ModifyModAssemblyTask" AssemblyFile="Rejuvena.Collate.dll"/>
     <Target Name="ModifyModAssembly" AfterTargets="Build">
@@ -63,7 +74,7 @@
             <Visible>false</Visible>
         </ModReference>
     </ItemDefinitionGroup>
-    <Target Name="IncludeModReferences" BeforeTargets="ResolveAssemblyReferences">
+    <Target Name="IncludeModReferences" AfterTargets="ModifyAssemblyReferences">
         <Message Text="Adding %(ModReference.Identity) as a reference..."/>
 
         <ItemGroup>

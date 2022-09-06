@@ -41,10 +41,10 @@ namespace Rejuvena.Collate.Tasks
                 else {
                     Log.LogMessage("Writing modified mod assembly to disk...");
 
-                    using MemoryStream mem = new();
-                    handler.ModuleWriter.Write(module, mem);
+                    using MemoryStream dllMem = new();
+                    handler.ModuleWriter.Write(module, dllMem);
                     module.Dispose();
-                    File.WriteAllBytes(assemblyPath, mem.ToArray());
+                    File.WriteAllBytes(assemblyPath, dllMem.ToArray());
                 }
             }
             catch (Exception e) {
