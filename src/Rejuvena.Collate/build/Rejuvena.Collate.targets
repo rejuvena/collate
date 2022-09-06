@@ -9,13 +9,13 @@
         <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
         <DISABLEFASTUPTODATECHECK>true</DISABLEFASTUPTODATECHECK>
     </PropertyGroup>
-    
+
     <PropertyGroup>
         <TMLCodeAssist Condition=" '$(TMLCodeAssist)' == '' ">disable</TMLCodeAssist>
     </PropertyGroup>
     <ItemGroup>
         <!-- TMLCodeAssist, adds tML's roslyn analyzers -->
-        <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" Condition=" '$(TMLCodeAssist)' == 'enable' " />
+        <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" Condition=" '$(TMLCodeAssist)' == 'enable' "/>
     </ItemGroup>
 
     <!-- Boilerplate to initialize TargetsFilePath (with TMODLOADER_TARGETS_PATH and some common paths) -->
@@ -44,6 +44,19 @@
     <!-- Import .targets file defined from TargetsFilePath. -->
     <Import Project="$(TargetsFilePath)"/>
 
+    <!--<UsingTask TaskName="ApplyAccessTransformersTask" AssemblyFile="Rejuvena.Collate.dll"/>
+    <Target Name="ApplyAccessTransformers">
+        
+    </Target>-->
+
+    <UsingTask TaskName="ModifyModAssemblyTask" AssemblyFile="Rejuvena.Collate.dll"/>
+    <Target Name="ModifyModAssembly" AfterTargets="Build">
+        <ModifyModAssemblyTask
+                OutputPath="$(OutputPath)"
+                AssemblyName="$(AssemblyName)"
+                RootNamespace="$(RootNamespace)"/>
+    </Target>
+
     <UsingTask TaskName="PackageModTask" AssemblyFile="Rejuvena.Collate.dll"/>
     <ItemDefinitionGroup>
         <ModReference>
@@ -64,7 +77,7 @@
         </ItemGroup>
     </Target>
     <!-- Use Build instead of AfterBuild since it runs regardless of code changes. -->
-    <Target Name="Package" AfterTargets="Build">
+    <Target Name="PackageMod" AfterTargets="ModifyModAssembly">
         <Message Text="Packaging files into a .tmod archive..."/>
 
         <Message Text="Converting mod properties into an item group..."/>

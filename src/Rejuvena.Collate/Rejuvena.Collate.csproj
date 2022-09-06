@@ -29,6 +29,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Felt.Needle" Version="1.0.0" />
         <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.2.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />

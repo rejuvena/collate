@@ -9,10 +9,8 @@
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
 
-        <!-- Work-around for us since our project name doesn't match the mod's internal name.
-             I wish we could just use periods in internal names, but tML does not support it.
-             Such workarounds are not relevant to you, unless your mod's name contains a period. -->
-        <RootNamespace>CollateExample</RootNamespace>
+        <!-- Collate will take care of generating a dummy type to satisfy tML if your root namespace does not match the assembly name. -->
+        <RootNamespace>Rejuvena.Collate.ExampleMod</RootNamespace>
     </PropertyGroup>
     
     <!-- Rejuvena.Collate configuration -->
