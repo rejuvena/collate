@@ -6,13 +6,19 @@
 
         <!-- Miscellaneous project settings. -->
         <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
 
         <!-- Work-around for us since our project name doesn't match the mod's internal name.
              I wish we could just use periods in internal names, but tML does not support it.
              Such workarounds are not relevant to you, unless your mod's name contains a period. -->
         <RootNamespace>CollateExample</RootNamespace>
+    </PropertyGroup>
+    
+    <!-- Rejuvena.Collate configuration -->
+    <PropertyGroup>
+        <!-- Enable tML's roslyn analyzers -->
+        <TMLCodeAssist>enable</TMLCodeAssist>
     </PropertyGroup>
 
     <!-- Mod properties. -->
@@ -30,7 +36,7 @@
 
     <ItemGroup>
         <!-- The Rejuvena.Collate package, which is what makes Collate work. -->
-        <PackageReference Include="Rejuvena.Collate" Version="1.0.0" />
+        <PackageReference Include="Rejuvena.Collate" Version="1.1.0" />
 
         <!-- An example of a NuGet package being used in a tModLoader mode. -->
         <PackageReference Include="HtmlAgilityPack" Version="1.11.45" />

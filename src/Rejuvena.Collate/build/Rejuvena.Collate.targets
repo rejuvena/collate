@@ -9,6 +9,14 @@
         <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
         <DISABLEFASTUPTODATECHECK>true</DISABLEFASTUPTODATECHECK>
     </PropertyGroup>
+    
+    <PropertyGroup>
+        <TMLCodeAssist Condition=" '$(TMLCodeAssist)' == '' ">disable</TMLCodeAssist>
+    </PropertyGroup>
+    <ItemGroup>
+        <!-- TMLCodeAssist, adds tML's roslyn analyzers -->
+        <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" Condition=" '$(TMLCodeAssist)' == 'enable' " />
+    </ItemGroup>
 
     <!-- Boilerplate to initialize TargetsFilePath (with TMODLOADER_TARGETS_PATH and some common paths) -->
     <PropertyGroup>

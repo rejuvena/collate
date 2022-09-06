@@ -1,4 +1,5 @@
-﻿using Terraria.ModLoader;
+﻿using Terraria;
+using Terraria.ModLoader;
 
 namespace CollateExample
 {
@@ -12,6 +13,11 @@ namespace CollateExample
             HtmlAgilityPack.HtmlWeb web = new();
             HtmlAgilityPack.HtmlDocument doc = web.Load("https://tmodloader.net");
             Logger.Info(doc.Text);
+
+            Item item = new()
+            {
+                type = 1
+            };
         }
     }
 }
