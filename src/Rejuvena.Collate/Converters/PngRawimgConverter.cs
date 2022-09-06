@@ -25,15 +25,8 @@ namespace Rejuvena.Collate.Converters
             for (int y = 0; y < image.Height; y++) {
                 for (int x = 0; x < image.Width; x++) {
                     Rgba32 color = image[x, y];
-
-                    if (color.A == 0) {
-                        to.WriteByte(0);
-                        to.WriteByte(0);
-                        to.WriteByte(0);
-                        to.WriteByte(0);
-                        continue;
-                    }
-
+                    
+                    if (color.A == 0) color = new Rgba32(0, 0, 0, 0);
                     to.WriteByte(color.R);
                     to.WriteByte(color.G);
                     to.WriteByte(color.B);
