@@ -1,0 +1,5 @@
+# Rejuvena.Collate file caches and other "hidden" files
+.collate/
+
+# Personal local testing script.
+publish_local.sh
