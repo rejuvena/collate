@@ -77,6 +77,9 @@ namespace Rejuvena.Collate.Tasks
                     | TypeAttributes.Abstract
                     | TypeAttributes.Sealed
                 )
+                {
+                    BaseType = module.TypeSystem.Object
+                }
             );
             log.LogMessage($"Added dummy type to mod assembly (\"{assemblyName}.CollateGeneratedDummyType\").");
             return true;
