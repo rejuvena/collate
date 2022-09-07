@@ -23,13 +23,13 @@ namespace Rejuvena.Collate.Tasks.AcessTransformer
         }
 
         public static AccessTransformerFile ReadFile(string path) {
-            string[] lines = File.ReadAllLines(path);
-            string versionLine = lines[1].Trim();
+            string[] lines = File.ReadAllLines(path).Where(x => !string.IsNullOrWhiteSpace(x) && !x.StartsWith("#")).Select(x => x.Trim()).ToArray();
+            string versionLine = lines[0];
             if (!versionLine.StartsWith('v')) throw new InvalidOperationException("Tried to parse file without specified version.");
 
             return new AccessTransformerFile(
                 int.Parse(versionLine[1..]),
-                lines.Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith('v') && !line.StartsWith('#')).Select(Transformer.Parse).ToArray()
+                lines.Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith('v')).Select(Transformer.Parse).ToArray()
             );
         }
 

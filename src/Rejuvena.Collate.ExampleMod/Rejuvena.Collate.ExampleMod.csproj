@@ -43,8 +43,4 @@
         <PackageReference Include="HtmlAgilityPack" Version="1.11.45" />
     </ItemGroup>
 
-    <ItemGroup>
-      <ReferencePathWithRefAssemblies Update="C:\Users\xxlen\OneDrive\Documents\Repositories\collate\src\Rejuvena.Collate.ExampleMod\.collate\lib\tModLoader.dll" />
-    </ItemGroup>
-
 </Project>
