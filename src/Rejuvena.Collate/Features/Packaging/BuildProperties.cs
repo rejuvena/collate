@@ -8,7 +8,7 @@ using Microsoft.Build.Framework;
 
 namespace Rejuvena.Collate.Features.Packaging
 {
-    public class BuildProperties
+    internal sealed class BuildProperties
     {
         public List<string> DllReferences = new();
         public List<ModReference> ModReferences = new();

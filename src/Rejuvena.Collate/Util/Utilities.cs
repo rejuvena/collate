@@ -10,7 +10,7 @@ using Rejuvena.Collate.Features.Packaging;
 
 namespace Rejuvena.Collate.Util
 {
-    public static class Utilities
+    internal static class Utilities
     {
         #region List Extensions
 

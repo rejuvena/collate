@@ -8,7 +8,7 @@ using TML.Files.Abstractions;
 
 namespace Rejuvena.Collate.TML
 {
-    public class CollateModFile : IModFile
+    internal sealed class CollateModFile : IModFile
     {
         public const uint MINIMUM_COMPRESSION_SIZE = 1 << 10; // 1kb
         public const float COMPRESSION_TRADEOFF = 0.9f;
@@ -54,7 +54,7 @@ namespace Rejuvena.Collate.TML
         }
     }
 
-    public static class CollateModFileExtensions
+    internal static class CollateModFileExtensions
     {
         public static void AddFileFromPath(this CollateModFile modFile, string fileName, string path, Action? onSuccess = null, Action? onError = null) {
             if (File.Exists(path)) {

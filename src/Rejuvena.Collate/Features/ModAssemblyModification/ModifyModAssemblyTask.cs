@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Felt.Needle;
-using Felt.Needle.API;
 using Microsoft.Build.Framework;
 using Mono.Cecil;
 using Rejuvena.Collate.Cecil;

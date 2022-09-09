@@ -2,7 +2,7 @@
 
 namespace Rejuvena.Collate.TML
 {
-    public class CollateModEntry : IModFileEntry
+    internal sealed class CollateModEntry : IModFileEntry
     {
         public string Name { get; }
 

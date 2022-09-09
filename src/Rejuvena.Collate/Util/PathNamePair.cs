@@ -2,7 +2,7 @@
 
 namespace Rejuvena.Collate.Util
 {
-    public readonly record struct PathNamePair
+    internal readonly record struct PathNamePair
     {
         public string Name { get; }
 

@@ -4,7 +4,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace Rejuvena.Collate.Features.Packaging.Converters
 {
-    public class PngRawimgConverter : ContentConverter
+    internal sealed class PngRawimgConverter : ContentConverter
     {
         public const int RAWIMG_FORMAT_VERSION = 1;
         

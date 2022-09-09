@@ -1,6 +1,6 @@
 ﻿namespace Rejuvena.Collate.Features.Packaging
 {
-    public enum BuildPurpose
+    internal enum BuildPurpose
     {
         Dev,
         Preview,

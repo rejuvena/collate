@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Felt.Needle;
-using Felt.Needle.API;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Mono.Cecil;
@@ -13,7 +11,7 @@ using BuildTask = Microsoft.Build.Utilities.Task;
 
 namespace Rejuvena.Collate.Features.AssemblyReferenceModification
 {
-    public class ModifyAssemblyReferencesTask : BuildTask
+    internal sealed class ModifyAssemblyReferencesTask : BuildTask
     {
         [Required]
         public string AccessTransformerPath { get; set; } = "";

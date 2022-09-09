@@ -2,7 +2,7 @@
 
 namespace Rejuvena.Collate.Features.Packaging.Converters
 {
-    public static class ContentConverters
+    internal static class ContentConverters
     {
         public static readonly ContentConverter[] Converters =
         {

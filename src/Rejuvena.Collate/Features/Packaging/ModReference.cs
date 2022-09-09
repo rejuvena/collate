@@ -2,7 +2,7 @@
 
 namespace Rejuvena.Collate.Features.Packaging
 {
-    public readonly record struct ModReference(string Mod, Version? TargetVersion)
+    internal readonly record struct ModReference(string Mod, Version? TargetVersion)
     {
         public override string ToString() {
             return TargetVersion is null ? Mod : Mod + '@' + TargetVersion;

@@ -2,7 +2,7 @@
 
 namespace Rejuvena.Collate.Features.Packaging.Converters
 {
-    public abstract class ContentConverter
+    internal abstract class ContentConverter
     {
         public abstract bool CanConvert(string resName);
 

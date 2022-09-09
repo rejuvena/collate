@@ -15,7 +15,7 @@ namespace Rejuvena.Collate.Features.Packaging
     /// <summary>
     ///     Packages the compiled assembly and PDB of a mod alongside its resources into a .tmod archive.
     /// </summary>
-    public class PackageModTask : BuildTask
+    internal sealed class PackageModTask : BuildTask
     {
         /// <summary>
         ///     NuGet package references.
