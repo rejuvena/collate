@@ -36,6 +36,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Rejuevna.Collate.AccessTransformer\Rejuevna.Collate.AccessTransformer.csproj" />
         <ProjectReference Include="..\TML.Patcher\src\TML.Files\TML.Files.csproj" />
     </ItemGroup>
 
