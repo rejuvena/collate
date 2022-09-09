@@ -2,7 +2,7 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace Rejuvena.Collate.Tasks.Packaging.Converters
+namespace Rejuvena.Collate.Features.Packaging.Converters
 {
     public class PngRawimgConverter : ContentConverter
     {

@@ -64,8 +64,8 @@
     <Target Name="ModifyModAssembly" AfterTargets="Build">
         <ModifyModAssemblyTask
                 OutputPath="$(OutputPath)"
-                AssemblyName="$(AssemblyName)"
-                RootNamespace="$(RootNamespace)"/>
+                AssemblyName="$(AssemblyName)"/>
+        <!--RootNamespace="$(RootNamespace)"-->
     </Target>
 
     <UsingTask TaskName="PackageModTask" AssemblyFile="Rejuvena.Collate.dll"/>

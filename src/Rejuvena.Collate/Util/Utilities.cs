@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Newtonsoft.Json;
-using Rejuvena.Collate.Tasks.Packaging;
+using Rejuvena.Collate.Features.Packaging;
 
 namespace Rejuvena.Collate.Util
 {

@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Rejuvena.Collate.Tasks.AcessTransformer
+namespace Rejuvena.Collate.Cecil.AT
 {
-    public sealed class ReadonlyTransformationType
+    internal readonly record struct ReadonlyTransformationType(string Value)
     {
         /// <summary>
         ///     Doesn't perform any modification to the readonly state.
@@ -27,12 +27,6 @@ namespace Rejuvena.Collate.Tasks.AcessTransformer
                 Readonly,
                 ReadWrite
             }.AsReadOnly();
-
-        public readonly string Value;
-
-        private ReadonlyTransformationType(string value) {
-            Value = value;
-        }
 
         public static ReadonlyTransformationType Parse(string value) {
             // Add *some* leniency, I guess.

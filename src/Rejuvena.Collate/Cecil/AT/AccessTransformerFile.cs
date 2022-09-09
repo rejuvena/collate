@@ -3,13 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Rejuvena.Collate.Tasks.AcessTransformer
+namespace Rejuvena.Collate.Cecil.AT
 {
-    public class AccessTransformerFile
+    internal sealed class AccessTransformerFile
     {
-        public virtual int Version { get; }
-
-        public virtual Transformer[] Items { get; }
+        public readonly int Version;
+        public readonly Transformer[] Items;
 
         public AccessTransformerFile(int version, params Transformer[] items) {
             Version = version;
@@ -33,11 +32,11 @@ namespace Rejuvena.Collate.Tasks.AcessTransformer
             );
         }
 
-        public virtual void Write(StreamWriter writer) {
+        public void Write(StreamWriter writer) {
             Write(this, writer);
         }
 
-        public virtual void WriteFile(string path) {
+        public void WriteFile(string path) {
             WriteFile(this, path);
         }
 

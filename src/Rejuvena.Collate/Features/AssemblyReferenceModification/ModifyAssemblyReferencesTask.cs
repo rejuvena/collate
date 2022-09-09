@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Felt.Needle;
@@ -7,48 +6,15 @@ using Felt.Needle.API;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Mono.Cecil;
-using Rejuvena.Collate.Tasks.AcessTransformer;
+using Rejuvena.Collate.Cecil;
+using Rejuvena.Collate.Cecil.AT;
+using Rejuvena.Collate.Cecil.Resolvers;
 using BuildTask = Microsoft.Build.Utilities.Task;
 
-namespace Rejuvena.Collate.Tasks
+namespace Rejuvena.Collate.Features.AssemblyReferenceModification
 {
     public class ModifyAssemblyReferencesTask : BuildTask
     {
-        private class TerrariaAssemblyResolver : BaseAssemblyResolver
-        {
-            private readonly DefaultAssemblyResolver DefaultResolver = new();
-            private readonly List<AssemblyDefinition> Libraries = new();
-
-            public TerrariaAssemblyResolver(TaskLoggingHelper log, string rootDirectory) {
-                foreach (string dll in Directory.GetFiles(Path.Combine(rootDirectory, "Libraries"), "*.dll", SearchOption.AllDirectories)) {
-                    // Ignore misc. DLLs that we don't care about.
-                    if (dll.Contains("runtimes") || dll.Contains("resources") || dll.Contains("Native")) continue;
-
-                    // Add all usable libraries to a collection that we use to resolve from later.
-                    try {
-                        Libraries.Add(AssemblyDefinition.ReadAssembly(dll));
-                    }
-                    catch (Exception e) {
-                        log.LogMessage($"Failed to resolve: {e}");
-                    }
-                }
-            }
-
-            public override AssemblyDefinition Resolve(AssemblyNameReference name) {
-                AssemblyDefinition assembly;
-                try {
-                    // Try to resolve normally.
-                    assembly = DefaultResolver.Resolve(name);
-                }
-                catch {
-                    // Resolve from our collection if normal resolution fails.
-                    assembly = Libraries.First(x => x.Name.Name == name.Name);
-                }
-
-                return assembly ?? base.Resolve(name);
-            }
-        }
-
         [Required]
         public string AccessTransformerPath { get; set; } = "";
 
@@ -82,15 +48,8 @@ namespace Rejuvena.Collate.Tasks
                 Log.LogMessage("Preparing to transform assembly: " + file);
 
                 bool modified = false;
-                IModuleHandler handler = new StandardModuleHandler(new StandardModuleResolver(), new StandardModuleWriter(), new StandardModuleTransformer());
-                ModuleDefinition? module = handler.ModuleResolver.ResolveFromPath(
-                    file,
-                    new ReaderParameters
-                    {
-                        AssemblyResolver = new TerrariaAssemblyResolver(Log, Path.GetDirectoryName(referenceFiles.First(x => x.EndsWith("tModLoader.dll")))!)
-                    }
-                );
-                if (module is null) throw new FileLoadException("Failed to load assembly into ModuleDefinition, path: " + file);
+                string libPath = Path.GetDirectoryName(referenceFiles.First(x => x.EndsWith("tModLoader.dll")))!;
+                ModuleDefinition module = ModuleFactory.CreateModuleFromFile(file, new TerrariaAssemblyResolver(Log, libPath));
 
                 if (transformer is not null) modified |= ApplyAccessTransformers(Log, transformer, module);
 
@@ -103,7 +62,7 @@ namespace Rejuvena.Collate.Tasks
                     Log.LogMessage($"Modifications were made to \"{file}\", writing to \"{resultingDir}\"...");
 
                     using MemoryStream dllMem = new();
-                    handler.ModuleWriter.Write(module, dllMem);
+                    module.Write(dllMem);
                     module.Dispose();
                     File.WriteAllBytes(resultingDir, dllMem.ToArray());
                     cachedReferences.Add((original: file, transformed: resultingDir));

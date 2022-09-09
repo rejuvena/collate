@@ -1,4 +1,4 @@
-﻿namespace Rejuvena.Collate.Tasks.Packaging
+﻿namespace Rejuvena.Collate.Features.Packaging
 {
     public enum ModSide : byte
     {

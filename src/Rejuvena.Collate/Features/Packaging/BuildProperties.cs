@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Build.Framework;
 
-namespace Rejuvena.Collate.Tasks.Packaging
+namespace Rejuvena.Collate.Features.Packaging
 {
     public class BuildProperties
     {

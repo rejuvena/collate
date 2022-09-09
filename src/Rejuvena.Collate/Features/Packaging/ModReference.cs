@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Rejuvena.Collate.Tasks.Packaging
+namespace Rejuvena.Collate.Features.Packaging
 {
     public readonly record struct ModReference(string Mod, Version? TargetVersion)
     {

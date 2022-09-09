@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Rejuvena.Collate.Tasks.AcessTransformer
+namespace Rejuvena.Collate.Cecil.AT
 {
-    public sealed class AccessorTransformationType
+    internal readonly record struct AccessorTransformationType(string Value, bool NoStatic = false)
     {
         /// <summary>
         ///     Doesn't perform an operation on an accessor.
@@ -52,14 +52,6 @@ namespace Rejuvena.Collate.Tasks.AcessTransformer
                 ProtectedInternal,
                 PrivateProtected
             }.AsReadOnly();
-
-        public readonly string Value;
-        public readonly bool NoStatic;
-
-        private AccessorTransformationType(string value, bool noStatic = false) {
-            Value = value;
-            NoStatic = noStatic;
-        }
 
         public static AccessorTransformationType Parse(string value) {
             // Add *some* leniency, I guess.

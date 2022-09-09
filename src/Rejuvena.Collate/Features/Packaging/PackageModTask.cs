@@ -4,14 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
-using Rejuvena.Collate.Tasks.Packaging;
-using Rejuvena.Collate.Tasks.Packaging.Converters;
+using Rejuvena.Collate.Features.Packaging.Converters;
 using Rejuvena.Collate.TML;
 using Rejuvena.Collate.Util;
 using TML.Files;
 using BuildTask = Microsoft.Build.Utilities.Task;
 
-namespace Rejuvena.Collate.Tasks
+namespace Rejuvena.Collate.Features.Packaging
 {
     /// <summary>
     ///     Packages the compiled assembly and PDB of a mod alongside its resources into a .tmod archive.

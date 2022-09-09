@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Rejuvena.Collate.Tasks.AcessTransformer
+namespace Rejuvena.Collate.Cecil.AT
 {
-    public class Transformer
+    internal sealed class Transformer
     {
         public readonly string ObjectToTransform;
         public readonly AccessorTransformationType AccessorTransformation;
@@ -20,13 +20,9 @@ namespace Rejuvena.Collate.Tasks.AcessTransformer
 
         public override string ToString() {
             List<string> values = new();
-
             if (AccessorTransformation != AccessorTransformationType.Inherit) values.Add(AccessorTransformation.Value);
-
             if (ReadonlyTransformation != ReadonlyTransformationType.Inherit) values.Add(ReadonlyTransformation.Value);
-
             values.Add(ObjectToTransform);
-
             return string.Join(" ", values);
         }
 
