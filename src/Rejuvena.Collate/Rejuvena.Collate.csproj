@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <RootNamespace>Rejuvena.Collate</RootNamespace>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
