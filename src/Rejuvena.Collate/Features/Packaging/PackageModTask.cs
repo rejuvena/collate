@@ -15,7 +15,7 @@ namespace Rejuvena.Collate.Features.Packaging
     /// <summary>
     ///     Packages the compiled assembly and PDB of a mod alongside its resources into a .tmod archive.
     /// </summary>
-    internal sealed class PackageModTask : BuildTask
+    public sealed class PackageModTask : BuildTask
     {
         /// <summary>
         ///     NuGet package references.
@@ -112,7 +112,7 @@ namespace Rejuvena.Collate.Features.Packaging
             return true;
         }
 
-        protected string GetOutputTmodPath() {
+        private string GetOutputTmodPath() {
             OutputTmodPath = string.IsNullOrEmpty(OutputTmodPath) ? Utilities.FindSavePath(Log, TmlDllPath, AssemblyName) : OutputTmodPath;
             Directory.CreateDirectory(
                 Path.GetDirectoryName(OutputTmodPath) ?? throw new DirectoryNotFoundException("Could not find parent directory of output path!")
@@ -163,7 +163,7 @@ namespace Rejuvena.Collate.Features.Packaging
             }
         }
 
-        protected List<ITaskItem> GetNugetReferences() {
+        private List<ITaskItem> GetNugetReferences() {
             Dictionary<string, ITaskItem> nugetLookup = PackageReferences.ToDictionary(x => x.ItemSpec);
 
             if (nugetLookup.ContainsKey("Rejuvena.Collate")) nugetLookup.Remove("Rejuvena.Collate");
@@ -188,7 +188,7 @@ namespace Rejuvena.Collate.Features.Packaging
             return nugetReferences;
         }
 
-        protected List<ITaskItem> GetModReferences() {
+        private List<ITaskItem> GetModReferences() {
             List<ITaskItem> modReferences = new();
             foreach (ITaskItem modReference in ModReferences) {
                 string? modPath = modReference.GetMetadata("HintPath");
@@ -210,7 +210,7 @@ namespace Rejuvena.Collate.Features.Packaging
             return modReferences;
         }
 
-        protected BuildProperties MakeModProperties() {
+        private BuildProperties MakeModProperties() {
             // TODO: Let this be specified as a property in the .csproj? Would be funny!!
             string buildInfoFile = Path.Combine(ProjectDirectory, "build.txt");
 

@@ -8,7 +8,7 @@ using BuildTask = Microsoft.Build.Utilities.Task;
 
 namespace Rejuvena.Collate.Features.ModAssemblyModification
 {
-    internal sealed class ModifyModAssemblyTask : BuildTask
+    public sealed class ModifyModAssemblyTask : BuildTask
     {
         internal record ModAssemblyContext(string AssemblyName)
         {

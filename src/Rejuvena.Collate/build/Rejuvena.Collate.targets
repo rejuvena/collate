@@ -48,6 +48,7 @@
     <UsingTask TaskName="ModifyAssemblyReferencesTask" AssemblyFile="Rejuvena.Collate.dll"/>
     <Target Name="ModifyAssemblyReferences" BeforeTargets="ResolveAssemblyReferences">
         <ModifyAssemblyReferencesTask
+                AccessTransformerPaths="$(AccessTransformerPaths)"
                 AccessTransformerPath="$(AccessTransformerPath)"
                 ProjectDirectory="$(MSBuildProjectDirectory)"
                 References="@(Reference)">

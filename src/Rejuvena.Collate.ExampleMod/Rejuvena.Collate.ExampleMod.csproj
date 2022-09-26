@@ -12,14 +12,20 @@
         <!-- Collate will take care of generating a dummy type to satisfy tML if your root namespace does not match the assembly name. -->
         <RootNamespace>Rejuvena.Collate.ExampleMod</RootNamespace>
     </PropertyGroup>
-    
+
     <!-- Rejuvena.Collate configuration -->
     <PropertyGroup>
         <!-- Enable tML's roslyn analyzers -->
         <TMLCodeAssist>enable</TMLCodeAssist>
-        
+
         <!-- Add our access transformer. -->
-        <AccessTransformerPath>.accesstransformer</AccessTransformerPath>
+        <!-- Include $(AccessTransformerPaths) in case other paths are defined. Paths are separted with a semicolon (;). -->
+        <!-- Since these paths get carried around, we want the fully-qualified path name. We use MSBuildProjectDirectory for this. -->
+        <AccessTransformerPaths>$(AccessTransformerPaths);$(MSBuildProjectDirectory)\.accesstransformer</AccessTransformerPaths>
+
+        <!-- This is obsolete, but was once valid: -->
+        <!-- <AccessTransformerPath>.accesstransformer</AccessTransformerPaths> -->
+        <!-- It is unadvised to use this, as support will be eventually axed, but currently it just gets appened AccessTransformerPaths. -->
     </PropertyGroup>
 
     <!-- Mod properties. -->
@@ -37,10 +43,10 @@
 
     <ItemGroup>
         <!-- The Rejuvena.Collate package, which is what makes Collate work. -->
-        <PackageReference Include="Rejuvena.Collate" Version="1.1.0" />
+        <PackageReference Include="Rejuvena.Collate" Version="1.1.0"/>
 
         <!-- An example of a NuGet package being used in a tModLoader mode. -->
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.45" />
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.45"/>
     </ItemGroup>
 
 </Project>

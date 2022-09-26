@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Build.Framework;
@@ -10,9 +11,13 @@ using BuildTask = Microsoft.Build.Utilities.Task;
 
 namespace Rejuvena.Collate.Features.AssemblyReferenceModification
 {
-    internal sealed class ModifyAssemblyReferencesTask : BuildTask
+    public sealed class ModifyAssemblyReferencesTask : BuildTask
     {
         [Required]
+        public string AccessTransformerPaths { get; set; } = "";
+
+        // [Required]
+        [Obsolete("Use AccessTransformerPaths")]
         public string AccessTransformerPath { get; set; } = "";
 
         [Required]
@@ -38,8 +43,17 @@ namespace Rejuvena.Collate.Features.AssemblyReferenceModification
             string[] referenceFiles = References.Split(';');
             List<(string original, string transformed)> cachedReferences = new();
 
-            bool applyAccessTransformer = AccessTransformerPath != "none" && File.Exists(AccessTransformerPath);
-            IATFile? atFile = applyAccessTransformer ? ATFileFactory.CreateFromFile(AccessTransformerPath) : null;
+            AccessTransformerPaths = AccessTransformerPaths.Trim().Trim(';');
+
+#pragma warning disable CS0618
+            if (!string.IsNullOrEmpty(AccessTransformerPath) && File.Exists(AccessTransformerPath)) AccessTransformerPaths += ';' + AccessTransformerPath;
+#pragma warning restore CS0618
+
+            string[] atPaths = AccessTransformerPaths.Split(';');
+            List<IATFile> atFiles = atPaths
+                                   .Where(LogFileExists)
+                                   .Select(ATFileFactory.CreateFromFile)
+                                   .ToList();
 
             foreach (string file in referenceFiles) {
                 Log.LogMessage("Preparing to transform assembly: " + file);
@@ -48,7 +62,7 @@ namespace Rejuvena.Collate.Features.AssemblyReferenceModification
                 string libPath = Path.GetDirectoryName(referenceFiles.First(x => x.EndsWith("tModLoader.dll")))!;
                 ModuleDefinition module = ModuleFactory.CreateModuleFromFile(file, new TerrariaAssemblyResolver(Log, libPath));
 
-                if (atFile is not null) modified |= atFile.Transform(module);
+                foreach (IATFile atFile in atFiles) modified |= atFile.Transform(module);
 
                 if (!modified) {
                     module.Dispose();
@@ -69,6 +83,16 @@ namespace Rejuvena.Collate.Features.AssemblyReferenceModification
             ReferenceToRemove = string.Join(";", cachedReferences.Select(x => x.original));
             ReferenceToAdd = string.Join(";", cachedReferences.Select(x => x.transformed));
             return true;
+        }
+
+        private bool LogFileExists(string file) {
+            if (File.Exists(file)) {
+                Log.LogMessage("Found access transformer file at: " + file);
+                return true;
+            }
+
+            Log.LogMessage("Could not find access transformer file at: " + file);
+            return false;
         }
     }
 }

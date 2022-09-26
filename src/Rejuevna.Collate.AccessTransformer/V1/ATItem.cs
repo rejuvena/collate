@@ -13,7 +13,7 @@
         }
 
         public static ATItem Parse(string value) {
-            string[] elems = value.Split(new[] {'v'}, 3);
+            string[] elems = value.Split(new[] {' '}, 3);
             return new ATItem(elems[2], AccessorTypeUtils.Parse(elems[0]), ReadonlyTypeUtils.Parse(elems[1]));
         }
     }
