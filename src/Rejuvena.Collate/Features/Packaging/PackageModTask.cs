@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
 using Rejuvena.Collate.Features.Packaging.Converters;
-using Rejuvena.Collate.TML;
 using Rejuvena.Collate.Util;
 using TML.Files;
+using TML.Files.Abstractions;
 using BuildTask = Microsoft.Build.Utilities.Task;
 
 namespace Rejuvena.Collate.Features.Packaging
@@ -83,7 +83,12 @@ namespace Rejuvena.Collate.Features.Packaging
             PathNamePair modPdb = new(AssemblyName + ".pdb", Path.Combine(ProjectDirectory, OutputPath));
             ModFileWriter writer = new();
             BuildProperties props = MakeModProperties();
-            CollateModFile buildFile = new(TmlVersion, AssemblyName, props.Version.ToString());
+            ModFile buildFile = new()
+            {
+                ModLoaderVersion = TmlVersion,
+                Name = AssemblyName,
+                Version = props.Version.ToString()
+            };
 
             buildFile.AddFileFromPath(modDll, onError: () => throw new FileNotFoundException("Mod assembly not present, expected at: " + modDll.Path));
             buildFile.AddFileFromPath(modPdb, onError: () => { Log.LogWarning("Could not resolve mod .pdb, expected at: " + modPdb.Path); });
@@ -99,7 +104,7 @@ namespace Rejuvena.Collate.Features.Packaging
 
             if (File.Exists(OutputTmodPath)) File.Delete(OutputTmodPath);
             using Stream modFile = File.Open(OutputTmodPath, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
-            writer.Write(buildFile, modFile, new ModFileWriterSettings(buildFile.Header, buildFile.ModLoaderVersion, buildFile.Name, buildFile.Version));
+            writer.Write(buildFile, modFile);
 
             // TODO: Let people specify the enabled.json file path? Kinda useless...?
             string enabledJsonPath = Path.Combine(Path.GetDirectoryName(OutputTmodPath)!, "enabled.json");
@@ -117,7 +122,7 @@ namespace Rejuvena.Collate.Features.Packaging
             return OutputTmodPath;
         }
 
-        protected void AddAllReferences(CollateModFile modFile, BuildProperties props) {
+        private void AddAllReferences(ModFile modFile, BuildProperties props) {
             List<ITaskItem> nugetReferences = GetNugetReferences();
             List<ITaskItem> modReferences = GetModReferences();
 
@@ -227,8 +232,8 @@ namespace Rejuvena.Collate.Features.Packaging
             return props;
         }
 
-        protected bool IgnoreResource(BuildProperties props, string resPath) {
-            string relPath = resPath[(ProjectDirectory.Length + 1)..];
+        private bool IgnoreResource(BuildProperties props, string resPath) {
+            string relPath = resPath.Substring((ProjectDirectory.Length + 1));
             return props.IgnoreFile(relPath)
                    || relPath[0] == '.' // ignore dotfiles (config files/folders, such as .git/, .vs/, .idea/, .gitignore, etc. 
                    || relPath.StartsWith("bin" + Path.DirectorySeparatorChar) // ignore ./bin/
@@ -238,8 +243,8 @@ namespace Rejuvena.Collate.Features.Packaging
                    || Path.GetFileName(resPath) == "Thumbs.db"; // ignore Thumbs.db, a dumb Windows file; people should just use Details view anyway
         }
 
-        protected void AddResource(CollateModFile modFile, string resPath) {
-            string relPath = resPath[(ProjectDirectory.Length + 1)..];
+        private void AddResource(IModFile modFile, string resPath) {
+            string relPath = resPath.Substring((ProjectDirectory.Length + 1));
             Log.LogMessage(MessageImportance.Low, "Packing file into resulting .tmod: " + relPath);
 
             using FileStream open = File.OpenRead(resPath);

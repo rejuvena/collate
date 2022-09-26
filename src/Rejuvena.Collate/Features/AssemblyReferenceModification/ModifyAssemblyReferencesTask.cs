@@ -66,8 +66,8 @@ namespace Rejuvena.Collate.Features.AssemblyReferenceModification
                 }
             }
 
-            ReferenceToRemove = string.Join(';', cachedReferences.Select(x => x.original));
-            ReferenceToAdd = string.Join(';', cachedReferences.Select(x => x.transformed));
+            ReferenceToRemove = string.Join(";", cachedReferences.Select(x => x.original));
+            ReferenceToAdd = string.Join(";", cachedReferences.Select(x => x.transformed));
             return true;
         }
     }

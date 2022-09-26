@@ -7,6 +7,7 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Newtonsoft.Json;
 using Rejuvena.Collate.Features.Packaging;
+using TML.Files.Abstractions;
 
 namespace Rejuvena.Collate.Util
 {
@@ -99,7 +100,7 @@ namespace Rejuvena.Collate.Util
 
             log.LogMessage(MessageImportance.Low, "Retrieved informational version from tModLoader DLL: " + tmlInfoVersion);
 
-            string[] parts = tmlInfoVersion[(tmlInfoVersion.IndexOf('+') + 1)..].Split('|');
+            string[] parts = tmlInfoVersion!.Substring(tmlInfoVersion.IndexOf('+') + 1).Split('|');
             if (parts.Length >= 3) {
                 if (Enum.TryParse(parts[2], true, out BuildPurpose purpose)) return purpose;
             }
@@ -118,6 +119,23 @@ namespace Rejuvena.Collate.Util
 
             List<string>? enabled = File.Exists(enabledPath) ? JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(enabledPath)) : new List<string>();
             File.WriteAllText(enabledPath, JsonConvert.SerializeObject((enabled ?? new List<string>()).With(modName), Formatting.Indented));
+        }
+
+        #endregion
+
+        #region IModFile Extensions
+
+        public static void AddFileFromPath(this IModFile modFile, string fileName, string path, Action? onSuccess = null, Action? onError = null) {
+            if (File.Exists(path)) {
+                modFile.AddFile(fileName, File.ReadAllBytes(path));
+                onSuccess?.Invoke();
+            }
+            else
+                onError?.Invoke();
+        }
+
+        public static void AddFileFromPath(this IModFile modFile, PathNamePair pnPair, Action? onSuccess = null, Action? onError = null) {
+            modFile.AddFileFromPath(pnPair.Name, pnPair.Path, onSuccess, onError);
         }
 
         #endregion

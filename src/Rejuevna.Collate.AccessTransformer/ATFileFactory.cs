@@ -9,9 +9,9 @@ namespace Rejuevna.Collate.AccessTransformer
             string[] lines = File.ReadAllLines(path);
             string versionLine = lines[0];
 
-            if (!versionLine.StartsWith('v')) throw new InvalidOperationException("Tried to parse file without specified version.");
+            if (!versionLine.StartsWith("v")) throw new InvalidOperationException("Tried to parse file without specified version.");
 
-            return int.Parse(versionLine[1..]) switch
+            return int.Parse(versionLine.Substring(1)) switch
             {
                 1 => V1.ATFile.Read(path),
                 _ => throw new InvalidOperationException("Tried to parse file with unsupported version.")

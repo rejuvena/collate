@@ -136,11 +136,11 @@ namespace Rejuevna.Collate.AccessTransformer.V1
             string[] lines = File.ReadAllLines(path).Where(x => !string.IsNullOrWhiteSpace(x) && !x.StartsWith("#")).Select(x => x.Trim()).ToArray();
             string versionLine = lines[0];
 
-            if (!versionLine.StartsWith('v')) throw new InvalidOperationException("Tried to parse file without specified version.");
-            if (int.Parse(versionLine[1..]) != VERSION) throw new InvalidOperationException("Tried to parse file with invalid version.");
+            if (!versionLine.StartsWith("v")) throw new InvalidOperationException("Tried to parse file without specified version.");
+            if (int.Parse(versionLine.Substring(1)) != VERSION) throw new InvalidOperationException("Tried to parse file with invalid version.");
 
             return new ATFile(
-                lines.Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith('v')).Select(ATItem.Parse).ToArray()
+                lines.Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith("v")).Select(ATItem.Parse).ToArray()
             );
         }
     }

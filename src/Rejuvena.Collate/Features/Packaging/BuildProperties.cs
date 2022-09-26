@@ -53,7 +53,7 @@ namespace Rejuvena.Collate.Features.Packaging
             BuildProperties props = new();
 
             foreach (ITaskItem prop in taskItems) {
-                string propName = char.ToLowerInvariant(prop.ItemSpec[0]) + prop.ItemSpec[1..];
+                string propName = char.ToLowerInvariant(prop.ItemSpec[0]) + prop.ItemSpec.Substring(1);
                 string propVal = prop.GetMetadata("Value");
                 ProcessProperty(props, propName, propVal);
             }

@@ -4,6 +4,10 @@ namespace Rejuvena.Collate.Features.Packaging
 {
     internal readonly record struct ModReference(string Mod, Version? TargetVersion)
     {
+        public string Mod { get; } = Mod;
+
+        public Version? TargetVersion { get; } = TargetVersion;
+
         public override string ToString() {
             return TargetVersion is null ? Mod : Mod + '@' + TargetVersion;
         }
