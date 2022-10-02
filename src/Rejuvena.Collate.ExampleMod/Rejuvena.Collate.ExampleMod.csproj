@@ -24,8 +24,8 @@
         <AccessTransformerPaths>$(AccessTransformerPaths);$(MSBuildProjectDirectory)\.accesstransformer</AccessTransformerPaths>
 
         <!-- This is obsolete, but was once valid: -->
-        <!-- <AccessTransformerPath>.accesstransformer</AccessTransformerPaths> -->
-        <!-- It is unadvised to use this, as support will be eventually axed, but currently it just gets appened AccessTransformerPaths. -->
+        <!-- <AccessTransformerPath>.accesstransformer</AccessTransformerPath> -->
+        <!-- It is unadvised to use this, as support will be eventually axed, but currently it just gets appended to AccessTransformerPaths. -->
     </PropertyGroup>
 
     <!-- Mod properties. -->

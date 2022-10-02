@@ -15,7 +15,7 @@
         <IsPackable>true</IsPackable>
         <Title>Alternative tModLoader Build Toolchain</Title>
         <Authors>Tomat</Authors>
-        <Description>A fast and efficient build toolchain for modern tModLoader mods, with extra features.</Description>
+        <Description>Rejuvena.Collate - Efficient tML Build Toolchain</Description>
         <Version>1.1.0</Version>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/rejuvena/collate</PackageProjectUrl>
