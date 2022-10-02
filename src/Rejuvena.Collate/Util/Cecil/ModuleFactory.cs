@@ -1,6 +1,6 @@
 ﻿using Mono.Cecil;
 
-namespace Rejuvena.Collate.Cecil
+namespace Rejuvena.Collate.Util.Cecil
 {
     internal static class ModuleFactory
     {

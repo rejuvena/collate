@@ -5,8 +5,8 @@ using System.Linq;
 using Microsoft.Build.Framework;
 using Mono.Cecil;
 using Rejuevna.Collate.AccessTransformer;
-using Rejuvena.Collate.Cecil;
-using Rejuvena.Collate.Cecil.Resolvers;
+using Rejuvena.Collate.Util.Cecil;
+using Rejuvena.Collate.Util.Cecil.Resolvers;
 using BuildTask = Microsoft.Build.Utilities.Task;
 
 namespace Rejuvena.Collate.Features.AssemblyReferenceModification

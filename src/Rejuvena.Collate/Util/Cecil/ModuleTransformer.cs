@@ -1,7 +1,7 @@
 ﻿using Microsoft.Build.Utilities;
 using Mono.Cecil;
 
-namespace Rejuvena.Collate.Cecil
+namespace Rejuvena.Collate.Util.Cecil
 {
     internal abstract class ModuleTransformer<TContext> where TContext : class
     {

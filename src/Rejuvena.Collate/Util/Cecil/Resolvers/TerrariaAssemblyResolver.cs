@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.Build.Utilities;
 using Mono.Cecil;
 
-namespace Rejuvena.Collate.Cecil.Resolvers
+namespace Rejuvena.Collate.Util.Cecil.Resolvers
 {
     internal sealed class TerrariaAssemblyResolver : BaseAssemblyResolver
     {

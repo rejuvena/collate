@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.Build.Utilities;
 using Mono.Cecil;
-using Rejuvena.Collate.Cecil;
+using Rejuvena.Collate.Util.Cecil;
 
 namespace Rejuvena.Collate.Features.ModAssemblyModification
 {

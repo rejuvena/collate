@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.Build.Framework;
 using Mono.Cecil;
-using Rejuvena.Collate.Cecil;
+using Rejuvena.Collate.Util.Cecil;
 using BuildTask = Microsoft.Build.Utilities.Task;
 
 namespace Rejuvena.Collate.Features.ModAssemblyModification
