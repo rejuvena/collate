@@ -13,7 +13,7 @@ namespace Rejuvena.Collate.Util.Cecil.Resolvers
         private readonly List<AssemblyDefinition> Libraries = new();
 
         public TerrariaAssemblyResolver(TaskLoggingHelper log, string rootDirectory) {
-            foreach (string dll in Directory.GetFiles(Path.Combine(rootDirectory, "Libraries"), "*.dll", SearchOption.AllDirectories)) {
+            foreach (string dll in Directory.GetFiles(rootDirectory, "*.dll", SearchOption.AllDirectories)) {
                 // Ignore misc. DLLs that we don't care about.
                 if (dll.Contains("runtimes") || dll.Contains("resources") || dll.Contains("Native")) continue;
 
@@ -22,7 +22,7 @@ namespace Rejuvena.Collate.Util.Cecil.Resolvers
                     Libraries.Add(AssemblyDefinition.ReadAssembly(dll));
                 }
                 catch (Exception e) {
-                    log.LogMessage($"Failed to resolve: {e}");
+                    log.LogError($"Failed to resolve: {e}");
                 }
             }
         }

@@ -80,6 +80,7 @@ namespace Rejuvena.Collate.Features.Packaging
             OutputTmodPath = GetOutputTmodPath();
 
             PathNamePair modDll = new(AssemblyName + ".dll", Path.Combine(ProjectDirectory, OutputPath));
+            PathNamePair modifiedModDll = new(AssemblyName + ".dll.modified", Path.Combine(ProjectDirectory, OutputPath));
             PathNamePair modPdb = new(AssemblyName + ".pdb", Path.Combine(ProjectDirectory, OutputPath));
             ModFileWriter writer = new();
             BuildProperties props = MakeModProperties();
@@ -90,7 +91,15 @@ namespace Rejuvena.Collate.Features.Packaging
                 Version = props.Version.ToString()
             };
 
-            buildFile.AddFileFromPath(modDll, onError: () => throw new FileNotFoundException("Mod assembly not present, expected at: " + modDll.Path));
+            string modifiedDllPath = Path.Combine(modifiedModDll.Path, modifiedModDll.Name);
+            if (File.Exists(modifiedDllPath)) {
+                Log.LogMessage($"Found modified assembly (.dll.modified) at {modifiedDllPath}.");
+                buildFile.AddFile(modDll.Name, File.ReadAllBytes(modifiedDllPath));
+            }
+            else {
+                Log.LogMessage("Did not find modified assembly (.dll.modified).");
+                buildFile.AddFileFromPath(modDll, onError: () => throw new FileNotFoundException("Mod assembly not present, expected at: " + modDll.Path));
+            }
             buildFile.AddFileFromPath(modPdb, onError: () => { Log.LogWarning("Could not resolve mod .pdb, expected at: " + modPdb.Path); });
 
             AddAllReferences(buildFile, props);

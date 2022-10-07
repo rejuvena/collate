@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Build.Framework;
 using Mono.Cecil;
 using Rejuvena.Collate.Util.Cecil;
+using Rejuvena.Collate.Util.Cecil.Resolvers;
 using BuildTask = Microsoft.Build.Utilities.Task;
 
 namespace Rejuvena.Collate.Features.ModAssemblyModification
@@ -21,9 +22,6 @@ namespace Rejuvena.Collate.Features.ModAssemblyModification
         [Required]
         public string AssemblyName { get; set; } = "";
 
-        /*[Required]
-        public string RootNamespace { get; set; } = "";*/
-
         private static ModuleTransformer<ModAssemblyContext>[] Modifications =
         {
             new InjectRootNamespaceTypeModification()
@@ -31,12 +29,16 @@ namespace Rejuvena.Collate.Features.ModAssemblyModification
 
         public override bool Execute() {
             string assemblyPath = Path.Combine(Path.GetFullPath(OutputPath), AssemblyName + ".dll");
+            string assemblyOutputPath = Path.Combine(Path.GetFullPath(OutputPath), AssemblyName + ".dll.modified");
             bool modified = false;
+            
+            // Delete the file if it was left over from a previous build.
+            if (File.Exists(assemblyOutputPath)) File.Delete(assemblyOutputPath);
 
             try {
                 Log.LogMessage("Preparing to modify the compiled mod assembly...");
 
-                ModuleDefinition? module = ModuleFactory.CreateModuleFromFile(assemblyPath);
+                ModuleDefinition? module = ModuleFactory.CreateModuleFromFile(assemblyPath, new TerrariaAssemblyResolver(Log, Path.GetDirectoryName(OutputPath)!));
                 if (module is null) throw new FileLoadException("Failed to load mod assembly into ModuleDefinition, path: " + assemblyPath);
 
                 ModAssemblyContext ctx = new(AssemblyName);
@@ -52,7 +54,7 @@ namespace Rejuvena.Collate.Features.ModAssemblyModification
                     using MemoryStream dllMem = new();
                     module.Write(dllMem);
                     module.Dispose();
-                    File.WriteAllBytes(assemblyPath, dllMem.ToArray());
+                    File.WriteAllBytes(assemblyOutputPath, dllMem.ToArray());
                 }
             }
             catch (Exception e) {

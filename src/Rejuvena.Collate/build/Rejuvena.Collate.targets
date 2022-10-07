@@ -52,12 +52,12 @@
                 AccessTransformerPath="$(AccessTransformerPath)"
                 ProjectDirectory="$(MSBuildProjectDirectory)"
                 References="@(Reference)">
-            <Output TaskParameter="ReferenceToRemove" ItemName="_ReferenceToRemove"/>
-            <Output TaskParameter="ReferenceToAdd" ItemName="_ReferenceToAdd"/>
+            <Output TaskParameter="ReferencesToRemove" ItemName="_ReferencesToRemove"/>
+            <Output TaskParameter="ReferencesToAdd" ItemName="_ReferencesToAdd"/>
         </ModifyAssemblyReferencesTask>
         <ItemGroup>
-            <Reference Remove="@(_ReferenceToRemove)"/>
-            <Reference Include="@(_ReferenceToAdd)"/>
+            <Reference Remove="@(_ReferencesToRemove)"/>
+            <Reference Include="@(_ReferencesToAdd)"/>
         </ItemGroup>
     </Target>
 
