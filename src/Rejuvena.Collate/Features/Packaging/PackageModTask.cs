@@ -91,13 +91,12 @@ namespace Rejuvena.Collate.Features.Packaging
                 Version = props.Version.ToString()
             };
 
-            string modifiedDllPath = Path.Combine(modifiedModDll.Path, modifiedModDll.Name);
-            if (File.Exists(modifiedDllPath)) {
-                Log.LogMessage($"Found modified assembly (.dll.modified) at {modifiedDllPath}.");
-                buildFile.AddFile(modDll.Name, File.ReadAllBytes(modifiedDllPath));
+            if (File.Exists(modifiedModDll.Path)) {
+                Log.LogMessage($"Found modified assembly (.dll.modified) at {modifiedModDll.Path}.");
+                buildFile.AddFile(modDll.Name, File.ReadAllBytes(modifiedModDll.Path));
             }
             else {
-                Log.LogMessage("Did not find modified assembly (.dll.modified).");
+                Log.LogMessage($"Did not find modified assembly (.dll.modified) at {modifiedModDll.Path}.");
                 buildFile.AddFileFromPath(modDll, onError: () => throw new FileNotFoundException("Mod assembly not present, expected at: " + modDll.Path));
             }
             buildFile.AddFileFromPath(modPdb, onError: () => { Log.LogWarning("Could not resolve mod .pdb, expected at: " + modPdb.Path); });
