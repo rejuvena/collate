@@ -10,9 +10,6 @@ User-facing changes are documented here, per version.
 ### Changes
 
 - Back-ported the projects to .NET Standard 2.0.
-
-### Fixes
-
 - Fixed issues with packaging in Visual Studio ([#1](https://github.com/rejuvena/collate/issues/1)).
 - Fixed issues with transforming multiple assemblies and transforming dependencies of other assembly references ([#6](https://github.com/rejuvena/collate/issues/6)).
 
@@ -32,7 +29,7 @@ User-facing changes are documented here, per version.
 
 ## 1.0.1 - 4 September 2022
 
-### Fixes
+### Changes
 
 - Fixed bug that improperly converted `.png` files to `.rawimg` files, causing. 
 
