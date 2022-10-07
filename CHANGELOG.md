@@ -33,7 +33,7 @@ User-facing changes are documented here, per version.
 
 - Fixed bug that improperly converted `.png` files to `.rawimg` files, causing. 
 
-## 1.0.0 - 25 August 2022
+## 1.0.0 - 25 August 2022 @ [`20b292..9cb36d`](https://github.com/rejuvena/collate/compare/20b292..9cb36d)
 
 ### Additions
 
