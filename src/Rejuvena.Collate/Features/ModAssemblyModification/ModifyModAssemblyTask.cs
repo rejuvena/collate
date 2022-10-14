@@ -24,7 +24,7 @@ namespace Rejuvena.Collate.Features.ModAssemblyModification
 
         private static ModuleTransformer<ModAssemblyContext>[] Modifications =
         {
-            new InjectRootNamespaceTypeModification()
+            // new InjectRootNamespaceTypeModification()
         };
 
         public override bool Execute() {

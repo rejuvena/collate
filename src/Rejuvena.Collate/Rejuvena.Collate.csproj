@@ -35,7 +35,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Rejuevna.Collate.AccessTransformer\Rejuevna.Collate.AccessTransformer.csproj"/>
-        <ProjectReference Include="..\Rejuvena.Collate.Analyzer\Rejuvena.Collate.Analyzer.csproj"/>
         <ProjectReference Include="..\TML.Patcher\src\TML.Files\TML.Files.csproj"/>
     </ItemGroup>
 
@@ -45,8 +44,7 @@
 
         <None PackagePath="build\" Include="$(OutputPath)\*.dll" Pack="true" Visible="false"/>
 
-        <None Remove="$(OutputPath)\Rejuvena.Collate.Analyzer.dll"/>
-        <None PackagePath="analyzers/dotnet/cs" Include="$(OutputPath)\Rejuvena.Collate.Analyzer.dll" Pack="true" Visible="false"/>
+        <None PackagePath="analyzers/dotnet/cs" Include="$(SolutionDir)/Rejuvena.Collate.Analyzer/bin/netstandard2.0/Rejuvena.Collate.Analyzer.dll" Pack="true" Visible="false"/>
     </ItemGroup>
 
 </Project>
