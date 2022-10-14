@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rejuvena.Collate.ExampleMod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rejuevna.Collate.AccessTransformer", "Rejuevna.Collate.AccessTransformer\Rejuevna.Collate.AccessTransformer.csproj", "{64FD260C-CED5-46B1-8A01-E0457053DBA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rejuvena.Collate.Analyzer", "Rejuvena.Collate.Analyzer\Rejuvena.Collate.Analyzer.csproj", "{9A1037C4-2483-4924-8FA8-55912E375492}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rejuvena.Collate.Analyzer.Tests", "Rejuvena.Collate.Analyzer.Tests\Rejuvena.Collate.Analyzer.Tests.csproj", "{D0051E7E-630B-4686-8E8D-741DF90E1DA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +46,13 @@ Global
 		{64FD260C-CED5-46B1-8A01-E0457053DBA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64FD260C-CED5-46B1-8A01-E0457053DBA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64FD260C-CED5-46B1-8A01-E0457053DBA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A1037C4-2483-4924-8FA8-55912E375492}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A1037C4-2483-4924-8FA8-55912E375492}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A1037C4-2483-4924-8FA8-55912E375492}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A1037C4-2483-4924-8FA8-55912E375492}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0051E7E-630B-4686-8E8D-741DF90E1DA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0051E7E-630B-4686-8E8D-741DF90E1DA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0051E7E-630B-4686-8E8D-741DF90E1DA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0051E7E-630B-4686-8E8D-741DF90E1DA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
