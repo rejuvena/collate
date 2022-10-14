@@ -7,11 +7,16 @@ User-facing changes are documented here, per version.
 
 > **Warning** | This version has not yet been released, and does not reflect the final product nor the current released version.
 
+### Additions
+
+- Added an analyzer project (`Rejuvena.Collate.Analyzer`) for source generation and code analysis.
+
 ### Changes
 
 - Back-ported the projects to .NET Standard 2.0.
-- Fixed issues with packaging in Visual Studio ([#1](https://github.com/rejuvena/collate/issues/1)).
-- Fixed issues with transforming multiple assemblies and transforming dependencies of other assembly references ([#6](https://github.com/rejuvena/collate/issues/6)).
+- Fixed issues with packaging in Visual Studio (resolves [#1](https://github.com/rejuvena/collate/issues/1)).
+- Fixed issues with transforming multiple assemblies and transforming dependencies of other assembly references (resolves [#6](https://github.com/rejuvena/collate/issues/6)).
+- Dummy namespace injection has been moved to a more reliable source generator.
 
 ### Removed
 
