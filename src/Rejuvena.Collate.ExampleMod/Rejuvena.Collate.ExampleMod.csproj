@@ -43,10 +43,10 @@
 
     <ItemGroup>
         <!-- The Rejuvena.Collate package, which is what makes Collate work. -->
-        <PackageReference Include="Rejuvena.Collate" Version="1.1.0" />
+        <PackageReference Include="Rejuvena.Collate" Version="1.1.0"/>
 
         <!-- An example of a NuGet package being used in a tModLoader mode. -->
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.45" />
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.45"/>
     </ItemGroup>
 
 </Project>
