@@ -1,0 +1,19 @@
+﻿<Project>
+
+    <!-- For organization's and cleanliness' sakes, we can split up our property definitions into multiple files. -->
+    <!-- This .targets file contains core project configurations, and is imported in the main .csproj file.-->
+
+    <PropertyGroup>
+        <!-- The mod's internal name, which should be explicitly specified. -->
+        <AssemblyName>CollateExample</AssemblyName>
+
+        <!-- Miscellaneous project settings. -->
+        <TargetFramework>net6.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+
+        <!-- Collate will take care of generating a dummy type to satisfy tML if your root namespace does not match the assembly name. -->
+        <RootNamespace>Rejuvena.Collate.ExampleMod</RootNamespace>
+    </PropertyGroup>
+
+</Project>

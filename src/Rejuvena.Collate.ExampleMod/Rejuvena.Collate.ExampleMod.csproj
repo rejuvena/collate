@@ -1,52 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <!-- The mod's internal name, which should be explicitly specified. -->
-        <AssemblyName>CollateExample</AssemblyName>
-
-        <!-- Miscellaneous project settings. -->
-        <TargetFramework>net6.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
-        <Nullable>enable</Nullable>
-
-        <!-- Collate will take care of generating a dummy type to satisfy tML if your root namespace does not match the assembly name. -->
-        <RootNamespace>Rejuvena.Collate.ExampleMod</RootNamespace>
-    </PropertyGroup>
-
-    <!-- Rejuvena.Collate configuration -->
-    <PropertyGroup>
-        <!-- Enable tML's roslyn analyzers -->
-        <TMLCodeAssist>enable</TMLCodeAssist>
-
-        <!-- Add our access transformer. -->
-        <!-- Include $(AccessTransformerPaths) in case other paths are defined. Paths are separted with a semicolon (;). -->
-        <!-- Since these paths get carried around, we want the fully-qualified path name. We use MSBuildProjectDirectory for this. -->
-        <AccessTransformerPaths>$(AccessTransformerPaths);$(MSBuildProjectDirectory)\.accesstransformer</AccessTransformerPaths>
-
-        <!-- This is obsolete, but was once valid: -->
-        <!-- <AccessTransformerPath>.accesstransformer</AccessTransformerPath> -->
-        <!-- It is unadvised to use this, as support will be eventually axed, but currently it just gets appended to AccessTransformerPaths. -->
-    </PropertyGroup>
-
-    <!-- Mod properties. -->
-    <PropertyGroup>
-        <DisplayName>Collate Example Mod</DisplayName> <!-- The name this mod is displayed as in-game. -->
-        <Author>Tomat</Author> <!-- A string representing the authors. Can be your name, a team name, multiple names, etc. -->
-        <Version>1.0.0</Version> <!-- The mod's version. -->
-
-        <HideCode>false</HideCode> <!-- Whether extracting a mod in-game will yield the mod's DLL; false means yes to extraction and true means no. -->
-        <HideResources>false</HideResources> <!-- Whether to hide all other packaged files; false means yes to extraction and true means no to extraction. -->
-        <IncludeSource>true</IncludeSource> <!-- Whether to package .cs, .csproj, and .sln files; false means packaging and true means no packaging. -->
-
-        <Homepage>https://github.com/rejuvena/collate</Homepage> <!-- The homepage link, which may be opened from in-game. -->
-    </PropertyGroup>
+    <!-- Import various files of ours that help to organize and declutter the .csproj, view them for more information. -->
+    <Import Project="_project.targets" />
+    <Import Project="_build.targets" />
+    <Import Project="_config.targets"/>
 
     <ItemGroup>
         <!-- The Rejuvena.Collate package, which is what makes Collate work. -->
-        <PackageReference Include="Rejuvena.Collate" Version="1.1.0"/>
+        <PackageReference Include="Rejuvena.Collate" Version="1.1.0" />
 
         <!-- An example of a NuGet package being used in a tModLoader mode. -->
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.45"/>
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.45" />
     </ItemGroup>
 
 </Project>
