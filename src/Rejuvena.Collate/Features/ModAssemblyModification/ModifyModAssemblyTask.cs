@@ -11,11 +11,6 @@ namespace Rejuvena.Collate.Features.ModAssemblyModification
 {
     public sealed class ModifyModAssemblyTask : BuildTask
     {
-        internal record ModAssemblyContext(string AssemblyName)
-        {
-            public string AssemblyName { get; } = AssemblyName;
-        }
-
         [Required]
         public string OutputPath { get; set; } = "";
 

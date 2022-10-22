@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.CodeAnalysis;
 
 namespace Rejuvena.Collate.Analyzer.SourceGen
@@ -11,6 +12,8 @@ namespace Rejuvena.Collate.Analyzer.SourceGen
     [Generator]
     public class DummyNamespaceSourceGenerator : ISourceGenerator
     {
+        public const string CLASS_NAME = "_CollateDummyType";
+
         public void Initialize(GeneratorInitializationContext context) { }
 
         public void Execute(GeneratorExecutionContext context) {
@@ -26,7 +29,16 @@ namespace Rejuvena.Collate.Analyzer.SourceGen
             // Check if any namespaces match the assembly name. If at least one does, skip.
             if (namespaces.Any(x => x.Name == assemblyName)) return;
 
-            context.AddSource("CollateDummyClass.g.cs", $"namespace {assemblyName} {{ internal static class CollateDummyClass {{ }} }}");
+            //$"namespace {assemblyName} {{ internal static class {CLASS_NAME} {{ }} }}"
+            StringBuilder sb = new StringBuilder()
+                              .AppendLine("using System.Runtime.CompilerServices;")
+                              .AppendLine()
+                              .AppendLine($"namespace {assemblyName};")
+                              .AppendLine()
+                              .AppendLine("[CompilerGenerated]")
+                              .AppendLine($"internal static class {CLASS_NAME} {{ }}");
+
+            context.AddSource($"{CLASS_NAME}.g.cs", sb.ToString());
         }
     }
 }
