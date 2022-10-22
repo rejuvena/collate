@@ -1,7 +1,7 @@
 ﻿<Project>
 
     <!-- For organization's and cleanliness' sakes, we can split up our property definitions into multiple files. -->
-    <!-- This .targets file contains mod properties (you know them as build.txt properties), and is imported in the main .csproj file.-->
+    <!-- This .targets file contains mod properties (you know them as build.txt properties), and is imported in the main .csproj file. -->
 
     <PropertyGroup>
         <!-- The mod's display name - the text displayed on the Steam Workshop and such. -->
