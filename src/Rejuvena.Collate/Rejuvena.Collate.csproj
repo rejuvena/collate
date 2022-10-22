@@ -17,7 +17,7 @@
         <Authors>Tomat</Authors>
         <Description>Rejuvena.Collate - Efficient tML Build Toolchain</Description>
         <Version>1.1.0</Version>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageLicenseExpression>GPL-2.0-or-later</PackageLicenseExpression>
         <PackageProjectUrl>https://github.com/rejuvena/collate</PackageProjectUrl>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <RepositoryUrl>https://github.com/rejuvena/collate</RepositoryUrl>
