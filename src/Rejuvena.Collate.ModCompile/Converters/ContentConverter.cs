@@ -1,8 +1,8 @@
 ﻿using System.IO;
 
-namespace Rejuvena.Collate.Features.Packaging.Converters
+namespace Rejuvena.Collate.ModCompile.Converters
 {
-    internal abstract class ContentConverter
+    public abstract class ContentConverter
     {
         public abstract bool CanConvert(string resName);
 

@@ -4,11 +4,10 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Microsoft.Build.Framework;
 
-namespace Rejuvena.Collate.Features.Packaging
+namespace Rejuvena.Collate.ModCompile
 {
-    internal sealed class BuildProperties
+    public sealed class BuildProperties
     {
         public List<string> DllReferences = new();
         public List<ModReference> ModReferences = new();
@@ -49,20 +48,6 @@ namespace Rejuvena.Collate.Features.Packaging
             writer.Write("");
         }
 
-        public static BuildProperties ReadTaskItems(IEnumerable<ITaskItem> taskItems) {
-            BuildProperties props = new();
-
-            foreach (ITaskItem prop in taskItems) {
-                string propName = char.ToLowerInvariant(prop.ItemSpec[0]) + prop.ItemSpec.Substring(1);
-                string propVal = prop.GetMetadata("Value");
-                ProcessProperty(props, propName, propVal);
-            }
-
-            VerifyRefs(props.RefNames(includeWeak: true).ToList());
-            props.SortAfter = DistinctSortAfter(props);
-            return props;
-        }
-
         public static BuildProperties ReadBuildInfo(string buildFile) {
             BuildProperties props = new();
 
@@ -82,7 +67,7 @@ namespace Rejuvena.Collate.Features.Packaging
             return props;
         }
 
-        private static void ProcessProperty(BuildProperties props, string prop, string val) {
+        public static void ProcessProperty(BuildProperties props, string prop, string val) {
             if (string.IsNullOrEmpty(prop)) return;
             if (string.IsNullOrEmpty(val)) return;
 
@@ -249,7 +234,7 @@ namespace Rejuvena.Collate.Features.Packaging
             return BuildIgnores.Any(x => FitsMask(res, x)) || DllReferences.Contains("lib/" + Path.GetFileName(res));
         }
 
-        private static bool FitsMask(string fileName, string fileMask) {
+        public static bool FitsMask(string fileName, string fileMask) {
             string escape = Regex.Escape(
                 fileMask.Replace(".", "__DOT__")
                         .Replace("*", "__STAR__")
@@ -265,12 +250,12 @@ namespace Rejuvena.Collate.Features.Packaging
             return new Regex(pattern, RegexOptions.IgnoreCase).IsMatch(fileMask);
         }
 
-        private static void VerifyRefs(List<string> refs) {
+        public static void VerifyRefs(List<string> refs) {
             if (refs.Count != refs.Distinct().Count()) throw new DuplicateNameException("Weak and strong references contain at least one matching mod!");
         }
 
         // Add weak and strong references that aren't in sortBefore to sortAfter.
-        private static string[] DistinctSortAfter(BuildProperties props) {
+        public static string[] DistinctSortAfter(BuildProperties props) {
             return props.RefNames(true).Where(x => !props.SortBefore.Contains(x)).Concat(props.SortAfter).Distinct().ToArray();
         }
     }

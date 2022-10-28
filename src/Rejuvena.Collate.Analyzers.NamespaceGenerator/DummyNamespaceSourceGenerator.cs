@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
-namespace Rejuvena.Collate.Analyzer.SourceGen
+namespace Rejuvena.Collate.Analyzers.NamespaceGenerator
 {
     /// <summary>
     ///     A source generator which creates an internal, dummy type under the namespace corresponding to the mod's internal name if a type under the determined namespace does not already exist. <br />

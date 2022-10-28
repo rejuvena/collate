@@ -1,8 +1,8 @@
 ﻿using System.IO;
 
-namespace Rejuvena.Collate.Features.Packaging.Converters
+namespace Rejuvena.Collate.ModCompile.Converters
 {
-    internal static class ContentConverters
+    public static class ContentConverters
     {
         public static readonly ContentConverter[] Converters =
         {

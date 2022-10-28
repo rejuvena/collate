@@ -4,7 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Build.Framework;
-using Rejuvena.Collate.Features.Packaging.Converters;
+using Rejuvena.Collate.ModCompile;
+using Rejuvena.Collate.ModCompile.Converters;
 using Rejuvena.Collate.Util;
 using TML.Files;
 using TML.Files.Abstractions;
@@ -229,7 +230,7 @@ namespace Rejuvena.Collate.Features.Packaging
             }
 
             // TODO: Let description.txt be specified as a property in the .csproj?
-            BuildProperties props = BuildProperties.ReadTaskItems(ModProperties);
+            BuildProperties props = Utilities.ReadTaskItems(ModProperties);
             string descFilePath = Path.Combine(ProjectDirectory, "description.txt");
             if (!File.Exists(descFilePath)) {
                 Log.LogWarning("Mod description (description.txt) file was not found, expected at path: " + descFilePath);

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Rejuvena.Collate.Features.Packaging
+namespace Rejuvena.Collate.ModCompile
 {
-    internal readonly record struct ModReference(string Mod, Version? TargetVersion)
+    public readonly record struct ModReference(string Mod, Version? TargetVersion)
     {
         public string Mod { get; } = Mod;
 

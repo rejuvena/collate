@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Newtonsoft.Json;
 using Rejuvena.Collate.Features.Packaging;
+using Rejuvena.Collate.ModCompile;
 using TML.Files.Abstractions;
 
 namespace Rejuvena.Collate.Util
@@ -136,6 +138,24 @@ namespace Rejuvena.Collate.Util
 
         public static void AddFileFromPath(this IModFile modFile, PathNamePair pnPair, Action? onSuccess = null, Action? onError = null) {
             modFile.AddFileFromPath(pnPair.Name, pnPair.Path, onSuccess, onError);
+        }
+
+        #endregion
+
+        #region BuildProperties Factories
+
+        public static BuildProperties ReadTaskItems(IEnumerable<ITaskItem> taskItems) {
+            BuildProperties props = new();
+
+            foreach (ITaskItem prop in taskItems) {
+                string propName = char.ToLowerInvariant(prop.ItemSpec[0]) + prop.ItemSpec.Substring(1);
+                string propVal = prop.GetMetadata("Value");
+                BuildProperties.ProcessProperty(props, propName, propVal);
+            }
+
+            BuildProperties.VerifyRefs(props.RefNames(includeWeak: true).ToList());
+            props.SortAfter = BuildProperties.DistinctSortAfter(props);
+            return props;
         }
 
         #endregion

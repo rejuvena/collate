@@ -41,7 +41,7 @@
                 files with the extensions '.csproj', '.cs', and '.sln';
                 and the file 'build.txt'
               are all ignored as well. -->
-        <BuildIgnore>.collate/,Properties/,.accesstransformer</BuildIgnore>
+        <BuildIgnore>.collate/,Properties/,.accesstransformer</BuildIgnore> <!-- Ignore the ./.collate/ and ./Properties/ folders, as well as the .accesstranformer file. -->
     </PropertyGroup>
 
 </Project>
