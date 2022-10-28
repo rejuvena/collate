@@ -1,6 +1,12 @@
-# `collate`
+# Collate
 
-_Collate_ is an alternative, open-source build toolchain for easily building mods with convenient dependency and file management, as well as [powerful additional features](README.md#Features) that aim to reduce boilerplate and complexity.
+> Efficient tModLoader ModCompile (mod building) toolchain alternative.
+
+---
+
+_Collate_ is an alternative, [free](https://en.wikipedia.org/wiki/Free_software) (as in both [free speech and free beer](https://en.wikipedia.org/wiki/Gratis_versus_libre)) build toolchain for [tModLoader](https://github.com/tModLoader/tModLoader) 2022.x.x.x (1.4).
+
+Collate attempts to supercharge your mod development experience by providing a flexible, easy-to-use build toolchain packed full with additional features.
 
 ## Features
 
