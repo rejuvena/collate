@@ -11,7 +11,7 @@ using TML.Files;
 using TML.Files.Abstractions;
 using BuildTask = Microsoft.Build.Utilities.Task;
 
-namespace Rejuvena.Collate.Features.Packaging
+namespace Rejuvena.Collate
 {
     /// <summary>
     ///     Packages the compiled assembly and PDB of a mod alongside its resources into a .tmod archive.

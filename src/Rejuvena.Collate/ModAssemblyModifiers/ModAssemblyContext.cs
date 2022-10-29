@@ -1,4 +1,4 @@
-﻿namespace Rejuvena.Collate.Features.ModAssemblyModification
+﻿namespace Rejuvena.Collate.ModAssemblyModifiers
 {
     internal record ModAssemblyContext(string AssemblyName)
     {

@@ -3,11 +3,12 @@ using System.IO;
 using System.Linq;
 using Microsoft.Build.Framework;
 using Mono.Cecil;
+using Rejuvena.Collate.ModAssemblyModifiers;
 using Rejuvena.Collate.Util.Cecil;
 using Rejuvena.Collate.Util.Cecil.Resolvers;
 using BuildTask = Microsoft.Build.Utilities.Task;
 
-namespace Rejuvena.Collate.Features.ModAssemblyModification
+namespace Rejuvena.Collate
 {
     public sealed class ModifyModAssemblyTask : BuildTask
     {

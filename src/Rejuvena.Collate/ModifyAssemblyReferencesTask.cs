@@ -9,7 +9,7 @@ using Rejuvena.Collate.Util.Cecil;
 using Rejuvena.Collate.Util.Cecil.Resolvers;
 using BuildTask = Microsoft.Build.Utilities.Task;
 
-namespace Rejuvena.Collate.Features.AssemblyReferenceModification
+namespace Rejuvena.Collate
 {
     public sealed class ModifyAssemblyReferencesTask : BuildTask
     {

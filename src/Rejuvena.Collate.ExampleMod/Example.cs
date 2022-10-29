@@ -1,5 +1,4 @@
 ﻿using System;
-using CollateExample;
 using ReLogic.Content;
 using ReLogic.Content.Sources;
 using Terraria.ModLoader;

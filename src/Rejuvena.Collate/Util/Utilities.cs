@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Newtonsoft.Json;
-using Rejuvena.Collate.Features.Packaging;
 using Rejuvena.Collate.ModCompile;
 using TML.Files.Abstractions;
 

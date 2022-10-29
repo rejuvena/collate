@@ -1,9 +1,30 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <RootNamespace>Rejuvena.Collate.AccessTransformer</RootNamespace>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
+
+        <Version>1.0.0</Version>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <PackageId>Rejuvena.Collate.AccessTransformer</PackageId>
+        <Title>Rejuvena.Collate.AccessTransformer</Title>
+        <Description>Provides primitive tools for access transformers (not an MSBuild Task package).</Description>
+        <Authors>Tomat &amp; The Rejuvena Team</Authors>
+
+        <PackageLicenseExpression>GPL-2.0-or-later</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/rejuvena/collate</PackageProjectUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <RepositoryUrl>https://github.com/rejuvena/collate</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <IsPackable>true</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
