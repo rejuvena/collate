@@ -3,7 +3,7 @@
 User-facing changes are documented here, per version.
 
 
-## 1.2.0 - Unreleased
+## 1.2.0 - 28 October 2022
 
 > **Warning** | This version has not yet been released, and does not reflect the final product nor the current released version.
 
