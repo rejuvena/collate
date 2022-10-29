@@ -10,6 +10,9 @@ User-facing changes are documented here, per version.
 ### Additions
 
 - Added an analyzer project (`Rejuvena.Collate.Analyzer`) for source generation and code analysis.
+- Added the `NamespaceGenerator` property, allowing a user to enable the `Rejuvena.Collate.Analyzers.NamespaceGenerator` source generator through an `enable`/`disable` switch:
+  - `<NamespaceGenerator>enable</NamespaceGenerator>
+  - `<NamespaceGenerator>disable</NamespaceGenerator>
 
 ### Changes
 
@@ -17,6 +20,7 @@ User-facing changes are documented here, per version.
 - Fixed issues with packaging in Visual Studio (resolves [#1](https://github.com/rejuvena/collate/issues/1)).
 - Fixed issues with transforming multiple assemblies and transforming dependencies of other assembly references (resolves [#6](https://github.com/rejuvena/collate/issues/6)).
 - Dummy namespace injection has been moved to a more reliable source generator.
+- Moved many core functionalities to NuGet packages that may be used separately from the main Rejuvena.Collate project.
 
 ### Removed
 
