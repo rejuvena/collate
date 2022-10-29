@@ -50,9 +50,9 @@ namespace Rejuvena.Collate.Features.AssemblyReferenceModification
 #pragma warning restore CS0618
 
             string[] atPaths = AccessTransformerPaths.Split(';');
-            List<IATFile> atFiles = atPaths
+            List<IAtFile> atFiles = atPaths
                                    .Where(LogFileExists)
-                                   .Select(ATFileFactory.CreateFromFile)
+                                   .Select(AtFileFactory.CreateFromFile)
                                    .ToList();
 
             foreach (string file in referenceFiles) {
@@ -62,7 +62,7 @@ namespace Rejuvena.Collate.Features.AssemblyReferenceModification
                 string libPath = Path.GetDirectoryName(referenceFiles.First(x => x.EndsWith("tModLoader.dll")))!;
                 ModuleDefinition module = ModuleFactory.CreateModuleFromFile(file, new TerrariaAssemblyResolver(Log, Path.Combine(libPath, "Libraries")));
 
-                foreach (IATFile atFile in atFiles) modified |= atFile.Transform(module);
+                foreach (IAtFile atFile in atFiles) modified |= atFile.Transform(module);
 
                 if (!modified) {
                     module.Dispose();

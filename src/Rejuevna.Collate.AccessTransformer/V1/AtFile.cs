@@ -7,15 +7,15 @@ using Mono.Cecil;
 
 namespace Rejuevna.Collate.AccessTransformer.V1
 {
-    public class ATFile : IATFile
+    public class AtFile : IAtFile
     {
         public const int VERSION = 1;
 
         public int Version => VERSION;
 
-        private readonly ATItem[] Items;
+        private readonly AtItem[] Items;
 
-        public ATFile(ATItem[] items) {
+        public AtFile(AtItem[] items) {
             Items = items;
         }
 
@@ -24,7 +24,7 @@ namespace Rejuevna.Collate.AccessTransformer.V1
         public bool Transform(ModuleDefinition module) {
             bool modified = false;
 
-            foreach (ATItem transformer in Items) {
+            foreach (AtItem transformer in Items) {
                 List<TypeDefinition> types = new();
                 foreach (TypeDefinition type in module.Types) CollectAllNested(type, types);
 
@@ -107,11 +107,11 @@ namespace Rejuevna.Collate.AccessTransformer.V1
             foreach (TypeDefinition nested in type.NestedTypes) CollectAllNested(nested, types);
         }
 
-        private static bool StaticSafeOperation(ATItem transformer, bool @static) {
+        private static bool StaticSafeOperation(AtItem transformer, bool @static) {
             return transformer.AccessorTarget.AllowsStatic() || !@static;
         }
 
-        private static bool ReadonlyState(ATItem transformer, bool @readonly) {
+        private static bool ReadonlyState(AtItem transformer, bool @readonly) {
             return transformer.ReadonlyTarget == ReadonlyType.Inherit ? @readonly : transformer.ReadonlyTarget == ReadonlyType.Readonly;
         }
 
@@ -128,19 +128,19 @@ namespace Rejuevna.Collate.AccessTransformer.V1
         public override string ToString() {
             StringBuilder sb = new();
             sb.AppendLine($"v{VERSION}");
-            foreach (ATItem item in Items) sb.AppendLine(item.ToString());
+            foreach (AtItem item in Items) sb.AppendLine(item.ToString());
             return sb.ToString();
         }
 
-        public static ATFile Read(string path) {
+        public static AtFile Read(string path) {
             string[] lines = File.ReadAllLines(path).Where(x => !string.IsNullOrWhiteSpace(x) && !x.StartsWith("#")).Select(x => x.Trim()).ToArray();
             string versionLine = lines[0];
 
             if (!versionLine.StartsWith("v")) throw new InvalidOperationException("Tried to parse file without specified version.");
             if (int.Parse(versionLine.Substring(1)) != VERSION) throw new InvalidOperationException("Tried to parse file with invalid version.");
 
-            return new ATFile(
-                lines.Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith("v")).Select(ATItem.Parse).ToArray()
+            return new AtFile(
+                lines.Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith("v")).Select(AtItem.Parse).ToArray()
             );
         }
     }

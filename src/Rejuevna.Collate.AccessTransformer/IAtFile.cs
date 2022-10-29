@@ -3,7 +3,7 @@ using Mono.Cecil;
 
 namespace Rejuevna.Collate.AccessTransformer
 {
-    public interface IATFile
+    public interface IAtFile
     {
         int Version { get; }
 

@@ -3,9 +3,9 @@ using System.IO;
 
 namespace Rejuevna.Collate.AccessTransformer
 {
-    public static class ATFileFactory
+    public static class AtFileFactory
     {
-        public static IATFile CreateFromFile(string path) {
+        public static IAtFile CreateFromFile(string path) {
             string[] lines = File.ReadAllLines(path);
             string versionLine = lines[0];
 
@@ -13,7 +13,7 @@ namespace Rejuevna.Collate.AccessTransformer
 
             return int.Parse(versionLine.Substring(1)) switch
             {
-                1 => V1.ATFile.Read(path),
+                1 => V1.AtFile.Read(path),
                 _ => throw new InvalidOperationException("Tried to parse file with unsupported version.")
             };
         }
