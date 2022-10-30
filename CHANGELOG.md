@@ -2,10 +2,14 @@
 
 User-facing changes are documented here, per version.
 
+## 1.2.1 - 29 October 2022
+
+### Changes
+
+- Fixed project loading failing with no access transformers were specified (resolves [#1](https://github.com/rejuvena/collate/issues/7)).
+- Fixed mod packaging failing when attempting to load the tModLoader DLL (reslolves [#8](https://github.com/rejuvena/collate/issues/8)).
 
 ## 1.2.0 - 28 October 2022
-
-> **Warning** | This version has not yet been released, and does not reflect the final product nor the current released version.
 
 ### Additions
 

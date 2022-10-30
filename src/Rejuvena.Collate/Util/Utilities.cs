@@ -6,8 +6,11 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using Mono.Cecil;
+using Mono.Collections.Generic;
 using Newtonsoft.Json;
 using Rejuvena.Collate.ModCompile;
+using Rejuvena.Collate.Util.Cecil;
 using TML.Files.Abstractions;
 
 namespace Rejuvena.Collate.Util
@@ -91,8 +94,10 @@ namespace Rejuvena.Collate.Util
         }
 
         private static BuildPurpose GetBuildPurpose(TaskLoggingHelper log, string tmlDllPath) {
-            Assembly tmlAssembly = Assembly.LoadFrom(tmlDllPath);
-            string? tmlInfoVersion = tmlAssembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+            AssemblyDefinition tmlAssembly = ModuleFactory.CreateModuleFromFile(tmlDllPath).Assembly;
+            Collection<CustomAttribute>? attrs = tmlAssembly.CustomAttributes;
+            CustomAttribute? attr = attrs.FirstOrDefault(x => x.AttributeType.Name == nameof(AssemblyInformationalVersionAttribute));
+            string? tmlInfoVersion = attr?.ConstructorArguments[0].Value as string;
 
             if (string.IsNullOrEmpty(tmlInfoVersion)) {
                 log.LogWarning("Could not retrieve informational version from the tModLoader DLL, assuming a 'Stable' build.");
