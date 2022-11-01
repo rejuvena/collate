@@ -13,7 +13,8 @@ namespace Rejuvena.Collate
 {
     public sealed class ModifyAssemblyReferencesTask : BuildTask
     {
-        public string? AccessTransformerPaths { get; set; } = "";
+        [Required]
+        public string AccessTransformerPaths { get; set; } = "";
 
         // [Required]
         [Obsolete("Use AccessTransformerPaths")]
@@ -42,7 +43,7 @@ namespace Rejuvena.Collate
             List<string> referenceFiles = References.Split(';').ToList();
             List<(string original, string transformed)> cachedReferences = new();
 
-            AccessTransformerPaths = (AccessTransformerPaths ?? "").Trim().Trim(';');
+            AccessTransformerPaths = AccessTransformerPaths.Trim().Trim(';');
 
 #pragma warning disable CS0618
             if (!string.IsNullOrEmpty(AccessTransformerPath) && File.Exists(AccessTransformerPath)) AccessTransformerPaths += ';' + AccessTransformerPath;

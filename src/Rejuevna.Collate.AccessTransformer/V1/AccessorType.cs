@@ -49,7 +49,7 @@ namespace Rejuevna.Collate.AccessTransformer.V1
         };
 
         public static bool AllowsStatic(this AccessorType accessorType) {
-            return NoStatic[accessorType];
+            return !NoStatic[accessorType];
         }
 
         public static AccessorType Parse(string value) {

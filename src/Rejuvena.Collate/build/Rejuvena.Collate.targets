@@ -13,6 +13,7 @@
     <PropertyGroup>
         <TMLCodeAssist Condition=" '$(TMLCodeAssist)' == '' ">disable</TMLCodeAssist>
         <NamespaceGenerator Condition=" '$(NamespaceGenerator)' == '' ">disable</NamespaceGenerator>
+        <AccessTransformerPaths Condition=" '$(AccessTransformerPaths)' == '' ">;</AccessTransformerPaths>
         <AccessTransformerPath Condition=" '$(AccessTransformerPath)' == '' ">none</AccessTransformerPath>
     </PropertyGroup>
     <ItemGroup>
