@@ -3,3 +3,8 @@
 
 # Personal local testing script.
 publish_local.sh
+
+bin/
+obj/
+.vs/
+.vscode/

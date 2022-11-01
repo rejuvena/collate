@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -107,8 +108,12 @@ namespace Rejuvena.Collate.Util
             log.LogMessage(MessageImportance.Low, "Retrieved informational version from tModLoader DLL: " + tmlInfoVersion);
 
             string[] parts = tmlInfoVersion!.Substring(tmlInfoVersion.IndexOf('+') + 1).Split('|');
-            if (parts.Length >= 3) {
-                if (Enum.TryParse(parts[2], true, out BuildPurpose purpose)) return purpose;
+            if (parts.Length >= 3 && Enum.TryParse(parts[2], true, out BuildPurpose purpose)) {
+                return purpose;
+            }
+            if (parts.Length >= 4 && Enum.TryParse(parts[3], true, out purpose)) // tML Preview build type is 4th element for some reason
+            {
+                return purpose;
             }
 
             log.LogWarning($"Could not parse resolved build purpose \"{parts[2]}\", assuming a 'Stable' build.");
