@@ -111,8 +111,7 @@ namespace Rejuvena.Collate.Util
             if (parts.Length >= 3 && Enum.TryParse(parts[2], true, out BuildPurpose purpose)) {
                 return purpose;
             }
-            if (parts.Length >= 4 && Enum.TryParse(parts[3], true, out purpose)) // tML Preview build type is 4th element for some reason
-            {
+            if (parts.Length >= 4 && Enum.TryParse(parts[3], true, out purpose)) { // tML Preview build type is 4th element for some reason
                 return purpose;
             }
 
