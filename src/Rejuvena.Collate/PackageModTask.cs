@@ -138,7 +138,7 @@ namespace Rejuvena.Collate
             // Assumes all DLL references are under the mod's folder (at same level or in sub-folders).
             // Letting DLL references by anywhere would mean doing some weird filters on references, TODO: explore?
             // or using a custom <DllReference> tag that would get translated to a <Reference>.
-            List<ITaskItem> dllReferences = ReferencePaths.Where(x => x.GetMetadata("FullPath").StartsWith(ProjectDirectory)).ToList();
+            List<ITaskItem> dllReferences = ReferencePaths.Where(x => x.GetMetadata("Fullpath").StartsWith(ProjectDirectory) && !x.GetMetadata("Fullpath").Contains(".collate")).ToList();
             Log.LogMessage(MessageImportance.Low, $"Found {dllReferences.Count} DLL references.");
 
             foreach (ITaskItem taskItem in nugetReferences) {

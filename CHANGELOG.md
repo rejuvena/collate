@@ -2,7 +2,13 @@
 
 User-facing changes are documented here, per version.
 
-## 1.2.2 - 31 Octoboer 2022
+## 1.2.3 - 31 October 2022
+
+### Changes
+
+- References modified by access transformers are no longer packaged as DLL references.
+
+## 1.2.2 - 31 October 2022
 
 ### Changes
 
