@@ -2,6 +2,14 @@
 
 User-facing changes are documented here, per version.
 
+## Unreleased
+
+> **Warning** | This version has not yet been released, and does not reflect the final product nor the current released version.
+
+### Changes
+
+-  Fix tModLoader preview build detection ([#10](https://github.com/rejuvena/collate/issues/10), thanks [@Ved_s](https://github.com/Ved_s)!).
+
 ## 1.2.3 - 31 October 2022
 
 ### Changes
