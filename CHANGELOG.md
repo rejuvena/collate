@@ -8,7 +8,7 @@ User-facing changes are documented here, per version.
 
 ### Changes
 
--  Fix tModLoader preview build detection ([#10](https://github.com/rejuvena/collate/issues/10), thanks [@Ved_s](https://github.com/Ved_s)!).
+-  Fix tModLoader preview build detection ([#10](https://github.com/rejuvena/collate/issues/10), thanks [@Ved-s](https://github.com/Ved-s)!).
 
 ## 1.2.3 - 31 October 2022
 
