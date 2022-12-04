@@ -1,6 +1,9 @@
 # Rejuvena.Collate file caches and other "hidden" files
 .collate/
 
+# Ensure .targets file isn't hidden.
+!src/Rejuvena.Collate.MSBuild/build/collate.targets
+
 # Personal local testing script.
 publish_local.sh
 

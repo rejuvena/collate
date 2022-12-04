@@ -1,0 +1,75 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AssemblyName>CollateExample</AssemblyName>
+        <RootNamespace>Rejuvena.Collate.ExampleMod</RootNamespace>
+
+        <TargetFramework>net6.0</TargetFramework>
+
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- Include the MSBuild package so Rejuvena.Collate commands are ran upon building and tModLoader references are added. -->
+        <PackageReference Include="Rejuvena.Collate.MSBuild" Version="2.0.0"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <!-- The version of Collate to use. -->
+        <CollateVersion>2.0.0</CollateVersion>
+        
+        <!-- Enable tML's roslyn analyzers -->
+        <TMLCodeAssist>enable</TMLCodeAssist>
+
+        <!-- Enable our analyzers -->
+        <NamespaceGenerator>enable</NamespaceGenerator>
+
+        <!-- Add our access transformer.
+             Include $(AccessTransformerPaths) in case other paths are defined. Paths are separted with a semicolon (;)
+             Since these paths get carried around, we want the fully-qualified path name. We use MSBuildProjectDirectory for this. -->
+        <AccessTransformerPaths>$(AccessTransformerPaths);$(MSBuildProjectDirectory)\.accesstransformer</AccessTransformerPaths>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <!-- The mod's display name - the text displayed on the Steam Workshop and such. -->
+        <DisplayName>Collate Example Mod</DisplayName>
+        <!-- The name of the authors that developed this mod. -->
+        <Author>Tomat</Author>
+        <!-- The mod's version. Your version may follow the format x, x.x, x.x.x, or x.x.x.x, where each x is 32-bit integer. -->
+        <Version>2.0.0</Version>
+        <!-- The mod's homepage, which is a link a user may visit. Often a forum post or Discord server invite. -->
+        <Homepage>https://github.com/rejuvena/collate</Homepage>
+
+        <!-- Both, Client, Server, or NoSync; represents in what environment this mod should be loaded.
+             Both is the default, and means the client and server should both load the mod.
+             Client means only the client should load the mod.
+             Server means only the server should load the mod.
+             NoSync means the client and server can both load it, but there is not a need for the client to have it when joining a server that has it and vice-versa. -->
+        <ModSide>Both</ModSide>
+        <!-- What mods should be loaded before this mod gets loaded. -->
+        <SortBefore>SomeModThatShouldBeLoadedBeforeThisOne</SortBefore> <!-- Example: CalamityMod,ThoriumMod -->
+        <!-- What mods should get loaded after this mod gets loaded. -->
+        <SortAfter>SomeModThatShouldBeLoadedAfterThisOne</SortAfter> <!-- Example: CalamityMod,ThoriumMod -->
+
+        <!-- Whether or not extracting a mod in-game will yield the mod's DLL; false means yes to extraction and true means no. -->
+        <HideCode>false</HideCode> <!-- It is well-known that this does not prevent theft; it is recommended to not obstruct your DLL in order to promote mod compatibility. -->
+        <!-- Whether to hide all other packaged files (aside from source files, see below); false means yes to extraction and true means no to extraction. -->
+        <HideResources>false</HideResources> <!-- It is well-known that this does not prevent theft; it is recommended to not obstruct your assets in order to promote mod compatibility. -->
+        <!-- Whether to package .cs, .csproj, and .slb files; false means packagin and true means no packaging. -->
+        <IncludeSource>true</IncludeSource> <!-- If this is set to true, people extracting your mod will basically have full access to your raw source code, etc.; if you want this then it is recommended to host your mod in a public repository. -->
+
+        <!-- Specifies which files should not be packaged when compiling your mod.
+             The paths:
+                'bin/';
+                'obj/';
+                'build.txt';
+                'Thumbs.db';
+                any paths starting with a period ('.');
+                files with the extensions '.csproj', '.cs', and '.sln';
+                and the file 'build.txt'
+              are all ignored as well. -->
+        <BuildIgnore>.collate/,Properties/,.accesstransformer</BuildIgnore> <!-- Ignore the ./.collate/ and ./Properties/ folders, as well as the .accesstranformer file. -->
+    </PropertyGroup>
+
+</Project>

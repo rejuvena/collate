@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>Rejuvena.Collate.CLI</RootNamespace>
+
+        <Version>2.0.0</Version>
+        <AssemblyVersion>2.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0</AssemblyVersion>
+
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        
+        <PackAsTool>true</PackAsTool>
+        <ToolCommandName>collate</ToolCommandName>
+    </PropertyGroup>
+
+    <PropertyGroup Label="NuGet Properties">
+        <PackageId>Rejuvena.Collate.CLI</PackageId>
+        <Title>Rejuvena.Collate.CLI</Title>
+        <Description>CLI tool for implementing Rejuvena.Collate, used in tandem with Rejuvena.Collate.MSBuild.</Description>
+        <Authors>Tomat &amp; The Rejuvena Team</Authors>
+
+        <PackageLicenseExpression>GPL-2.0-or-later</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/rejuvena/collate</PackageProjectUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <RepositoryUrl>https://github.com/rejuvena/collate</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Rejuvena.Collate\Rejuvena.Collate.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CliFx" Version="2.3.0" />
+    </ItemGroup>
+
+</Project>
