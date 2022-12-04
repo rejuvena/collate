@@ -8,6 +8,9 @@ namespace Rejuvena.Collate.MSBuild.FilterTasks;
 /// </summary>
 public abstract class FilterTask : CollateTask
 {
+    /// <summary>
+    ///     The input to filter.
+    /// </summary>
     [Required]
     public ITaskItem[] Input { get; set; } = Array.Empty<ITaskItem>();
 }

@@ -23,11 +23,16 @@ public abstract class VersionSensitiveCommand : ICommand
     [CommandOption("version", 'v', Description = "The version of Collate to run against, assumes latest if not specified.")]
     public string Version { get; set; } = typeof(VersionSensitiveCommand).Assembly.GetName().Version?.ToString() ?? string.Empty;
 
+    /// <summary>
+    ///     Whether this command should run under debug mode.
+    /// </summary>
+    [CommandOption("debug", 'd', Description = "Whether this command should run under debug mode.")]
+    public bool Debug { get; set; } = false;
+
     async ValueTask ICommand.ExecuteAsync(IConsole console) {
         if (!System.Version.TryParse(Version, out var vers)) throw new InvalidOperationException("Invalid version specified: " + Version);
 
-        await console.Output.WriteLineAsync($"Running command \"{CommandName}\" against version \"{vers}\"...");
-        await console.Output.WriteLineAsync();
+        if (Debug) await console.Output.WriteLineAsync($"Running command \"{CommandName}\" against version \"{vers}\"...");
 
         await ExecuteAsync(console, vers);
     }
