@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Rejuvena.Collate.Util;
-using TML.Files.Extraction;
 
 namespace Rejuvena.Collate.Packing.References;
 
@@ -12,12 +11,7 @@ namespace Rejuvena.Collate.Packing.References;
 public class ReferencesProvider : CombinedProvider<IReferencesProvider>, IReferencesProvider
 {
     public IEnumerable<ModReference> GetModReferences() {
-        var references = new Dictionary<string, List<Version?>>();
-
-        foreach (var modRef in Providers.SelectMany(x => x.GetModReferences()))
-            (references.ContainsKey(modRef.Mod) ? references[modRef.Mod] : references[modRef.Mod] = new List<Version?>()).Add(modRef.TargetVersion);
-
-        return references.Select(x => new ModReference(x.Key, x.Value.Max()));
+        return hashUnion(provider => provider.GetModReferences());
     }
 
     public IEnumerable<AssemblyReference> GetAssemblyReferences() {

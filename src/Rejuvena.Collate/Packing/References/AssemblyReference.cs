@@ -1,3 +1,3 @@
 ﻿namespace Rejuvena.Collate.Packing.References;
 
-public readonly record struct AssemblyReference(string Path, bool Private);
+public readonly record struct AssemblyReference(string Name, string Path, bool Private);

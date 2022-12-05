@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using TML.Files.Extraction;
 
 namespace Rejuvena.Collate.Packing.References;
 
