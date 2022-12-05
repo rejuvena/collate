@@ -27,4 +27,10 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Jint" Version="2.11.58" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+      <PackageReference Include="Tomat.TML.Files" Version="2.1.0" />
+    </ItemGroup>
+
 </Project>
