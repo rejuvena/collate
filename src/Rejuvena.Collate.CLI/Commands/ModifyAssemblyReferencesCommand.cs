@@ -53,10 +53,5 @@ public sealed class ModifyAssemblyReferencesCommand : VersionSensitiveCommand
             await log("Access transformer paths: " + AccessTransformerPaths);
             await log("References: "               + References);
         }
-
-        await addReference("test");
-        await addReference("test2");
-        await removeReference("test3");
-        await removeReference("test4");
     }
 }

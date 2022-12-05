@@ -37,7 +37,7 @@
         <!-- The name of the authors that developed this mod. -->
         <Author>Tomat</Author>
         <!-- The mod's version. Your version may follow the format x, x.x, x.x.x, or x.x.x.x, where each x is 32-bit integer. -->
-        <Version>2.0.0</Version>
+        <ModVersion>2.0.0</ModVersion>
         <!-- The mod's homepage, which is a link a user may visit. Often a forum post or Discord server invite. -->
         <Homepage>https://github.com/rejuvena/collate</Homepage>
 
