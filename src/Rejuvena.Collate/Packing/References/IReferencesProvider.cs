@@ -18,11 +18,11 @@ public interface IReferencesProvider
     ///     Provides a collection of all assembly references.
     /// </summary>
     /// <returns>A collection of local paths (local to the <c>./lib/</c> folder of a mod.</returns>
-    IEnumerable<string> GetAssemblyReferences();
+    IEnumerable<AssemblyReference> GetAssemblyReferences();
     
     /// <summary>
     ///     Provides a collection of NuGet package references.
     /// </summary>
     /// <returns>A collection of NuGet package paths.</returns>
-    IEnumerable<string> GetPackageReferences();
+    IEnumerable<NuGetReference> GetPackageReferences();
 }

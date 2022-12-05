@@ -20,20 +20,20 @@ public class ReferencesProvider : CombinedProvider<IReferencesProvider>, IRefere
         return references.Select(x => new ModReference(x.Key, x.Value.Max()));
     }
 
-    public IEnumerable<string> GetAssemblyReferences() {
+    public IEnumerable<AssemblyReference> GetAssemblyReferences() {
         return hashUnion(provider => provider.GetAssemblyReferences());
     }
 
-    public IEnumerable<string> GetPackageReferences() {
+    public IEnumerable<NuGetReference> GetPackageReferences() {
         // TODO: Handle versions here as well.
         return hashUnion(provider => provider.GetPackageReferences());
     }
 
-    private IEnumerable<string> hashUnion(Func<IReferencesProvider, IEnumerable<string>> func) {
-        var refs = new HashSet<string>();
+    private IEnumerable<T> hashUnion<T>(Func<IReferencesProvider, IEnumerable<T>> func) {
+        var refs = new HashSet<T>();
 
         foreach (var provider in Providers) refs.UnionWith(func(provider));
-        
+
         return refs;
     }
 }
