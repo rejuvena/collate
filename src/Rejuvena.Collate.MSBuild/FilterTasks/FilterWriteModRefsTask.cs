@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Microsoft.Build.Framework;
 
 namespace Rejuvena.Collate.MSBuild.FilterTasks;
 
-public class FilterModRefsToReadableOutputTask : FilterTask
+public class FilterWriteModRefsTask : FilterTask
 {
+    [Required]
+    public string File { get; set; } = string.Empty;
+
     [Output]
     public string Output { get; set; } = string.Empty;
 
@@ -16,10 +20,12 @@ public class FilterModRefsToReadableOutputTask : FilterTask
             string? identity = item.GetMetadata("Identity");
             string? weak     = item.GetMetadata("Weak");
 
-            output.Add($"{hintPath ?? "null"}|{identity ?? "null"}|{weak ?? "null"}");
+            output.Add($"{hintPath ?? "null"};{identity ?? "null"};{weak ?? "null"}");
         }
 
-        Output = string.Join(";", output);
+        Directory.CreateDirectory(Path.GetDirectoryName(File)!);
+        System.IO.File.WriteAllText(File, string.Join("\n", output));
+        Output = File;
         return true;
     }
 }

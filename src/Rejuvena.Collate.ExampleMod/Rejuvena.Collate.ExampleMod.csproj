@@ -8,6 +8,8 @@
 
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        
+        <CollateDebug>enable</CollateDebug>
     </PropertyGroup>
 
     <ItemGroup>

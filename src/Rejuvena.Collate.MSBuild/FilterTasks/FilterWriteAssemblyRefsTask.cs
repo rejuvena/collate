@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using Microsoft.Build.Framework;
 
 namespace Rejuvena.Collate.MSBuild.FilterTasks;
 
-public class FilterAssemblyRefsToReadableOutputTask : FilterTask
+public class FilterWriteAssemblyRefsTask : FilterTask
 {
+    [Required]
+    public string File { get; set; } = string.Empty;
+
     [Output]
     public string Output { get; set; } = string.Empty;
 
@@ -15,10 +20,12 @@ public class FilterAssemblyRefsToReadableOutputTask : FilterTask
             string? fullPath = item.GetMetadata("FullPath");
             string? @private = item.GetMetadata("Private");
 
-            output.Add($"{fullPath ?? "null"}|{@private ?? "null"}");
+            output.Add($"{fullPath ?? "null"};{@private ?? "null"}");
         }
 
-        Output = string.Join(";", output);
+        Directory.CreateDirectory(Path.GetDirectoryName(File)!);
+        System.IO.File.WriteAllText(File, string.Join("\n", output));
+        Output = File;
         return true;
     }
 }

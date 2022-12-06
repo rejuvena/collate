@@ -10,7 +10,7 @@ namespace Rejuvena.Collate.CLI.Commands;
 [Command(COMMAND_NAME, Description = "Packages a mod into a .tmod file.")]
 public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProvider
 {
-    public const string COMMAND_NAME = "pack";
+    public const string COMMAND_NAME = "package";
 
     protected override string CommandName => COMMAND_NAME;
 
@@ -49,38 +49,53 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
     public string? BuildIgnore { get; set; } = null;
 #endregion
 
-    public string AssemblyReferences { get; set; }
+    [CommandOption("asmrefs-path")]
+    public string AsmRefsPath { get; set; }
 
-    public string NuGetReferences { get; set; }
+    [CommandOption("nugetrefs-path")]
+    public string NuGetrefsPath { get; set; }
 
-    public string ModReferences { get; set; }
+    [CommandOption("modrefs-path")]
+    public string ModRefsPath { get; set; }
 
     /// <summary>
     ///     The project directory.
     /// </summary>
     [CommandOption("proj-dir", 'p', IsRequired = true, Description = "The project directory.")]
     public string ProjectDirectory { get; set; } = string.Empty;
-    
+
+    [CommandOption("proj-out-dir")]
     public string ProjectOutputDirectory { get; set; }
 
+    [CommandOption("asm-name")]
     public string AssemblyName { get; set; }
 
+    [CommandOption("tml-ver")]
     public string TmlVersion { get; set; }
 
+    [CommandOption("tml-path")]
     public string TmlPath { get; set; }
 
+    [CommandOption("out-dir")]
     public string OutputTmodPath { get; set; }
 
-    // asm-refs
-    // nuget-refs
-    // mod-refs
-    // proj-out-dir ProjectOutputPath
-    // asm-name AssemblyName
-    // tml-ver TmlVersion
-    // tml-path TmlPath
-    // out-dir OutputTmodPath
+    protected override async ValueTask ExecuteAsync(IConsole console, Version version) {
+        if (Debug) {
+            await console.Output.WriteLineAsync("Options:");
+            await console.Output.WriteLineAsync($"  {nameof(AsmRefsPath)}: {AsmRefsPath}");
+            await console.Output.WriteLineAsync($"  {nameof(NuGetrefsPath)}: {NuGetrefsPath}");
+            await console.Output.WriteLineAsync($"  {nameof(ModRefsPath)}: {ModRefsPath}");
+            await console.Output.WriteLineAsync($"  {nameof(ProjectDirectory)}: {ProjectDirectory}");
+            await console.Output.WriteLineAsync($"  {nameof(ProjectOutputDirectory)}: {ProjectOutputDirectory}");
+            await console.Output.WriteLineAsync($"  {nameof(AssemblyName)}: {AssemblyName}");
+            await console.Output.WriteLineAsync($"  {nameof(TmlVersion)}: {TmlVersion}");
+            await console.Output.WriteLineAsync($"  {nameof(TmlPath)}: {TmlPath}");
+            await console.Output.WriteLineAsync($"  {nameof(OutputTmodPath)}: {OutputTmodPath}");
 
-    protected override async ValueTask ExecuteAsync(IConsole console, Version version) { }
+            await console.Output.WriteLineAsync("Properties:");
+            foreach ((string key, string value) in GetProperties()) await console.Output.WriteLineAsync($"  {key}: {value}");
+        }
+    }
 
     public Dictionary<string, string> GetProperties() {
         var properties = new Dictionary<string, string>();
@@ -88,18 +103,18 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
         void includeIfNotNull(string key, string? value) {
             if (value is not null) properties.Add(key, value);
         }
-        
-        includeIfNotNull("displayName", DisplayName);
-        includeIfNotNull("author", Author);
-        includeIfNotNull("modVersion", ModVersion);
-        includeIfNotNull("homepage", Homepage);
-        includeIfNotNull("side", ModSide);
-        includeIfNotNull("sortBefore", SortBefore);
-        includeIfNotNull("sortAfter", SortAfter);
-        includeIfNotNull("hideCode", HideCode.ToString());
+
+        includeIfNotNull("displayName",   DisplayName);
+        includeIfNotNull("author",        Author);
+        includeIfNotNull("modVersion",    ModVersion);
+        includeIfNotNull("homepage",      Homepage);
+        includeIfNotNull("side",          ModSide);
+        includeIfNotNull("sortBefore",    SortBefore);
+        includeIfNotNull("sortAfter",     SortAfter);
+        includeIfNotNull("hideCode",      HideCode.ToString());
         includeIfNotNull("hideResources", HideResources.ToString());
         includeIfNotNull("includeSource", IncludeSource.ToString());
-        includeIfNotNull("buildIgnore", BuildIgnore);
+        includeIfNotNull("buildIgnore",   BuildIgnore);
 
         return properties;
     }
