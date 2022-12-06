@@ -16,11 +16,11 @@ public class FilterWriteNuGetRefsTask : FilterTask
         var output = new List<string>();
 
         foreach (var item in Input) {
-            string? hintPath            = item.GetMetadata("HintPath");
             string? nugetPackageId      = item.GetMetadata("NuGetPackageId");
+            string? hintPath            = item.GetMetadata("HintPath");
             string? nugetPackageVersion = item.GetMetadata("NuGetPackageVersion");
 
-            output.Add($"{hintPath ?? "null"};{nugetPackageId ?? "null"};{nugetPackageVersion ?? "null"}");
+            output.Add($"{nugetPackageId ?? "null"};{hintPath ??"null"};{nugetPackageVersion ?? "null"}");
         }
 
         Directory.CreateDirectory(Path.GetDirectoryName(File)!);

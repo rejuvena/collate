@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
+using Rejuvena.Collate.Packing;
 using Rejuvena.Collate.Packing.Properties;
+using Rejuvena.Collate.Packing.References;
+using Rejuvena.Collate.Util;
 
 namespace Rejuvena.Collate.CLI.Commands;
 
 [Command(COMMAND_NAME, Description = "Packages a mod into a .tmod file.")]
-public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProvider
+public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProvider, IReferencesProvider
 {
     public const string COMMAND_NAME = "package";
 
@@ -53,7 +57,7 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
     public string AsmRefsPath { get; set; }
 
     [CommandOption("nugetrefs-path")]
-    public string NuGetrefsPath { get; set; }
+    public string NuGetRefsPath { get; set; }
 
     [CommandOption("modrefs-path")]
     public string ModRefsPath { get; set; }
@@ -83,7 +87,7 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
         if (Debug) {
             await console.Output.WriteLineAsync("Options:");
             await console.Output.WriteLineAsync($"  {nameof(AsmRefsPath)}: {AsmRefsPath}");
-            await console.Output.WriteLineAsync($"  {nameof(NuGetrefsPath)}: {NuGetrefsPath}");
+            await console.Output.WriteLineAsync($"  {nameof(NuGetRefsPath)}: {NuGetRefsPath}");
             await console.Output.WriteLineAsync($"  {nameof(ModRefsPath)}: {ModRefsPath}");
             await console.Output.WriteLineAsync($"  {nameof(ProjectDirectory)}: {ProjectDirectory}");
             await console.Output.WriteLineAsync($"  {nameof(ProjectOutputDirectory)}: {ProjectOutputDirectory}");
@@ -95,6 +99,21 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
             await console.Output.WriteLineAsync("Properties:");
             foreach ((string key, string value) in GetProperties()) await console.Output.WriteLineAsync($"  {key}: {value}");
         }
+
+        if (string.IsNullOrEmpty(OutputTmodPath)) OutputTmodPath = PathLocator.FindSavePath(TmlPath, AssemblyName);
+
+        TModPacker.PackMod(
+            new PackingOptions
+                {
+                    ProjectDirectory      = ProjectDirectory,
+                    ProjectBuildDirectory = ProjectOutputDirectory,
+                    AssemblyName          = AssemblyName,
+                    TmlVersion            = TmlVersion,
+                    OutputTmodPath        = OutputTmodPath,
+                }
+                .WithReferencesProvider(this)
+                .WithPropertiesProvider(this)
+        );
     }
 
     public Dictionary<string, string> GetProperties() {
@@ -117,5 +136,35 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
         includeIfNotNull("buildIgnore",   BuildIgnore);
 
         return properties;
+    }
+
+    public IEnumerable<ModReference> GetModReferences() {
+        string   text  = File.ReadAllText(ModRefsPath);
+        string[] lines = text.Split('\n');
+
+        foreach (string line in lines) {
+            string[] parts = line.Split(';');
+            yield return new ModReference(parts[0], parts[1], !string.IsNullOrEmpty(parts[2]) && bool.Parse(parts[2]));
+        }
+    }
+
+    public IEnumerable<AssemblyReference> GetAssemblyReferences() {
+        string   text  = File.ReadAllText(AsmRefsPath);
+        string[] lines = text.Split('\n');
+
+        foreach (string line in lines) {
+            string[] parts = line.Split(';');
+            yield return new AssemblyReference(Path.GetFileNameWithoutExtension(parts[0]), parts[0], !string.IsNullOrEmpty(parts[1]) && bool.Parse(parts[1]));
+        }
+    }
+
+    public IEnumerable<NuGetReference> GetPackageReferences() {
+        string   text  = File.ReadAllText(NuGetRefsPath);
+        string[] lines = text.Split('\n');
+
+        foreach (string line in lines) {
+            string[] parts = line.Split(';');
+            yield return new NuGetReference(parts[0], parts[1], !string.IsNullOrEmpty(parts[2]) && bool.Parse(parts[2]));
+        }
     }
 }

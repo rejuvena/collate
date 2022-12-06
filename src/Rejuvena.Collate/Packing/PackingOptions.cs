@@ -44,4 +44,14 @@ public record PackingOptions
     ///     <see cref="IPropertiesProvider"/> instances should be added to this object.
     /// </summary>
     public PropertiesProvider Properties { get; } = new();
+
+    public PackingOptions WithReferencesProvider(IReferencesProvider provider) {
+        References.Providers.Add(provider);
+        return this;
+    }
+
+    public PackingOptions WithPropertiesProvider(IPropertiesProvider provider) {
+        Properties.Providers.Add(provider);
+        return this;
+    }
 }

@@ -35,8 +35,8 @@ public static class TModPacker
         };
 
         // Add .dll and .pdb files.
-        var modDll = new PathNamePair(options.AssemblyName + ".dll", options.OutputTmodPath);
-        var modPdb = new PathNamePair(options.AssemblyName + ".pdb", options.OutputTmodPath);
+        var modDll = new PathNamePair(options.AssemblyName + ".dll", options.ProjectBuildDirectory);
+        var modPdb = new PathNamePair(options.AssemblyName + ".pdb", options.ProjectBuildDirectory);
 
         if (File.Exists(modDll.Path)) modFile.AddFile(new TModFileData(modDll.Name, File.ReadAllBytes(modDll.Path)));
         else Console.WriteLine("Could not resolve mod .dll, expected at: " + modDll.Path);

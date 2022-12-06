@@ -1,0 +1,19 @@
+﻿<Project>
+
+    <PropertyGroup>
+        <!-- The version of Collate to use. -->
+        <CollateVersion>2.0.0</CollateVersion>
+
+        <!-- Enable tML's roslyn analyzers -->
+        <TMLCodeAssist>enable</TMLCodeAssist>
+
+        <!-- Enable our analyzers -->
+        <NamespaceGenerator>enable</NamespaceGenerator>
+
+        <!-- Add our access transformer.
+             Include $(AccessTransformerPaths) in case other paths are defined. Paths are separted with a semicolon (;)
+             Since these paths get carried around, we want the fully-qualified path name. We use MSBuildProjectDirectory for this. -->
+        <!-- <AccessTransformerPaths>$(AccessTransformerPaths);$(MSBuildProjectDirectory)\.accesstransformer</AccessTransformerPaths> -->
+    </PropertyGroup>
+
+</Project>
