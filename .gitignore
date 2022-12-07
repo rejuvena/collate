@@ -2,7 +2,7 @@
 .collate/
 
 # Ensure .targets file isn't hidden.
-!src/Rejuvena.Collate.MSBuild/build/collate.targets
+!src/Rejuvena.Collate.MSBuild/build/Rejuvena.Collate.MSBuild.targets
 
 # Personal local testing script.
 publish_local.sh
