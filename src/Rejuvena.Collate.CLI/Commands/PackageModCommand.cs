@@ -85,22 +85,6 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
     public string OutputTmodPath { get; set; }
 
     protected override async ValueTask ExecuteAsync(IConsole console, Version version) {
-        if (Debug) {
-            await console.Output.WriteLineAsync("Options:");
-            await console.Output.WriteLineAsync($"  {nameof(AsmRefsPath)}: {AsmRefsPath}");
-            await console.Output.WriteLineAsync($"  {nameof(NuGetRefsPath)}: {NuGetRefsPath}");
-            await console.Output.WriteLineAsync($"  {nameof(ModRefsPath)}: {ModRefsPath}");
-            await console.Output.WriteLineAsync($"  {nameof(ProjectDirectory)}: {ProjectDirectory}");
-            await console.Output.WriteLineAsync($"  {nameof(ProjectOutputDirectory)}: {ProjectOutputDirectory}");
-            await console.Output.WriteLineAsync($"  {nameof(AssemblyName)}: {AssemblyName}");
-            await console.Output.WriteLineAsync($"  {nameof(TmlVersion)}: {TmlVersion}");
-            await console.Output.WriteLineAsync($"  {nameof(TmlPath)}: {TmlPath}");
-            await console.Output.WriteLineAsync($"  {nameof(OutputTmodPath)}: {OutputTmodPath}");
-
-            await console.Output.WriteLineAsync("Properties:");
-            foreach ((string key, string value) in GetProperties()) await console.Output.WriteLineAsync($"  {key}: {value}");
-        }
-
         if (string.IsNullOrEmpty(OutputTmodPath)) OutputTmodPath = PathLocator.FindSavePath(TmlPath, AssemblyName);
 
         var options = new PackingOptions
@@ -124,6 +108,30 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
         else await console.Output.WriteLineAsync("Could not resolve mod .pdb, expected at: " + modDll.Path);
 
         TModPacker.PackMod(options);
+    }
+
+    protected override async ValueTask ExecuteDebugAsync(IConsole console, Version version) {
+        console.ForegroundColor = ConsoleColor.DarkGray;
+        await console.Output.WriteLineAsync();
+
+        await base.ExecuteDebugAsync(console, version);
+
+        await console.Output.WriteLineAsync("Options:");
+        await console.Output.WriteLineAsync($"  {nameof(AsmRefsPath)}: {AsmRefsPath}");
+        await console.Output.WriteLineAsync($"  {nameof(NuGetRefsPath)}: {NuGetRefsPath}");
+        await console.Output.WriteLineAsync($"  {nameof(ModRefsPath)}: {ModRefsPath}");
+        await console.Output.WriteLineAsync($"  {nameof(ProjectDirectory)}: {ProjectDirectory}");
+        await console.Output.WriteLineAsync($"  {nameof(ProjectOutputDirectory)}: {ProjectOutputDirectory}");
+        await console.Output.WriteLineAsync($"  {nameof(AssemblyName)}: {AssemblyName}");
+        await console.Output.WriteLineAsync($"  {nameof(TmlVersion)}: {TmlVersion}");
+        await console.Output.WriteLineAsync($"  {nameof(TmlPath)}: {TmlPath}");
+        await console.Output.WriteLineAsync($"  {nameof(OutputTmodPath)}: {OutputTmodPath}");
+
+        await console.Output.WriteLineAsync("Properties:");
+        foreach ((string key, string value) in GetProperties()) await console.Output.WriteLineAsync($"  {key}: {value}");
+
+        await console.Output.WriteLineAsync();
+        console.ResetColor();
     }
 
     public Dictionary<string, string> GetProperties() {

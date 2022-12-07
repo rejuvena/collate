@@ -32,10 +32,14 @@ public abstract class VersionSensitiveCommand : ICommand
     async ValueTask ICommand.ExecuteAsync(IConsole console) {
         if (!System.Version.TryParse(Version, out var vers)) throw new InvalidOperationException("Invalid version specified: " + Version);
 
-        if (Debug) await console.Output.WriteLineAsync($"Running command \"{CommandName}\" against version \"{vers}\"...");
+        if (Debug) await ExecuteDebugAsync(console, vers);
 
         await ExecuteAsync(console, vers);
     }
 
     protected abstract ValueTask ExecuteAsync(IConsole console, Version version);
+
+    protected virtual async ValueTask ExecuteDebugAsync(IConsole console, Version version) {
+        await console.Output.WriteLineAsync($"Running command \"{CommandName}\" against version \"{version}\"...");
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Microsoft.Build.Framework;
 
@@ -22,10 +23,10 @@ public class FilterModifyAssemblyReferencesTask : FilterTask
     public string[] ReferencesToAdd { get; set; } = Array.Empty<string>();
 
     protected override bool ExecuteTask() {
-        var refs = Input.Select(x => x.ToString()).ToList();
+        string[] contents = File.ReadAllLines(Input[0].ToString());
 
-        ReferencesToRemove = refs.Where(x => x.StartsWith("-")).Select(x => x.Substring(1)).ToArray();
-        ReferencesToAdd    = refs.Where(x => x.StartsWith("+")).Select(x => x.Substring(1)).ToArray();
+        ReferencesToRemove = contents.Where(x => x.StartsWith("-")).Select(x => x.Substring(1)).ToArray();
+        ReferencesToAdd    = contents.Where(x => x.StartsWith("+")).Select(x => x.Substring(1)).ToArray();
         return true;
     }
 }

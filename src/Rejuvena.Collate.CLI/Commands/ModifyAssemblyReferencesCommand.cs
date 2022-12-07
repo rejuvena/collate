@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using CliFx.Attributes;
 using CliFx.Infrastructure;
@@ -30,28 +33,31 @@ public sealed class ModifyAssemblyReferencesCommand : VersionSensitiveCommand
     [CommandOption("references", 'r', IsRequired = true, Description = "The references to modify and output.")]
     public string References { get; set; } = string.Empty;
 
+    [CommandOption("output-file", 'o', IsRequired = true, Description = "The output file.")]
+    public string OutputFile { get; set; } = string.Empty;
+
     protected override async ValueTask ExecuteAsync(IConsole console, Version version) {
-        // The following is how the output should be interpreted, given what a line starts with:
-        //  > '+': Add a reference.
-        //  > '-': Remove a reference.
-        //  > Anything else is to be ignored by the filter in Rejuvena.Collate.MSBuild.
+        // ReSharper disable once CollectionNeverUpdated.Local
+        var added = new List<string>();
+        // ReSharper disable once CollectionNeverUpdated.Local
+        var removed = new List<string>();
 
-        async Task log(string message) {
-            await console.Output.WriteLineAsync(message);
-        }
+        string contents = string.Join("\n", added.Select(x => '+' + x).Concat(removed.Select(x => '-' + x)));
+        await File.WriteAllTextAsync(OutputFile, contents);
+    }
 
-        async Task addReference(string reference) {
-            await log('+' + reference);
-        }
+    protected override async ValueTask ExecuteDebugAsync(IConsole console, Version version) {
+        console.ForegroundColor = ConsoleColor.DarkGray;
+        await console.Output.WriteLineAsync();
 
-        async Task removeReference(string reference) {
-            await log('-' + reference);
-        }
+        await base.ExecuteDebugAsync(console, version);
 
-        if (Debug) {
-            await log("Project directory: "        + ProjectDirectory);
-            await log("Access transformer paths: " + AccessTransformerPaths);
-            await log("References: "               + References);
-        }
+        await console.Output.WriteLineAsync("Options:");
+        await console.Output.WriteLineAsync($"  {nameof(ProjectDirectory)}: "       + ProjectDirectory);
+        await console.Output.WriteLineAsync($"  {nameof(AccessTransformerPaths)}: " + AccessTransformerPaths);
+        await console.Output.WriteLineAsync($"  {nameof(References)}: "             + References);
+
+        await console.Output.WriteLineAsync();
+        console.ResetColor();
     }
 }
