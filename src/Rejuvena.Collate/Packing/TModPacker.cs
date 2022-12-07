@@ -8,6 +8,7 @@ using Rejuvena.Collate.Packing.References;
 using Rejuvena.Collate.Util;
 using TML.Files;
 using TML.Files.Extraction;
+using TML.Files.Extraction.Packers;
 using ModReference = Rejuvena.Collate.Packing.References.ModReference;
 
 namespace Rejuvena.Collate.Packing;
@@ -34,32 +35,31 @@ public static class TModPacker
             Version          = props.Version.ToString()
         };
 
-        // Add .dll and .pdb files.
-        var modDll = new PathNamePair(options.AssemblyName + ".dll", options.ProjectBuildDirectory);
-        var modPdb = new PathNamePair(options.AssemblyName + ".pdb", options.ProjectBuildDirectory);
-
-        if (File.Exists(modDll.Path)) modFile.AddFile(new TModFileData(modDll.Name, File.ReadAllBytes(modDll.Path)));
-        else Console.WriteLine("Could not resolve mod .dll, expected at: " + modDll.Path);
-
-        if (File.Exists(modPdb.Path)) modFile.AddFile(new TModFileData(modPdb.Name, File.ReadAllBytes(modPdb.Path)));
-        else Console.WriteLine("Could not resolve mod .pdb, expected at: " + modDll.Path);
-
         // Add references.
         Console.WriteLine("Adding references...");
         addReferences(modFile, options, props);
 
         // Add resources.
-        Console.WriteLine("Packing project directory files (resource files) into .tmod file...");
+        var directories = options.BuildDirectories;
+        prettyLogCollection(
+            directories.Select(x => $"\"{x.directory}\" (Relative: \"{x.relative}\")"),
+            "Packing the following directories into the .tmod file: ",
+            "No directories to pack."
+        );
         prettyLogCollection(props.BuildIgnores, "Ignoring files based on buildIgnore value: ", "No buildIgnore values were provided.");
-        TModFileExtractor.Pack(options.ProjectDirectory, options.TmlVersion, options.AssemblyName, props);
+
+        foreach (var tuple in directories) addDirectory(modFile, tuple, props);
+
+        var files = options.BuildFiles;
+        prettyLogCollection(files.Select(x => x.Path), "Packing explicitly-defined files into the .tmod file: ", "No files to pack.");
 
         // Write .tmod file to specified path.
-        Console.WriteLine("Writing .tmod file to: " + options.OutputTmodPath);
-        if (File.Exists(options.OutputTmodPath)) File.Delete(options.OutputTmodPath);
-        TModFileSerializer.Serialize(modFile, options.OutputTmodPath);
+        Console.WriteLine("Writing .tmod file to: " + options.OutputPath);
+        if (File.Exists(options.OutputPath)) File.Delete(options.OutputPath);
+        TModFileSerializer.Serialize(modFile, options.OutputPath);
 
         // Add to enabled.json.
-        ModsFolderUtils.EnableMod(Path.Combine(Path.GetDirectoryName(options.OutputTmodPath)!, "enabled.json"), options.AssemblyName);
+        ModsFolderUtils.EnableMod(Path.Combine(Path.GetDirectoryName(options.OutputPath)!, "enabled.json"), options.AssemblyName);
     }
 
     private static BuildProperties processProperties(IPropertiesProvider propertiesProvider) {
@@ -73,7 +73,7 @@ public static class TModPacker
 
     private static void addReferences(TModFile modFile, PackingOptions options, BuildProperties props) {
         var modRefs = filterModRefs(options.References.GetModReferences().ToList()).ToList();
-        var asmRefs = filterAsmRefs(options.ProjectDirectory, options.References.GetAssemblyReferences().ToList()).ToList();
+        var asmRefs = filterAsmRefs(options.BuildDirectories.Select(x => x.directory).ToList(), options.References.GetAssemblyReferences().ToList()).ToList();
         var pkgRefs = filterPkgRefs(options.References.GetPackageReferences().ToList()).ToList();
 
         prettyLogCollection(modRefs, $"Resolved {modRefs.Count} mod references: ", "Resolved 0 mod references.");
@@ -117,19 +117,19 @@ public static class TModPacker
         return refs;
     }
 
-    private static IEnumerable<AssemblyReference> filterAsmRefs(string projectDirectory, IEnumerable<AssemblyReference> refs) {
+    private static IEnumerable<AssemblyReference> filterAsmRefs(IReadOnlyCollection<string> projectDirectories, IEnumerable<AssemblyReference> refs) {
         // Assumes all DLL references are under the mod's folder (at same level or in sub-folders).
         // Letting DLL references be anywhere would mean doing some weird filters on references, TODO: explore?
         // or using a custom <DllReference> tag that would get translated to a <Reference>.
-        return refs.Where(x => x.Path.StartsWith(projectDirectory) && !x.Path.Contains(".collate"));
+        return refs.Where(x => projectDirectories.Any(y => x.Path.Contains(y)) && !x.Path.Contains(".collate"));
     }
 
     private static IEnumerable<NuGetReference> filterPkgRefs(IEnumerable<NuGetReference> refs) {
         return refs.Where(x => x.Private).Where(x => !package_blacklist.Contains(x.PackageId));
     }
 
-    private static void prettyLogCollection<T>(IEnumerable<T> ignores, string nonEmptyMessage, string emptyMessage) {
-        var enumerated = ignores.ToArray();
+    private static void prettyLogCollection<T>(IEnumerable<T> items, string nonEmptyMessage, string emptyMessage) {
+        var enumerated = items.ToArray();
 
         if (enumerated.Length > 0) Console.Write(nonEmptyMessage);
         else Console.WriteLine(emptyMessage);
@@ -142,5 +142,20 @@ public static class TModPacker
 
             Console.WriteLine(sb.ToString());
         }
+    }
+
+    private static void addDirectory(TModFile modFile, (string directory, string relative) tuple, BuildProperties props) {
+        string directory = Path.GetFullPath(tuple.directory);
+
+        Console.WriteLine("Adding files from directory: " + directory);
+
+        // TODO: Update TML.Files lib to support variant of TModFileExtractor.Pack that allows for adding to existing TModFile instance.
+        var dummyFile = TModFileExtractor.Pack(directory, "", "", props, packers: new PngFilePacker());
+
+        dummyFile.Entries.ForEach(entry =>
+        {
+            Console.WriteLine($"Adding file to .tmod file (adjusted to relative path: \"{tuple.relative}\"): " + entry.Path);
+            modFile.Entries.Add(entry);
+        });
     }
 }

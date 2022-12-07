@@ -8,6 +8,7 @@ using Rejuvena.Collate.Packing;
 using Rejuvena.Collate.Packing.Properties;
 using Rejuvena.Collate.Packing.References;
 using Rejuvena.Collate.Util;
+using TML.Files;
 
 namespace Rejuvena.Collate.CLI.Commands;
 
@@ -102,18 +103,27 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
 
         if (string.IsNullOrEmpty(OutputTmodPath)) OutputTmodPath = PathLocator.FindSavePath(TmlPath, AssemblyName);
 
-        TModPacker.PackMod(
-            new PackingOptions
-                {
-                    ProjectDirectory      = ProjectDirectory,
-                    ProjectBuildDirectory = ProjectOutputDirectory,
-                    AssemblyName          = AssemblyName,
-                    TmlVersion            = TmlVersion,
-                    OutputTmodPath        = OutputTmodPath,
-                }
-                .WithReferencesProvider(this)
-                .WithPropertiesProvider(this)
-        );
+        var options = new PackingOptions
+                      {
+                          AssemblyName = AssemblyName,
+                          TmlVersion   = TmlVersion,
+                          OutputPath   = OutputTmodPath,
+                      }
+                      .WithReferencesProvider(this)
+                      .WithPropertiesProvider(this)
+                      .WithBuildDirectory(ProjectDirectory, "");
+
+        // Add .dll and .pdb files. ProjectOutputDirectory
+        var modDll = new PathNamePair(AssemblyName + ".dll", ProjectOutputDirectory);
+        var modPdb = new PathNamePair(AssemblyName + ".pdb", ProjectOutputDirectory);
+
+        if (File.Exists(modDll.Path)) options.WithBuildFile(new TModFileData(modDll.Name, await File.ReadAllBytesAsync(modDll.Path)));
+        else await console.Output.WriteLineAsync("Could not resolve mod .dll, expected at: " + modDll.Path);
+
+        if (File.Exists(modPdb.Path)) options.WithBuildFile(new TModFileData(modPdb.Name, await File.ReadAllBytesAsync(modPdb.Path)));
+        else await console.Output.WriteLineAsync("Could not resolve mod .pdb, expected at: " + modDll.Path);
+
+        TModPacker.PackMod(options);
     }
 
     public Dictionary<string, string> GetProperties() {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Rejuvena.Collate.Util;
 
 namespace Rejuvena.Collate.Packing.References;

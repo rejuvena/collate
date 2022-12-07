@@ -1,5 +1,7 @@
-﻿using Rejuvena.Collate.Packing.Properties;
+﻿using System.Collections.Generic;
+using Rejuvena.Collate.Packing.Properties;
 using Rejuvena.Collate.Packing.References;
+using TML.Files;
 
 namespace Rejuvena.Collate.Packing;
 
@@ -8,15 +10,12 @@ namespace Rejuvena.Collate.Packing;
 /// </summary>
 public record PackingOptions
 {
-    /// <summary>
-    ///     The directory of the project.
-    /// </summary>
-    public string ProjectDirectory { get; set; } = string.Empty;
+    private readonly List<(string directory, string relative)> buildDirectories = new();
+    private readonly List<TModFileData>                        buildFiles       = new();
 
-    /// <summary>
-    ///     The path containing the compiled mod assembly.
-    /// </summary>
-    public string ProjectBuildDirectory { get; set; } = string.Empty;
+    public IReadOnlyList<(string directory, string relative)> BuildDirectories => buildDirectories.AsReadOnly();
+
+    public IReadOnlyList<TModFileData> BuildFiles => buildFiles.AsReadOnly();
 
     /// <summary>
     ///     The assembly name (internal name) of the mod.
@@ -31,7 +30,7 @@ public record PackingOptions
     /// <summary>
     ///     The path to write the packed .tmod file to.
     /// </summary>
-    public string OutputTmodPath { get; set; } = string.Empty;
+    public string OutputPath { get; set; } = string.Empty;
 
     /// <summary>
     ///     Provides various types of references <br />
@@ -52,6 +51,16 @@ public record PackingOptions
 
     public PackingOptions WithPropertiesProvider(IPropertiesProvider provider) {
         Properties.Providers.Add(provider);
+        return this;
+    }
+
+    public virtual PackingOptions WithBuildDirectory(string directory, string relative) {
+        buildDirectories.Add((directory, relative));
+        return this;
+    }
+
+    public virtual PackingOptions WithBuildFile(TModFileData fileData) {
+        buildFiles.Add(fileData);
         return this;
     }
 }
