@@ -157,31 +157,37 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
     }
 
     public IEnumerable<ModReference> GetModReferences() {
-        string   text  = File.ReadAllText(ModRefsPath);
+        string   text  = File.ReadAllText(ModRefsPath).Trim();
         string[] lines = text.Split('\n');
 
         foreach (string line in lines) {
-            string[] parts = line.Split(';');
+            string[] parts = line.Split(';', 3);
+            if (parts.Length != 3) continue;
+
             yield return new ModReference(parts[0], parts[1], !string.IsNullOrEmpty(parts[2]) && bool.Parse(parts[2]));
         }
     }
 
     public IEnumerable<AssemblyReference> GetAssemblyReferences() {
-        string   text  = File.ReadAllText(AsmRefsPath);
+        string   text  = File.ReadAllText(AsmRefsPath).Trim();
         string[] lines = text.Split('\n');
 
         foreach (string line in lines) {
-            string[] parts = line.Split(';');
+            string[] parts = line.Split(';', 2);
+            if (parts.Length != 2) continue;
+
             yield return new AssemblyReference(Path.GetFileNameWithoutExtension(parts[0]), parts[0], !string.IsNullOrEmpty(parts[1]) && bool.Parse(parts[1]));
         }
     }
 
     public IEnumerable<NuGetReference> GetPackageReferences() {
-        string   text  = File.ReadAllText(NuGetRefsPath);
+        string   text  = File.ReadAllText(NuGetRefsPath).Trim();
         string[] lines = text.Split('\n');
 
         foreach (string line in lines) {
-            string[] parts = line.Split(';');
+            string[] parts = line.Split(';', 3);
+            if (parts.Length != 3) continue;
+
             yield return new NuGetReference(parts[0], parts[1], !string.IsNullOrEmpty(parts[2]) && bool.Parse(parts[2]));
         }
     }
