@@ -1,0 +1,140 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <!-- Build options -->
+    <PropertyGroup>
+        <DebugSymbols>true</DebugSymbols> <!-- Stack traces with line numbers. -->
+        <ProduceReferenceAssembly>False</ProduceReferenceAssembly> <!-- We do not need reference assemblies. -->
+
+        <!-- Attempt to make it so mods *always* build, but this sort of doesn't work it seems? -->
+        <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+        <DISABLEFASTUPTODATECHECK>true</DISABLEFASTUPTODATECHECK>
+    </PropertyGroup>
+
+    <!-- Collate settings, applying and supplying default values if needed. -->
+    <PropertyGroup>
+        <CollateVersion Condition=" '$(CollateVersion)' == '' ">2.0.0</CollateVersion>
+        <CollateDebug Condition=" '$(CollateDebug)' == '' ">disable</CollateDebug>
+        <TMLCodeAssist Condition=" '$(TMLCodeAssist)' == '' ">disable</TMLCodeAssist>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" Condition=" '$(TMLCodeAssist)' == 'enable' "/>
+    </ItemGroup>
+
+    <!-- Boilerplate to initialize TargetsFilePath (with TMODLOADER_TARGETS_PATH and some common paths). -->
+    <PropertyGroup>
+        <!-- Environment variable we advise users to set. -->
+        <TargetsFilePath Condition=" !Exists('$(TargetsFilePath)') ">$(TMODLOADER_TARGETS_PATH)</TargetsFilePath>
+    </PropertyGroup>
+    <Choose>
+        <!-- Windows -->
+        <When Condition=" $(OS) == 'Windows_NT' ">
+            <PropertyGroup>
+                <TargetsFilePath Condition=" !Exists('$(TargetsFilePath)') ">$(USERPROFILE)/Documents/My Games/Terraria/tModLoader/ModSources/tModLoader.targets</TargetsFilePath>
+            </PropertyGroup>
+        </When>
+
+        <!-- Mac/Linux -->
+        <When Condition=" $(OS) == 'Unix' OR $(OS) == 'OSX' OR $(OS) == 'Linux' ">
+            <PropertyGroup>
+                <TargetsFilePath Condition=" !Exists('$(TargetsFilePath)') ">$(HOME)/.local/share/Terraria/tModLoader/ModSources/tModLoader.targets</TargetsFilePath>
+                <TargetsFilePath Condition=" !Exists('$(TargetsFilePath)') ">$(XDG_DATA_HOME)/Terraria/tModLoader/ModSources/tModLoader.targets</TargetsFilePath>
+                <TargetsFilePath Condition=" !Exists('$(TargetsFilePath)') ">$(HOME)/Library/Application support/Terraria/tModLoader/ModSources/tModLoader.targets</TargetsFilePath>
+            </PropertyGroup>
+        </When>
+    </Choose>
+
+    <!-- Import .targets file defined from TargetsFilePath. -->
+    <Import Project="$(TargetsFilePath)"/>
+
+    <PropertyGroup>
+        <DebugSwitch Condition=" $(CollateDebug) == 'enable' ">-d</DebugSwitch>
+        <MarCommand>collate mar -v "$(CollateVersion)" $(DebugSwitch)</MarCommand>
+        <PackageCommand>collate package -v "$(CollateVersion)" $(DebugSwitch)</PackageCommand>
+    </PropertyGroup>
+
+    <UsingTask TaskName="FilterSanitizePathsTask" AssemblyFile="Rejuvena.Collate.MSBuild.dll"/>
+
+    <UsingTask TaskName="FilterModifyAssemblyReferencesTask" AssemblyFile="Rejuvena.Collate.MSBuild.dll"/>
+    <Target Name="ModifyAssemblyReferences" BeforeTargets="ResolveAssemblyReferences">
+        <Exec Command='$(MarCommand) -p "$(ProjectDirectory)" -a "$(AccessTransformerPaths)" -r "@(Reference)" -o "$(MSBuildProjectDirectory)/.collate/build/mar"' ConsoleToMSBuild="true"/>
+        <FilterModifyAssemblyReferencesTask Input="$(MSBuildProjectDirectory)/.collate/build/mar">
+            <Output TaskParameter="ReferencesToRemove" ItemName="_ReferencesToRemove"/>
+            <Output TaskParameter="ReferencesToAdd" ItemName="_ReferencesToAdd"/>
+        </FilterModifyAssemblyReferencesTask>
+        <ItemGroup>
+            <Reference Remove="@(_ReferencesToRemove)"/>
+            <Reference Include="@(_ReferencesToAdd)"/>
+        </ItemGroup>
+    </Target>
+
+    <ItemDefinitionGroup>
+        <ModReference>
+            <Visible>false</Visible>
+        </ModReference>
+    </ItemDefinitionGroup>
+    <Target Name="IncludeModReferences" AfterTargets="ModifyAssemblyReferences">
+        <Message Text="Adding %(ModReference.Identity) as a reference..."/>
+
+        <ItemGroup>
+            <Reference Include="%(ModReference.Identity)" Condition="' %(ModReference.ProjectPath)' == '' AND '%(ModReference.HintPath)' != '' ">
+                <HintPath>%(ModReference.HintPath)</HintPath>
+            </Reference>
+        </ItemGroup>
+
+        <ItemGroup>
+            <ProjectReference Include="%(ModReference.ProjectPath)" Condition="'%(ModReference.ProjectPath)'!=''"/>
+        </ItemGroup>
+    </Target>
+    <UsingTask TaskName="FilterWriteAssemblyRefsTask" AssemblyFile="Rejuvena.Collate.MSBuild.dll"/>
+    <UsingTask TaskName="FilterWriteNuGetRefsTask" AssemblyFile="Rejuvena.Collate.MSBuild.dll"/>
+    <UsingTask TaskName="FilterWriteModRefsTask" AssemblyFile="Rejuvena.Collate.MSBuild.dll"/>
+    <Target Name="PackageMod" AfterTargets="Build">
+        <Message Text="Packing files into a .tmod archive..."/>
+
+        <PropertyGroup>
+            <ModProperties Condition=" $(DisplayName) != '' ">$(ModProperties) --display-name "$(DisplayName)"</ModProperties>
+            <ModProperties Condition=" $(Author) != '' ">$(ModProperties) --author "$(Author)"</ModProperties>
+            <ModProperties Condition=" $(ModVersion) != '' ">$(ModProperties) --mod-version "$(ModVersion)"</ModProperties>
+            <ModProperties Condition=" $(Homepage) != '' ">$(ModProperties) --homepage "$(Homepage)"</ModProperties>
+            <ModProperties Condition=" $(ModSide) != '' ">$(ModProperties) --mod-side "$(ModSide)"</ModProperties>
+            <ModProperties Condition=" $(SortBefore) != '' ">$(ModProperties) --sort-before "$(SortBefore)"</ModProperties>
+            <ModProperties Condition=" $(SortAfter) != '' ">$(ModProperties) --sort-after "$(SortAfter)"</ModProperties>
+            <ModProperties Condition=" $(HideCode) != '' ">$(ModProperties) --hide-code "$(HideCode)"</ModProperties>
+            <ModProperties Condition=" $(HideResources) != '' ">$(ModProperties) --hide-resources "$(HideResources)"</ModProperties>
+            <ModProperties Condition=" $(IncludeSource) != '' ">$(ModProperties) --include-source "$(IncludeSource)"</ModProperties>
+            <ModProperties Condition=" $(BuildIgnore) != '' ">$(ModProperties) --build-ignore "$(BuildIgnore)"</ModProperties>
+        </PropertyGroup>
+
+        <GetAssemblyIdentity AssemblyFiles="$(tMLSteamPath)$(tMLPath)">
+            <Output TaskParameter="Assemblies" ItemName="TmlAssemblyIdentity"/>
+        </GetAssemblyIdentity>
+
+        <PropertyGroup>
+            <!-- Use default values in case they have not been provided -->
+            <TmlVersion Condition=" $(TmlVersion) == '' AND TmlAssemblyIdentity != '' ">%(TmlAssemblyIdentity.Version)</TmlVersion>
+            <TmlVersion Condition=" $(TmlVersion) == '' AND TmlAssemblyIdentity == '' ">1.4</TmlVersion>
+        </PropertyGroup>
+        
+        <FilterSanitizePathsTask Input="$(OutputPath)">
+            <Output TaskParameter="Output" ItemName="SanitizedOutputPath"/>
+        </FilterSanitizePathsTask>
+
+        <FilterWriteAssemblyRefsTask Input="@(ReferencePath)" File=".collate/build/asmrefs">
+            <Output TaskParameter="Output" ItemName="AssemblyRefsFile"/>
+        </FilterWriteAssemblyRefsTask>
+        <FilterWriteNuGetRefsTask Input="@(PackageReference)" File=".collate/build/nugetrefs">
+            <Output TaskParameter="Output" ItemName="NuGetRefsFile"/>
+        </FilterWriteNuGetRefsTask>
+        <FilterWriteModRefsTask Input="@(ModReference)" File=".collate/build/modrefs">
+            <Output TaskParameter="Output" ItemName="ModRefsFile"/>
+        </FilterWriteModRefsTask>
+
+        <Exec Command='$(PackageCommand)$(ModProperties) --asmrefs-path "@(AssemblyRefsFile)" --nugetrefs-path "@(NuGetRefsFile)" --modrefs-path "@(ModRefsFile)" --proj-dir "$(MSBuildProjectDirectory)" --proj-out-dir "@(SanitizedOutputPath)" --asm-name "$(AssemblyName)" --tml-ver "$(TmlVersion)" --tml-path "$(tMLSteamPath)$(tMLPath)" --out-dir "$(OutputTmodPath)"' ConsoleToMSBuild="true">
+            <Output TaskParameter="ConsoleOutput" PropertyName="ExecOutput"/>
+        </Exec>
+    </Target>
+
+    <!-- Override normal tModLoader BuildMod target. -->
+    <Target Name="BuildMod" AfterTargets="AfterBuild"/>
+
+</Project>
