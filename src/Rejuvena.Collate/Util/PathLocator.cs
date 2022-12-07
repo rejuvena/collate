@@ -53,17 +53,20 @@ public static class PathLocator
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
             string? environmentVariable = Environment.GetEnvironmentVariable("HOME");
             if (string.IsNullOrEmpty(environmentVariable)) return ".";
+
             return environmentVariable + "/Library/Application Support";
         }
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
             string? text = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
+
             if (!string.IsNullOrEmpty(text)) {
                 return text;
             }
 
             text = Environment.GetEnvironmentVariable("HOME");
             if (string.IsNullOrEmpty(text)) return ".";
+
             return text + "/.local/share";
         }
 
@@ -72,8 +75,8 @@ public static class PathLocator
 
     private static BuildPurpose getBuildPurpose(string tmlDllPath) {
         var     tmlAsm         = ModuleDefinition.ReadModule(tmlDllPath);
-        var     attrs          = tmlAsm.CustomAttributes;
-        var     attr           = attrs.FirstOrDefault(x => x.AttributeType.Name == nameof(AssemblyInformationalVersionAttribute));
+        var     attrs          = tmlAsm?.Assembly.CustomAttributes;
+        var     attr           = attrs?.FirstOrDefault(x => x.AttributeType.Name == nameof(AssemblyInformationalVersionAttribute));
         string? tmlInfoVersion = attr?.ConstructorArguments[0].Value as string;
 
         if (string.IsNullOrEmpty(tmlInfoVersion)) {
