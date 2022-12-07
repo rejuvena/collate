@@ -1,18 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <!-- Basic project settings. -->
-    <Import Project="_project.targets"/>
+    <Import Project="_project.targets" />
     
     <!-- Configurations for Collate. -->
-    <Import Project="_config.targets"/>
+    <Import Project="_config.targets" />
     
     <!-- A demonstration of build properties (build.txt) through the .csproj file. -->
-    <Import Project="_properties.targets"/>
+    <Import Project="_properties.targets" />
 
     <ItemGroup>
         <!-- Rejuvena.Collate.MSBuild enables the Collate build system with MSBuild task integration. -->
         <!-- This is essentially required to use Collate. -->
-        <PackageReference Include="Rejuvena.Collate.MSBuild" Version="2.0.0"/>
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+        
+        <!-- Demonstration of including a NuGet reference using support offered by Collate. -->
+        <PackageReference Include="Rejuvena.Collate.MSBuild" Version="2.0.0" />
     </ItemGroup>
 
 </Project>
