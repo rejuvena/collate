@@ -52,6 +52,9 @@ public static class TModPacker
 
         var files = options.BuildFiles;
         prettyLogCollection(files.Select(x => x.Path), "Packing explicitly-defined files into the .tmod file: ", "No files to pack.");
+        
+        Console.WriteLine("Writing build properties to \"Info\" file...");
+        modFile.AddFile(new TModFileData("Info", props.ToBytes(options.TmlVersion)));
 
         // Write .tmod file to specified path.
         Console.WriteLine("Writing .tmod file to: " + options.OutputPath);
