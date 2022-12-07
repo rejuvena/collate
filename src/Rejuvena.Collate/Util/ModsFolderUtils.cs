@@ -14,7 +14,7 @@ public static class ModsFolderUtils
         Directory.CreateDirectory(dir);
 
         var enabled = File.Exists(enabledPath) ? JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(enabledPath)) : new List<string>();
-        enabled?.Add(modName);
+        if (enabled is not null && !enabled.Contains(modName)) enabled.Add(modName);
         File.WriteAllText(enabledPath, JsonConvert.SerializeObject(enabled, Formatting.Indented));
     }
 }
