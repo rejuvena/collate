@@ -105,15 +105,16 @@
             <ModProperties Condition=" $(BuildIgnore) != '' ">$(ModProperties) --build-ignore "$(BuildIgnore)"</ModProperties>
         </PropertyGroup>
 
-        <GetAssemblyIdentity AssemblyFiles="$(tMLSteamPath)$(tMLPath)">
+        <!-- Using the assembly version is incorrect, since that's just the Terraria version. -->
+        <!-- <GetAssemblyIdentity AssemblyFiles="$(tMLSteamPath)$(tMLPath)">
             <Output TaskParameter="Assemblies" ItemName="TmlAssemblyIdentity"/>
         </GetAssemblyIdentity>
-
+        
         <PropertyGroup>
-            <!-- Use default values in case they have not been provided -->
+            Use default values in case they have not been provided
             <TmlVersion Condition=" $(TmlVersion) == '' AND TmlAssemblyIdentity != '' ">%(TmlAssemblyIdentity.Version)</TmlVersion>
             <TmlVersion Condition=" $(TmlVersion) == '' AND TmlAssemblyIdentity == '' ">1.4</TmlVersion>
-        </PropertyGroup>
+        </PropertyGroup> -->
         
         <FilterSanitizePathsTask Input="$(OutputPath)">
             <Output TaskParameter="Output" ItemName="SanitizedOutputPath"/>
@@ -129,7 +130,7 @@
             <Output TaskParameter="Output" ItemName="ModRefsFile"/>
         </FilterWriteModRefsTask>
 
-        <Exec Command='$(PackageCommand)$(ModProperties) --asmrefs-path "@(AssemblyRefsFile)" --nugetrefs-path "@(NuGetRefsFile)" --modrefs-path "@(ModRefsFile)" --proj-dir "$(MSBuildProjectDirectory)" --proj-out-dir "@(SanitizedOutputPath)" --asm-name "$(AssemblyName)" --tml-ver "$(TmlVersion)" --tml-path "$(tMLSteamPath)$(tMLPath)" --out-dir "$(OutputTmodPath)"' ConsoleToMSBuild="true">
+        <Exec Command='$(PackageCommand)$(ModProperties) --asmrefs-path "@(AssemblyRefsFile)" --nugetrefs-path "@(NuGetRefsFile)" --modrefs-path "@(ModRefsFile)" --proj-dir "$(MSBuildProjectDirectory)" --proj-out-dir "@(SanitizedOutputPath)" --asm-name "$(AssemblyName)" --tml-path "$(tMLSteamPath)$(tMLPath)" --out-dir "$(OutputTmodPath)"' ConsoleToMSBuild="true">
             <Output TaskParameter="ConsoleOutput" PropertyName="ExecOutput"/>
         </Exec>
     </Target>

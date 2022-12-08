@@ -17,18 +17,19 @@ public static class PathLocator
     public const string MODS_FOLDER_NAME    = "Mods";
     public const string TMOD_FILE_EXTENSION = ".tmod";
 
-    public static string FindSavePath(string tmlDllPath, string assemblyName) {
-        return Path.Combine(findSaveFolder(tmlDllPath), MODS_FOLDER_NAME, assemblyName + TMOD_FILE_EXTENSION);
+    public static string FindSavePath(string tmlDllPath, string assemblyName, out string? version) {
+        return Path.Combine(findSaveFolder(tmlDllPath, out version), MODS_FOLDER_NAME, assemblyName + TMOD_FILE_EXTENSION);
     }
 
-    private static string findSaveFolder(string tmlDllPath) {
+    private static string findSaveFolder(string tmlDllPath, out string? version) {
         string tmlSteamPath = Path.GetDirectoryName(tmlDllPath) ?? throw new ArgumentException("Could not resolve directory of file: " + tmlDllPath);
-        string fileFolder = getBuildPurpose(tmlDllPath) switch
+        (var buildPurpose, version) = getBuildInfo(tmlDllPath);
+        string fileFolder = buildPurpose switch
         {
             BuildPurpose.Dev     => DEV_FOLDER_NAME,
             BuildPurpose.Preview => PREVIEW_FOLDER_NAME,
             BuildPurpose.Stable  => STABLE_FOLDER_NAME,
-            _                    => throw new ArgumentOutOfRangeException()
+            _                    => throw new InvalidOperationException("Attempted to resolve save path for unknown build purpose: " + buildPurpose)
         };
 
         if (File.Exists(Path.Combine(tmlSteamPath, "savehere.txt"))) {
@@ -38,7 +39,7 @@ public static class PathLocator
         }
 
         string savePath = Path.Combine(getStoragePath("Terraria"), fileFolder);
-        Console.WriteLine("Couldn't verify expected Steam path, saving to: " + savePath);
+        Console.WriteLine("Couldn't verify expected Steam path (this is okay!), saving to: " + savePath);
         return savePath;
     }
 
@@ -73,7 +74,7 @@ public static class PathLocator
         throw new PlatformNotSupportedException("Could not locate storage path for platform: " + RuntimeInformation.OSDescription);
     }
 
-    private static BuildPurpose getBuildPurpose(string tmlDllPath) {
+    private static (BuildPurpose buildPurpose, string? version) getBuildInfo(string tmlDllPath) {
         var     tmlAsm         = ModuleDefinition.ReadModule(tmlDllPath);
         var     attrs          = tmlAsm?.Assembly.CustomAttributes;
         var     attr           = attrs?.FirstOrDefault(x => x.AttributeType.Name == nameof(AssemblyInformationalVersionAttribute));
@@ -81,19 +82,28 @@ public static class PathLocator
 
         if (string.IsNullOrEmpty(tmlInfoVersion)) {
             Console.WriteLine("Could not retrieve informational version from the tModLoader DLL, assuming a 'Stable' build.");
-            return BuildPurpose.Stable;
+            return (BuildPurpose.Stable, null);
         }
 
         Console.WriteLine("Retrieved informational version from tModLoader DLL: " + tmlInfoVersion);
 
-        string[] parts = tmlInfoVersion!.Substring(tmlInfoVersion.IndexOf('+') + 1).Split('|');
-        if (parts.Length >= 3 && Enum.TryParse(parts[2], true, out BuildPurpose purpose)) return purpose;
+        string[] parts = tmlInfoVersion.Split('|');
 
-        // tML Preview build type is 4th element for some reason
-        if (parts.Length >= 4 && Enum.TryParse(parts[3], true, out purpose)) return purpose;
+        BuildPurpose? purpose = null;
+        string?       version = null;
 
-        Console.WriteLine($"Could not parse resolved build purpose \"{parts[2]}\", assuming a 'Stable' build.");
-        return BuildPurpose.Stable;
+        foreach (string part in parts) {
+            // Parse build purpose, f.e.: stable, dev, preview.
+            if (Enum.TryParse(part, true, out BuildPurpose p)) purpose ??= p;
+
+            // Parse version, f.e.: 1.x.x.x+20xx.xx.xx.xx.
+            if (part.Contains('+')) version ??= part.Split('+', 2)[1];
+        }
+
+        if (purpose is null) Console.WriteLine($"Could not parse resolved build purpose \"{parts[2]}\", assuming a 'Stable' build.");
+        if (version is null) Console.WriteLine("Could not parse resolved tModLoader version, defaulting to 'null'.");
+
+        return (purpose ?? BuildPurpose.Stable, version);
     }
 #endregion
 }

@@ -85,7 +85,11 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
     public string OutputTmodPath { get; set; }
 
     protected override async ValueTask ExecuteAsync(IConsole console, Version version) {
-        if (string.IsNullOrEmpty(OutputTmodPath)) OutputTmodPath = PathLocator.FindSavePath(TmlPath, AssemblyName);
+        string? tempVers = null;
+
+        if (string.IsNullOrEmpty(OutputTmodPath)) OutputTmodPath = PathLocator.FindSavePath(TmlPath, AssemblyName, out tempVers);
+
+        if (string.IsNullOrEmpty(TmlVersion) && tempVers is not null) TmlVersion = tempVers;
 
         var options = new PackingOptions
                       {
@@ -123,7 +127,6 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
         await console.Output.WriteLineAsync($"  {nameof(ProjectDirectory)}: {ProjectDirectory}");
         await console.Output.WriteLineAsync($"  {nameof(ProjectOutputDirectory)}: {ProjectOutputDirectory}");
         await console.Output.WriteLineAsync($"  {nameof(AssemblyName)}: {AssemblyName}");
-        await console.Output.WriteLineAsync($"  {nameof(TmlVersion)}: {TmlVersion}");
         await console.Output.WriteLineAsync($"  {nameof(TmlPath)}: {TmlPath}");
         await console.Output.WriteLineAsync($"  {nameof(OutputTmodPath)}: {OutputTmodPath}");
 
