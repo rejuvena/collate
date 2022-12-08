@@ -17,6 +17,7 @@ public static class PropertiesProviderFactory
         return Path.GetExtension(filePath) switch
         {
             ".txt" => new TextPropertiesProvider(filePath),
+            ".js"  => new JsPropertiesProvider(filePath),
             _      => throw new Exception("Attempted to create a properties provider for file with unsupported extension: " + filePath)
         };
     }

@@ -130,7 +130,7 @@
             <Output TaskParameter="Output" ItemName="ModRefsFile"/>
         </FilterWriteModRefsTask>
 
-        <Exec Command='$(PackageCommand)$(ModProperties) --asmrefs-path "@(AssemblyRefsFile)" --nugetrefs-path "@(NuGetRefsFile)" --modrefs-path "@(ModRefsFile)" --proj-dir "$(MSBuildProjectDirectory)" --proj-out-dir "@(SanitizedOutputPath)" --asm-name "$(AssemblyName)" --tml-path "$(tMLSteamPath)$(tMLPath)" --out-dir "$(OutputTmodPath)"' ConsoleToMSBuild="true">
+        <Exec Command='$(PackageCommand)$(ModProperties) --asmrefs-path "@(AssemblyRefsFile)" --nugetrefs-path "@(NuGetRefsFile)" --modrefs-path "@(ModRefsFile)" --prop-prov-paths "$(BuildPropertiesProviders)" --proj-dir "$(MSBuildProjectDirectory)" --proj-out-dir "@(SanitizedOutputPath)" --asm-name "$(AssemblyName)" --tml-path "$(tMLSteamPath)$(tMLPath)" --out-dir "$(OutputTmodPath)"' ConsoleToMSBuild="true">
             <Output TaskParameter="ConsoleOutput" PropertyName="ExecOutput"/>
         </Exec>
     </Target>

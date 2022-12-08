@@ -84,6 +84,9 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
     [CommandOption("out-dir")]
     public string OutputTmodPath { get; set; }
 
+    [CommandOption("prop-prov-paths")]
+    public string PropertiesProviderPaths { get; set; }
+
     protected override async ValueTask ExecuteAsync(IConsole console, Version version) {
         string? tempVers = null;
 
@@ -100,6 +103,13 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
                       .WithReferencesProvider(this)
                       .WithPropertiesProvider(this)
                       .WithBuildDirectory(ProjectDirectory, "");
+
+        foreach (string propProvider in PropertiesProviderPaths.Split(';')) {
+            if (string.IsNullOrEmpty(propProvider)) continue;
+
+            await console.Output.WriteLineAsync("Using properties provider at path: " + propProvider);
+            options.WithPropertiesProvider(PropertiesProviderFactory.CreateProvider(propProvider));
+        }
 
         // Add .dll and .pdb files. ProjectOutputDirectory
         var modDll = new PathNamePair(AssemblyName + ".dll", ProjectOutputDirectory);
@@ -129,6 +139,7 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
         await console.Output.WriteLineAsync($"  {nameof(AssemblyName)}: {AssemblyName}");
         await console.Output.WriteLineAsync($"  {nameof(TmlPath)}: {TmlPath}");
         await console.Output.WriteLineAsync($"  {nameof(OutputTmodPath)}: {OutputTmodPath}");
+        await console.Output.WriteLineAsync($"  {nameof(PropertiesProviderPaths)}: {PropertiesProviderPaths}");
 
         await console.Output.WriteLineAsync("Properties:");
         foreach ((string key, string value) in GetProperties()) await console.Output.WriteLineAsync($"  {key}: {value}");
