@@ -24,7 +24,7 @@ Numerous features are planned/implemented:
   - [x] `.txt` (original)
     - Extended syntax: supports lines starting with `#` as comments.
   - [x] `.csproj` (properties)
-  - [ ] `.js`
+  - [x] `.js`
   - [ ] `.lua`
   - [ ] `.json`
   - [ ] `.yaml`
