@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd "$(dirname "$0")/.." || exit
+cd "$(dirname "$0")/.." || { echo "Unable to cd into $(realpath "$(dirname "$0")/..")"; exit; }
 
 find . -name "*.csproj" | while read proj
 do

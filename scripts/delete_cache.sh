@@ -7,7 +7,7 @@ elif [[ "$OSTYPE" == "msys" ]]
 then
     path="$HOME/.nuget/packages"
 else
-    echo "Unknown OSTYPE $OSTYPE"
+    echo "Unknown OSTYPE $OSTYPE! Contribute additional paths at https://github.com/rejuvena/collate/"
     exit 1
 fi
 
@@ -15,9 +15,12 @@ if [[ -d $path ]]
 then
     echo "Using NuGet cache $path"
 
-    [[ -d "$path/rejuvena.collate" ]] && rm -rfv "$path/rejuvena.collate" || echo "$path/rejuvena.collate does not exist"
-    [[ -d "$path/rejuvena.collate.cli" ]] && rm -rfv "$path/rejuvena.collate.cli" || echo "$path/rejuvena.collate.cli does not exist"
-    [[ -d "$path/rejuvena.collate.msbuild" ]] && rm -rfv "$path/rejuvena.collate.msbuild" || echo "$path/rejuvena.collate.msbuild does not exist"
+    files=( "rejuvena.collate" "rejuvena.collate.cli" "rejuvena.collate.msbuild" )
+
+    for file in "${files[@]}"
+    do
+        [[ -d "$path/$file" ]] && rm -rfv "${path:?}/${file:?}" || echo "$path/$file does not exist"
+    done
 else
     echo "Unable to locate NuGet cache at $path"
     exit 1
