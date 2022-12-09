@@ -15,10 +15,11 @@ public static class PropertiesProviderFactory
         // TODO: Support .json, .yaml, .toml, etc.
         return Path.GetExtension(filePath) switch
         {
-            ".txt" => new TextPropertiesProvider(filePath),
-            ".js"  => new JsPropertiesProvider(filePath),
-            ".lua" => new LuaPropertiesProvider(filePath),
-            _      => throw new Exception("Attempted to create a properties provider for file with unsupported extension: " + filePath)
+            ".txt"  => new TextPropertiesProvider(filePath),
+            ".js"   => new JsPropertiesProvider(filePath),
+            ".lua"  => new LuaPropertiesProvider(filePath),
+            ".json" => new JsonPropertiesProvider(filePath),
+            _       => throw new Exception("Attempted to create a properties provider for file with unsupported extension: " + filePath)
         };
     }
 }
