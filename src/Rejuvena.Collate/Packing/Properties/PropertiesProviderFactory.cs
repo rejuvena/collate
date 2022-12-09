@@ -18,6 +18,7 @@ public static class PropertiesProviderFactory
             ".txt" => new TextPropertiesProvider(filePath),
             ".js"  => new JsPropertiesProvider(filePath),
             ".lua" => new LuaPropertiesProvider(filePath),
+            ".json" => new JsonPropertiesProvider(filePath),
             _      => throw new Exception("Attempted to create a properties provider for file with unsupported extension: " + filePath)
         };
     }
