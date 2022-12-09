@@ -18,6 +18,7 @@ public static class PropertiesProviderFactory
             ".js"  => new JsPropertiesProvider(filePath),
             ".lua" => new LuaPropertiesProvider(filePath),
             ".yaml" or ".yml" => new YamlPropertiesProvider(filePath),
+            ".json" => new JsonPropertiesProvider(filePath),
             _      => throw new Exception("Attempted to create a properties provider for file with unsupported extension: " + filePath)
         };
     }

@@ -26,7 +26,7 @@ Numerous features are planned/implemented:
   - [x] `.csproj` (properties)
   - [x] `.js`
   - [x] `.lua`
-  - [ ] `.json`
+  - [x] `.json`
   - [x] `.yaml`
 - [ ] Building through MSBuild/`dotnet build`, no building using the tModLoader assembly.
 
