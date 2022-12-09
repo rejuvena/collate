@@ -11,7 +11,7 @@
         <NamespaceGenerator>enable</NamespaceGenerator>
         
         <!-- Add our custom build properties provider. -->
-        <BuildPropertiesProviders>$(BuildPropertiesProviders);$(MSBuildThisFileDirectory)build.js</BuildPropertiesProviders>
+        <BuildPropertiesProviders>$(BuildPropertiesProviders);$(MSBuildThisFileDirectory)build.lua</BuildPropertiesProviders>
 
         <!-- Add our access transformer.
              Include $(AccessTransformerPaths) in case other paths are defined. Paths are separted with a semicolon (;)
