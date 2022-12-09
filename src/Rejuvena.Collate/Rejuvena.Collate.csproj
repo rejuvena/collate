@@ -32,6 +32,7 @@
       <PackageReference Include="Jint.CommonJS" Version="1.0.14" />
       <PackageReference Include="Mono.Cecil" Version="0.11.4" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+      <PackageReference Include="NLua" Version="1.6.0" />
       <PackageReference Include="Tomat.TML.Files" Version="2.1.0" />
     </ItemGroup>
 

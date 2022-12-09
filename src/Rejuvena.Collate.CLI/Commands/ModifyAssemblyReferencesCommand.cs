@@ -42,6 +42,7 @@ public sealed class ModifyAssemblyReferencesCommand : VersionSensitiveCommand
         // ReSharper disable once CollectionNeverUpdated.Local
         var removed = new List<string>();
 
+        Directory.CreateDirectory(Path.GetDirectoryName(OutputFile)!);
         string contents = string.Join("\n", added.Select(x => '+' + x).Concat(removed.Select(x => '-' + x)));
         await File.WriteAllTextAsync(OutputFile, contents);
     }

@@ -25,7 +25,7 @@ Numerous features are planned/implemented:
     - Extended syntax: supports lines starting with `#` as comments.
   - [x] `.csproj` (properties)
   - [x] `.js`
-  - [ ] `.lua`
+  - [x] `.lua`
   - [ ] `.json`
   - [ ] `.yaml`
   - [ ] `.toml`
