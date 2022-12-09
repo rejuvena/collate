@@ -44,4 +44,17 @@ Numerous features are planned/implemented:
 * Automatic mod dependeny resolution.
 * `build.txt` and `description.txt` in other spots, redirected through a mod's `.csproj`.
 
+## Building
+
+Local building (for development, testing, debugging, etc.) is made easiest through a build script (`./scripts/build.sh`):
+
+```sh
+git clone https://github.com/rejuvena/collate.git && cd collate
+bash ./scripts/build.sh
+```
+
+Ensure `dotnet` exists on your path and `dotnet nuget` functions.
+
+Building is done through a script as the developed projects are NuGet packages that need to be published and tested locally.
+
 [^1]: Any features that support multiple file types will be checked if even one file type as been implemented.
