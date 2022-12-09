@@ -53,7 +53,7 @@ git clone https://github.com/rejuvena/collate.git && cd collate
 bash ./scripts/build.sh
 ```
 
-Ensure `dotnet` exists on your path and `dotnet nuget` functions.
+Ensure `dotnet` exists on your PATH and `dotnet nuget` functions.
 
 Building is done through a script as the developed projects are NuGet packages that need to be published and tested locally.
 
