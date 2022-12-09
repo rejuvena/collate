@@ -34,6 +34,7 @@
       <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
       <PackageReference Include="NLua" Version="1.6.0" />
       <PackageReference Include="Tomat.TML.Files" Version="2.1.0" />
+      <PackageReference Include="YamlDotNet" Version="12.2.0" />
     </ItemGroup>
 
 </Project>

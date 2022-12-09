@@ -27,8 +27,7 @@ Numerous features are planned/implemented:
   - [x] `.js`
   - [x] `.lua`
   - [ ] `.json`
-  - [ ] `.yaml`
-  - [ ] `.toml`
+  - [x] `.yaml`
 - [ ] Building through MSBuild/`dotnet build`, no building using the tModLoader assembly.
 
 * MSBuild toolchain.
