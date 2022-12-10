@@ -4,6 +4,9 @@
 # Ensure .targets file isn't hidden.
 !src/Rejuvena.Collate.MSBuild/build/Rejuvena.Collate.MSBuild.targets
 
+# Local NuGet
+NugetLocal/
+
 # Personal local testing script.
 publish_local.sh
 
