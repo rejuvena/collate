@@ -63,6 +63,9 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
     [CommandOption("modrefs-path")]
     public string ModRefsPath { get; set; }
 
+    [CommandOption("proj-name")]
+    public string ProjectName { get; set; }
+
     /// <summary>
     ///     The project directory.
     /// </summary>
@@ -122,6 +125,8 @@ public sealed class PackageModCommand : VersionSensitiveCommand, IPropertiesProv
         else await console.Output.WriteLineAsync("Could not resolve mod .pdb, expected at: " + modDll.Path);
 
         TModPacker.PackMod(options);
+
+        ModsFolderUtils.AddBuildPath(Path.Combine(Path.GetDirectoryName(OutputTmodPath)!, "collate.json"), AssemblyName, Path.Combine(ProjectDirectory, ProjectName) + ".csproj");
     }
 
     protected override async ValueTask ExecuteDebugAsync(IConsole console, Version version) {

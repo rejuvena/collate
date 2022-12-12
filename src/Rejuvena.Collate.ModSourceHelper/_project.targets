@@ -1,0 +1,13 @@
+﻿<Project>
+
+    <PropertyGroup>
+        <AssemblyName>ModSourceHelper</AssemblyName>
+        <RootNamespace>Rejuvena.Collate.ModSourceHelper</RootNamespace>
+
+        <TargetFramework>net6.0</TargetFramework>
+
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+</Project>

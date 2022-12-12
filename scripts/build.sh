@@ -4,7 +4,7 @@ cd "$(dirname "$0")/.." || { echo "Unable to cd into $(realpath "$(dirname "$0")
 
 find . -name "*.csproj" | while read proj
 do
-    if ! [[ "$proj" == *"nocompile"* ]] && ! [[ "$proj" == *"ExampleMod"* ]]
+    if ! [[ "$proj" == *"nocompile"* ]] && ! [[ "$proj" == *"ExampleMod"* ]] && ! [[ "$proj" == *"ModSourceHelper"* ]]
     then
         dotnet build "$proj" -c "Release"
     fi

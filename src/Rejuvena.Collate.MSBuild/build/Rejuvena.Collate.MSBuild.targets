@@ -1,4 +1,4 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
     <!-- Build options -->
     <PropertyGroup>
@@ -130,7 +130,7 @@
             <Output TaskParameter="Output" ItemName="ModRefsFile"/>
         </FilterWriteModRefsTask>
 
-        <Exec Command='$(PackageCommand)$(ModProperties) --asmrefs-path "@(AssemblyRefsFile)" --nugetrefs-path "@(NuGetRefsFile)" --modrefs-path "@(ModRefsFile)" --prop-prov-paths "$(BuildPropertiesProviders)" --proj-dir "$(MSBuildProjectDirectory)" --proj-out-dir "@(SanitizedOutputPath)" --asm-name "$(AssemblyName)" --tml-path "$(tMLSteamPath)$(tMLPath)" --out-dir "$(OutputTmodPath)"' ConsoleToMSBuild="true">
+        <Exec Command='$(PackageCommand)$(ModProperties) --asmrefs-path "@(AssemblyRefsFile)" --nugetrefs-path "@(NuGetRefsFile)" --modrefs-path "@(ModRefsFile)" --prop-prov-paths "$(BuildPropertiesProviders)" --proj-name "$(MSBuildProjectName)" --proj-dir "$(MSBuildProjectDirectory)" --proj-out-dir "@(SanitizedOutputPath)" --asm-name "$(AssemblyName)" --tml-path "$(tMLSteamPath)$(tMLPath)" --out-dir "$(OutputTmodPath)"' ConsoleToMSBuild="true">
             <Output TaskParameter="ConsoleOutput" PropertyName="ExecOutput"/>
         </Exec>
     </Target>
