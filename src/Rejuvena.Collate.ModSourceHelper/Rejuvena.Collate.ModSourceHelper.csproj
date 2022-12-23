@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="_project.targets" />
+    <Import Project="_config.targets" />
+
+    <ItemGroup>
+        <PackageReference Include="Rejuvena.Collate.MSBuild" Version="2.0.0" />
+    </ItemGroup>
+
+</Project>
