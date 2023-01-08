@@ -1,4 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+      <RootNamespace>Rejuvena.Collate.DevTools</RootNamespace>
+    </PropertyGroup>
     <Import Project="_project.targets" />
     <Import Project="_config.targets" />
 

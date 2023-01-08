@@ -1,8 +1,8 @@
 ﻿<Project>
 
     <PropertyGroup>
-        <AssemblyName>ModSourceHelper</AssemblyName>
-        <RootNamespace>Rejuvena.Collate.ModSourceHelper</RootNamespace>
+        <AssemblyName>DevTools</AssemblyName>
+        <RootNamespace>Rejuvena.Collate.DevTools</RootNamespace>
 
         <TargetFramework>net6.0</TargetFramework>
 

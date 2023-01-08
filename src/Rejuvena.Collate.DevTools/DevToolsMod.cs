@@ -15,9 +15,9 @@ using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace Rejuvena.Collate.ModSourceHelper;
+namespace Rejuvena.Collate.DevTools;
 
-public class ModSourceHelper : Mod {
+public class DevToolsMod : Mod {
     public static string collateJsonPath = Path.Combine(Main.SavePath, "Mods", "collate.json");
     public Type uiModSourcesType = typeof(Mod).Assembly.GetType("Terraria.ModLoader.UI.UIModSources")!;
     public Type uiModSourceItemType = typeof(Mod).Assembly.GetType("Terraria.ModLoader.UI.UIModSourceItem")!;
