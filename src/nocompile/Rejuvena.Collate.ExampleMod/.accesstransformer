@@ -1,8 +1,0 @@
-﻿v1
-
-# Publicize the Terraria.ModLoader.Mod.loading instance boolean field.
-public = System.Boolean Terraria.ModLoader.Mod::loading
-# Make IAsset.Continuation public so we can implement it in DeferredAsset.
-public = System.Void ReLogic.Content.IAsset::set_Continuation(System.Action)
-# public = System.Action ReLogic.Content.Asset::get_Continuation()
-# public = System.Void ReLogic.Content.Asset::set_Continuation(System.Action)
