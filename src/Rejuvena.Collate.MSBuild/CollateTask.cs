@@ -7,6 +7,7 @@ namespace Rejuvena.Collate.MSBuild;
 /// </summary>
 public abstract class CollateTask : BuildTask
 {
+    /// <inheritdoc cref="BuildTask.Execute"/>
     public sealed override bool Execute() {
         try {
             return ExecuteTask();
@@ -17,5 +18,9 @@ public abstract class CollateTask : BuildTask
         }
     }
 
+    /// <summary>
+    ///     Executes the task.
+    /// </summary>
+    /// <returns><see langword="true"/>, if successful</returns>
     protected abstract bool ExecuteTask();
 }
